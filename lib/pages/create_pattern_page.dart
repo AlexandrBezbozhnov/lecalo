@@ -328,8 +328,11 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ResultPage(calculatedMeasurements,
-                        measurementNames[selectedClothingType]!),
+                    builder: (context) => ResultPage(
+                      calculatedMeasurements,
+                      measurementNames[selectedClothingType]!,
+                      measurements,
+                    ),
                   ),
                 );
               },
