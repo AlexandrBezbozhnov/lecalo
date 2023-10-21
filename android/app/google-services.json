@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "342229509705",
+    "project_id": "lecalo",
+    "storage_bucket": "lecalo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:342229509705:android:b02a5d112873e067be4198",
+        "android_client_info": {
+          "package_name": "com.example.lecalo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDp6DCBrz8u-Fk3HFIESzvfvbDZ9THxoRo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
