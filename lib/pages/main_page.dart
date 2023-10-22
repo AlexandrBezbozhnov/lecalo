@@ -1,183 +1,80 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'dart:convert';
+import 'file_view_page.dart';
 
-class FolderPage extends StatefulWidget {
+class MainPage extends StatefulWidget {
   @override
-  _FolderPageState createState() => _FolderPageState();
+  _MainPageState createState() => _MainPageState();
 }
 
-class _FolderPageState extends State<FolderPage> {
-  List<Folder> folders = [];
+class _MainPageState extends State<MainPage> {
+  List<String> uploadedFiles = []; // Список для хранения имен файлов
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUploadedFiles(); // Загрузить список загруженных файлов при инициализации страницы
+  }
+
+  Future<void> fetchUploadedFiles() async {
+    final FirebaseStorage storage = FirebaseStorage.instance;
+    Reference reference = storage.ref().child('uploads');
+
+    try {
+      ListResult result = await reference.listAll();
+      List<String> files = result.items.map((item) => item.name).toList();
+      setState(() {
+        uploadedFiles = files;
+      });
+    } catch (error) {
+      print('Ошибка при получении файлов из Firebase Storage: $error');
+    }
+  }
+
+  Future<void> downloadAndShowFileContents(String fileName) async {
+    final FirebaseStorage storage = FirebaseStorage.instance;
+    Reference reference = storage.ref().child('uploads/$fileName');
+
+    try {
+      File localFile =
+          File('${(await getTemporaryDirectory()).path}/$fileName');
+      await reference.writeToFile(localFile);
+
+      String contents = await localFile.readAsString();
+
+      // Навигация на новую страницу для отображения содержимого файла
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              FileViewPage(fileName: fileName, fileContents: contents),
+        ),
+      );
+    } catch (error) {
+      print('Ошибка при загрузке или чтении файла: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Главная страница'),
+        title: Text('Загруженные файлы'),
       ),
       body: ListView.builder(
-        itemCount: folders.length,
+        itemCount: uploadedFiles.length,
         itemBuilder: (context, index) {
-          final folder = folders[index];
           return ListTile(
-            title: Text(folder.name),
+            title: Text(uploadedFiles[index]),
             onTap: () {
-              // Переход в папку
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => FolderDetailPage(folder),
-                ),
-              );
-            },
-            onLongPress: () {
-              // Длинное нажатие для изменения имени и удаления папки
-              showDialog(
-                context: context,
-                builder: (context) {
-                  String folderName = folder.name;
-                  return AlertDialog(
-                    title: Text('Изменить имя папки'),
-                    content: TextField(
-                      onChanged: (value) {
-                        folderName = value;
-                      },
-                      controller: TextEditingController(text: folder.name),
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          // Отмена
-                          Navigator.of(context).pop();
-                        },
-                        child: Text('Отмена'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          // Сохранение измененного имени папки
-                          if (folderName.isNotEmpty) {
-                            setState(() {
-                              folder.name = folderName;
-                            });
-                          }
-                          Navigator.of(context).pop();
-                        },
-                        child: Text('Сохранить'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          // Подтверждение удаления папки
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: Text('Удалить папку?'),
-                                content: Text('Вы уверены, что хотите удалить эту папку?'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      // Отмена
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text('Отмена'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      // Удаление папки
-                                      setState(() {
-                                        folders.remove(folder);
-                                      });
-                                      Navigator.of(context).pop();
-                                      // Закрыть второе диалоговое окно и первое диалоговое окно
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text('Удалить'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        child: Text('Удалить'),
-                      ),
-                    ],
-                  );
-                },
-              );
+              downloadAndShowFileContents(uploadedFiles[index]);
             },
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Добавление новой папки
-          showDialog(
-            context: context,
-            builder: (context) {
-              String folderName = '';
-              return AlertDialog(
-                title: Text('Добавить папку'),
-                content: TextField(
-                  onChanged: (value) {
-                    folderName = value;
-                  },
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      // Отмена
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Отмена'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      // Добавление папки
-                      if (folderName.isNotEmpty) {
-                        setState(() {
-                          folders.add(Folder(name: folderName));
-                        });
-                      }
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Добавить'),
-                  ),
-                ],
-              );
-            },
-          );
-        },
-        child: Icon(Icons.add),
-      ),
     );
   }
-}
-
-class Folder {
-  String name;
-
-  Folder({required this.name});
-}
-
-class FolderDetailPage extends StatelessWidget {
-  final Folder folder;
-
-  FolderDetailPage(this.folder);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(folder.name),
-      ),
-      body: Center(
-        child: Text('Содержимое папки "${folder.name}"'),
-      ),
-    );
-  }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: FolderPage(),
-  ));
 }

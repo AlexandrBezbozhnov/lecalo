@@ -19,7 +19,7 @@ class _MyAppState extends State<MyApp> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    FolderPage(),
+    MainPage(),
     CreatePatternPage(),
     ExportToAutodeskPage(),
   ];
