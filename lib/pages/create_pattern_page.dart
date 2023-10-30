@@ -7,7 +7,7 @@ class CreatePatternPage extends StatefulWidget {
 }
 
 class _CreatePatternPageState extends State<CreatePatternPage> {
-  final List<String> clothingTypes = ['Комбинезон', 'Купальник'];
+  final List<String> clothingTypes = ['Комбинезон', 'Купальник', 'Лосины'];
   final List<String> ageCategories = ['Малыш', 'Девочка', 'Юниорка'];
   final List<String> sleeveTypes = ['Короткий', 'Длинный'];
 
@@ -26,7 +26,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
       'Обхват щиколотки',
       'Обхват подъема стопы',
       'Обхват руки под мышкой',
-      'Обхват плеча',
+      'Длина плеча',
       'Ширина плеч (от косточки до косточки)',
       'Ширина груди',
       'Ширина спины',
@@ -37,6 +37,8 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
       'Дуга',
       'Высота сидения (От талии до твердой поверхности)',
       'Полудуга (От талии спереди через низ до талии сзади)',
+      'Длина талии переда'
+          'Длина талии спинки'
     ],
     'Купальник': [
       'Обхват шеи',
@@ -44,7 +46,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
       'Обхват талии',
       'Обхват бедер',
       'Обхват руки под мышкой',
-      'Обхват плеча',
+      'Длина плеча',
       'Ширина плеч (от косточки до косточки)',
       'Ширина груди',
       'Ширина спины',
@@ -55,6 +57,18 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
       'Полудуга (От талии спереди через низ до талии сзади)',
       'Попа',
       'Перед',
+    ],
+    'Лосины': [
+      'Обхват талии',
+      'Обхват бедер',
+      'Обхват бедра в паху',
+      'Обхват колена',
+      'Обхват щиколотки',
+      'Обхват подъема стопы',
+      'Длина от талии до пола',
+      'Длина от талии до колена',
+      'Высота сидения (От талии до твердой поверхности)',
+      'Полудуга (От талии спереди через низ до талии сзади)',
     ],
   };
 
@@ -105,7 +119,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
             case 9:
               calculatedMeasurements.add(value - 1);
             case 10:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1)/2);
             case 11:
               calculatedMeasurements.add(value - 1);
             case 12:
@@ -127,6 +141,12 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               break;
             case 19:
               calculatedMeasurements.add((value - 2) / 2);
+              break;
+            case 20:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 21:
+              calculatedMeasurements.add(value - 1);
               break;
           }
         }
@@ -161,7 +181,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
             case 9:
               calculatedMeasurements.add(value - 1);
             case 10:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1)/2);
             case 11:
               calculatedMeasurements.add(value - 1);
             case 12:
@@ -183,6 +203,12 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               break;
             case 19:
               calculatedMeasurements.add((value - 2) / 2);
+              break;
+            case 20:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 21:
+              calculatedMeasurements.add(value - 1);
               break;
           }
         }
@@ -217,7 +243,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
             case 9:
               calculatedMeasurements.add(value - 1);
             case 10:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1)/2);
             case 11:
               calculatedMeasurements.add(value - 1);
             case 12:
@@ -240,12 +266,19 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
             case 19:
               calculatedMeasurements.add((value - 2) / 2);
               break;
+            case 20:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 21:
+              calculatedMeasurements.add(value - 1);
+              break;
           }
         }
       }
     } else if (selectedClothingType == 'Купальник') {
       // Добавьте вычисления для купальника
       // Ваш код здесь
+    } else if (selectedClothingType == 'Лосины') {
     }
 
     return calculatedMeasurements;
