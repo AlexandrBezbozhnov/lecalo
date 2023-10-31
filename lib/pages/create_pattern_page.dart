@@ -55,8 +55,12 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
       'Длина рукава',
       'Дуга',
       'Полудуга (От талии спереди через низ до талии сзади)',
-      'Попа',
-      'Перед',
+      'Попа 1',
+      'Попа 2',
+      'Попа 3',
+      'Перед 1',
+      'Перед 2',
+      'Перед 3',
     ],
     'Лосины': [
       'Обхват талии',
@@ -99,37 +103,52 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
           switch (i) {
             case 0:
               calculatedMeasurements.add((value - 2) / 4);
+              break;
             case 1:
               calculatedMeasurements.add((value - 3) / 4);
+              break;
             case 2:
               calculatedMeasurements.add((value - 3) / 4);
+              break;
             case 3:
               calculatedMeasurements.add((value - 3) / 4);
+              break;
             case 4:
               calculatedMeasurements.add((value - 3) / 2);
+              break;
             case 5:
               calculatedMeasurements.add((value - 3) / 2);
+              break;
             case 6:
               calculatedMeasurements.add(value / 2);
+              break;
             case 7:
               calculatedMeasurements.add(value / 2);
+              break;
             case 8:
               calculatedMeasurements.add(value - 1);
               break;
             case 9:
               calculatedMeasurements.add(value - 1);
+              break;
             case 10:
-              calculatedMeasurements.add((value - 1)/2);
+              calculatedMeasurements.add((value - 1) / 2);
+              break;
             case 11:
               calculatedMeasurements.add(value - 1);
+              break;
             case 12:
               calculatedMeasurements.add(value - 1);
+              break;
             case 13:
               calculatedMeasurements.add(value - 1);
+              break;
             case 14:
               calculatedMeasurements.add(value - 3);
+              break;
             case 15:
               calculatedMeasurements.add(value - 2);
+              break;
             case 16:
               calculatedMeasurements.add(value - adjustment);
               break;
@@ -161,37 +180,52 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
           switch (i) {
             case 0:
               calculatedMeasurements.add((value - 2) / 4);
+              break;
             case 1:
               calculatedMeasurements.add((value - 4) / 4);
+              break;
             case 2:
               calculatedMeasurements.add((value - 4) / 4);
+              break;
             case 3:
               calculatedMeasurements.add((value - 4) / 4);
+              break;
             case 4:
               calculatedMeasurements.add((value - 4) / 2);
+              break;
             case 5:
               calculatedMeasurements.add((value - 4) / 2);
+              break;
             case 6:
               calculatedMeasurements.add(value / 2);
+              break;
             case 7:
               calculatedMeasurements.add(value / 2);
+              break;
             case 8:
               calculatedMeasurements.add(value - 1);
               break;
             case 9:
               calculatedMeasurements.add(value - 1);
+              break;
             case 10:
-              calculatedMeasurements.add((value - 1)/2);
+              calculatedMeasurements.add((value - 1) / 2);
+              break;
             case 11:
               calculatedMeasurements.add(value - 1);
+              break;
             case 12:
               calculatedMeasurements.add(value - 1);
+              break;
             case 13:
               calculatedMeasurements.add(value - 1);
+              break;
             case 14:
               calculatedMeasurements.add(value - 3);
+              break;
             case 15:
               calculatedMeasurements.add(value - 2);
+              break;
             case 16:
               calculatedMeasurements.add(value - adjustment);
               break;
@@ -223,37 +257,52 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
           switch (i) {
             case 0:
               calculatedMeasurements.add((value - 2) / 4);
+              break;
             case 1:
               calculatedMeasurements.add((value - 5) / 4);
+              break;
             case 2:
               calculatedMeasurements.add((value - 5) / 4);
+              break;
             case 3:
               calculatedMeasurements.add((value - 5) / 4);
+              break;
             case 4:
               calculatedMeasurements.add((value - 5) / 2);
+              break;
             case 5:
               calculatedMeasurements.add((value - 5) / 2);
+              break;
             case 6:
               calculatedMeasurements.add(value / 2);
+              break;
             case 7:
               calculatedMeasurements.add(value / 2);
+              break;
             case 8:
               calculatedMeasurements.add(value - 1);
               break;
             case 9:
               calculatedMeasurements.add(value - 1);
+              break;
             case 10:
-              calculatedMeasurements.add((value - 1)/2);
+              calculatedMeasurements.add((value - 1) / 2);
+              break;
             case 11:
               calculatedMeasurements.add(value - 1);
+              break;
             case 12:
               calculatedMeasurements.add(value - 1);
+              break;
             case 13:
               calculatedMeasurements.add(value - 1);
+              break;
             case 14:
               calculatedMeasurements.add(value - 3);
+              break;
             case 15:
               calculatedMeasurements.add(value - 2);
+              break;
             case 16:
               calculatedMeasurements.add(value - adjustment);
               break;
@@ -276,9 +325,347 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
         }
       }
     } else if (selectedClothingType == 'Купальник') {
-      // Добавьте вычисления для купальника
-      // Ваш код здесь
+      double adjustment = 0.0;
+      if (selectedAgeCategory == 'Малыш') {
+        if (selectedSleeveType == 'Длинный') {
+          adjustment = 2.0;
+        }
+        for (int i = 0;
+            i < measurementNames[selectedClothingType]!.length;
+            i++) {
+          double value = double.parse(measurements[i]);
+          switch (i) {
+            case 0:
+              calculatedMeasurements.add((value - 2) / 4);
+              break;
+            case 1:
+              calculatedMeasurements.add((value - 3) / 4);
+              break;
+            case 2:
+              calculatedMeasurements.add((value - 3) / 4);
+              break;
+            case 3:
+              calculatedMeasurements.add((value - 3) / 4);
+              break;
+            case 4:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 5:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 6:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 7:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 8:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 9:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 10:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 11:
+              calculatedMeasurements.add(value - adjustment);
+              break;
+            case 12:
+              calculatedMeasurements.add((value - 3) / 2);
+              break;
+            case 13:
+              calculatedMeasurements.add((value - 2) / 2);
+              break;
+            case 14:
+              calculatedMeasurements.add(value);
+              break;
+            case 15:
+              calculatedMeasurements.add(value);
+              break;
+            case 16:
+              calculatedMeasurements.add(value);
+              break;
+            case 17:
+              calculatedMeasurements.add(value);
+              break;
+            case 18:
+              calculatedMeasurements.add(value);
+              break;
+            case 19:
+              calculatedMeasurements.add(value);
+              break;
+          }
+        }
+      } else if (selectedAgeCategory == 'Девочка') {
+        if (selectedSleeveType == 'Длинный') {
+          adjustment = 2.0;
+        }
+        for (int i = 0;
+            i < measurementNames[selectedClothingType]!.length;
+            i++) {
+          double value = double.parse(measurements[i]);
+          switch (i) {
+            case 0:
+              calculatedMeasurements.add((value - 2) / 4);
+              break;
+            case 1:
+              calculatedMeasurements.add((value - 4) / 4);
+              break;
+            case 2:
+              calculatedMeasurements.add((value - 4) / 4);
+              break;
+            case 3:
+              calculatedMeasurements.add((value - 4) / 4);
+              break;
+            case 4:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 5:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 6:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 7:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 8:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 9:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 10:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 11:
+              calculatedMeasurements.add(value - adjustment);
+              break;
+            case 12:
+              calculatedMeasurements.add((value - 3) / 2);
+              break;
+            case 13:
+              calculatedMeasurements.add((value - 2) / 2);
+              break;
+            case 14:
+              calculatedMeasurements.add(value);
+              break;
+            case 15:
+              calculatedMeasurements.add(value);
+              break;
+            case 16:
+              calculatedMeasurements.add(value);
+              break;
+            case 17:
+              calculatedMeasurements.add(value);
+              break;
+            case 18:
+              calculatedMeasurements.add(value);
+              break;
+            case 19:
+              calculatedMeasurements.add(value);
+              break;
+          }
+        }
+      } else if (selectedAgeCategory == 'Юниорка') {
+        if (selectedSleeveType == 'Длинный') {
+          adjustment = 2.0;
+        }
+        for (int i = 0;
+            i < measurementNames[selectedClothingType]!.length;
+            i++) {
+          double value = double.parse(measurements[i]);
+          switch (i) {
+            case 0:
+              calculatedMeasurements.add((value - 2) / 4);
+              break;
+            case 1:
+              calculatedMeasurements.add((value - 5) / 4);
+              break;
+            case 2:
+              calculatedMeasurements.add((value - 5) / 4);
+              break;
+            case 3:
+              calculatedMeasurements.add((value - 5) / 4);
+              break;
+            case 4:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 5:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 6:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 7:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 8:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 9:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 10:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 11:
+              calculatedMeasurements.add(value - adjustment);
+              break;
+            case 12:
+              calculatedMeasurements.add((value - 3) / 2);
+              break;
+            case 13:
+              calculatedMeasurements.add((value - 2) / 2);
+              break;
+            case 14:
+              calculatedMeasurements.add(value);
+              break;
+            case 15:
+              calculatedMeasurements.add(value);
+              break;
+            case 16:
+              calculatedMeasurements.add(value);
+              break;
+            case 17:
+              calculatedMeasurements.add(value);
+              break;
+            case 18:
+              calculatedMeasurements.add(value);
+              break;
+            case 19:
+              calculatedMeasurements.add(value);
+              break;
+          }
+        }
+      }
     } else if (selectedClothingType == 'Лосины') {
+      double adjustment = 0.0;
+      if (selectedAgeCategory == 'Малыш') {
+        if (selectedSleeveType == 'Длинный') {
+          adjustment = 2.0;
+        }
+        for (int i = 0;
+            i < measurementNames[selectedClothingType]!.length;
+            i++) {
+          double value = double.parse(measurements[i]);
+          switch (i) {
+            case 0:
+              calculatedMeasurements.add((value - 3) / 4);
+              break;
+            case 1:
+              calculatedMeasurements.add((value - 3) / 4);
+              break;
+            case 2:
+              calculatedMeasurements.add((value - 3) / 2);
+              break;
+            case 3:
+              calculatedMeasurements.add((value - 3) / 2);
+              break;
+            case 4:
+              calculatedMeasurements.add(value / 2);
+              break;
+            case 5:
+              calculatedMeasurements.add(value / 2);
+              break;
+            case 6:
+              calculatedMeasurements.add(value - 3);
+              break;
+            case 7:
+              calculatedMeasurements.add(value - 2);
+              break;
+            case 8:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 9:
+              calculatedMeasurements.add((value - 2) / 2);
+              break;
+          }
+        }
+      } else if (selectedAgeCategory == 'Девочка') {
+        if (selectedSleeveType == 'Длинный') {
+          adjustment = 2.0;
+        }
+        for (int i = 0;
+            i < measurementNames[selectedClothingType]!.length;
+            i++) {
+          double value = double.parse(measurements[i]);
+          switch (i) {
+            case 0:
+              calculatedMeasurements.add((value - 4) / 4);
+              break;
+            case 1:
+              calculatedMeasurements.add((value - 4) / 4);
+              break;
+            case 2:
+              calculatedMeasurements.add((value - 4) / 2);
+              break;
+            case 3:
+              calculatedMeasurements.add((value - 4) / 2);
+              break;
+            case 4:
+              calculatedMeasurements.add(value / 2);
+              break;
+            case 5:
+              calculatedMeasurements.add(value / 2);
+              break;
+            case 6:
+              calculatedMeasurements.add(value - 3);
+              break;
+            case 7:
+              calculatedMeasurements.add(value - 2);
+              break;
+            case 8:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 9:
+              calculatedMeasurements.add((value - 2) / 2);
+              break;
+          }
+        }
+      } else if (selectedAgeCategory == 'Юниорка') {
+        if (selectedSleeveType == 'Длинный') {
+          adjustment = 2.0;
+        }
+        for (int i = 0;
+            i < measurementNames[selectedClothingType]!.length;
+            i++) {
+          double value = double.parse(measurements[i]);
+          switch (i) {
+            case 0:
+              calculatedMeasurements.add((value - 5) / 4);
+              break;
+            case 1:
+              calculatedMeasurements.add((value - 5) / 4);
+              break;
+            case 2:
+              calculatedMeasurements.add((value - 5) / 2);
+              break;
+            case 3:
+              calculatedMeasurements.add((value - 5) / 2);
+              break;
+            case 4:
+              calculatedMeasurements.add(value / 2);
+              break;
+            case 5:
+              calculatedMeasurements.add(value / 2);
+              break;
+            case 6:
+              calculatedMeasurements.add(value - 3);
+              break;
+            case 7:
+              calculatedMeasurements.add(value - 2);
+              break;
+            case 8:
+              calculatedMeasurements.add(value - 1);
+              break;
+            case 9:
+              calculatedMeasurements.add((value - 2) / 2);
+              break;
+          }
+        }
+      }
     }
 
     return calculatedMeasurements;
