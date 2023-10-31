@@ -100,7 +100,6 @@ Future<void> saveData(
   String fileName,
 ) async {
   try {
-    // Создание строки для сохранения в файле
     String data = '';
 
     for (int i = 0; i < calculatedMeasurements.length; i++) {
@@ -110,7 +109,7 @@ Future<void> saveData(
 
     for (int i = 0; i < userMeasurements.length; i++) {
       final userIndex = calculatedMeasurements.length + i;
-      data += '${userIndex < measurementNames.length ? measurementNames[userIndex] : 'Неизвестное измерение'}\n';
+      data += '${measurementNames[i]}\n';
       data += 'Значение: ${userMeasurements[i]} (Введено).\n';
     }
 
