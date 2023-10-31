@@ -101,16 +101,15 @@ Future<void> saveData(
 ) async {
   try {
     String data = '';
-
+    
+    data += 'Вычеслено: \n\n';
     for (int i = 0; i < calculatedMeasurements.length; i++) {
-      data += '${measurementNames[i]}\n';
-      data += 'Значение: ${calculatedMeasurements[i].toStringAsFixed(2)} (Вычислено).\n';
+      data += '${measurementNames[i]}: ${calculatedMeasurements[i].toStringAsFixed(2)} \n\n';
     }
-
+    data += 'Введено: \n\n';
     for (int i = 0; i < userMeasurements.length; i++) {
       final userIndex = calculatedMeasurements.length + i;
-      data += '${measurementNames[i]}\n';
-      data += 'Значение: ${userMeasurements[i]} (Введено).\n';
+      data += '${measurementNames[i]}: ${userMeasurements[i]} \n\n';
     }
 
     final directory = await getApplicationDocumentsDirectory();
