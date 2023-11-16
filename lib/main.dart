@@ -30,7 +30,6 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        // You can customize your Material 3 theme here
       ),
       home: Scaffold(
         body: _pages[_currentIndex],

@@ -62,7 +62,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Загруженные файлы'),
+        title: Text('Главная'),
       ),
       body: ListView.builder(
         itemCount: uploadedFiles.length,
