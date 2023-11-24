@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:typed_data';
-import 'package:path/path.dart' as path; // Импорт библиотеки path
+import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'file_view_page.dart';
+import 'FolderContentsPage.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -18,6 +19,23 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     futureFiles = fetchUploadedFiles();
+  }
+
+  Future<void> exploreFolderContents(
+      String folderName, List<String> items, List<String> folders) async {
+    try {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => FolderContentsPage(
+            folderName: folderName,
+            contents: items, // Передаем только содержимое папки
+          ),
+        ),
+      );
+    } catch (error) {
+      print('Ошибка при чтении содержимого папки: $error');
+    }
   }
 
   Future<void> downloadAndShowFileContents(String fileName) async {
@@ -69,12 +87,10 @@ class _MainPageState extends State<MainPage> {
     Reference reference = storage.ref().child('uploads/$folderName/');
 
     try {
-      // Создаем файл внутри папки, это создаст папку в Firebase Storage
       await reference.child('/.keep').putData(Uint8List(0));
 
       setState(() {
-        futureFiles =
-            fetchUploadedFiles(); // Обновление списка после создания папки
+        futureFiles = fetchUploadedFiles();
       });
     } catch (error) {
       print('Ошибка при создании папки: $error');
@@ -109,21 +125,33 @@ class _MainPageState extends State<MainPage> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   String itemName = snapshot.data![index];
-                  bool isFolder = itemName.endsWith('/');
+                  bool isFile = itemName.endsWith('.txt');
 
-                  String fileName = path
-                      .basename(itemName); // Получаем только имя файла без пути
+                  String fileName = path.basename(itemName);
 
                   return ListTile(
-                    title: Text(fileName), // Отображаем только имя файла
-                    onTap: () {
-                      if (isFolder) {
-                        print('Вы выбрали папку: $itemName');
-                      } else {
+                    title: Text(fileName),
+                    onTap: () async {
+                      if (isFile) {
                         downloadAndShowFileContents(itemName);
+
+                      } else {
+                        try {
+                          ListResult result = await FirebaseStorage.instance
+                              .ref()
+                              .child(itemName)
+                              .listAll();
+                          List<String> items =
+                              result.items.map((item) => item.fullPath).toList();
+                          List<String> folders = result.prefixes
+                              .map((folder) => folder.fullPath)
+                              .toList();
+                          exploreFolderContents(itemName, items, folders);
+                        } catch (error) {
+                          print('Ошибка при открытии папки: $error');
+                        }
                       }
                     },
-                    leading: isFolder ? Icon(Icons.folder) : null,
                   );
                 },
               );
@@ -136,13 +164,13 @@ class _MainPageState extends State<MainPage> {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              String newFolderName = ''; // Хранение имени новой папки
+              String newFolderName = '';
 
               return AlertDialog(
                 title: Text('Новая папка'),
                 content: TextField(
                   onChanged: (value) {
-                    newFolderName = value; // Сохранение введенного значения
+                    newFolderName = value;
                   },
                   decoration: InputDecoration(hintText: 'Введите имя папки'),
                 ),
@@ -155,7 +183,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                   TextButton(
                     onPressed: () {
-                      createFolder(newFolderName); // Создание новой папки
+                      createFolder(newFolderName);
                       Navigator.of(context).pop();
                     },
                     child: Text('Создать'),
