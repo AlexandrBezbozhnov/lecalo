@@ -38,7 +38,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
       'Высота сидения (От талии до твердой поверхности)',
       'Полудуга (От талии спереди через низ до талии сзади)',
       'Длина талии переда'
-      'Длина талии спинки'
+          'Длина талии спинки'
     ],
     'Купальник': [
       'Обхват шеи',
@@ -679,6 +679,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
   }
 
   @override
+  // В методе build:
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -715,17 +716,20 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               },
             ),
             SizedBox(height: 20),
-            DropdownButtonFormField(
-              value: selectedSleeveType,
-              items: sleeveTypes.map((sleeve) {
-                return DropdownMenuItem(value: sleeve, child: Text(sleeve));
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  selectedSleeveType = value.toString();
-                });
-              },
-            ),
+            // Условная логика для скрытия DropdownButtonFormField
+            if (selectedClothingType !=
+                'Лосины') // Проверяем, не выбран ли тип "Лосины"
+              DropdownButtonFormField(
+                value: selectedSleeveType,
+                items: sleeveTypes.map((sleeve) {
+                  return DropdownMenuItem(value: sleeve, child: Text(sleeve));
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedSleeveType = value.toString();
+                  });
+                },
+              ),
             SizedBox(height: 20),
             Text('Введите замеры:'),
             Column(
