@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+import 'main_page.dart';
 
 class ResultPage extends StatelessWidget {
   final List<double> calculatedMeasurements;
@@ -46,6 +47,9 @@ class ResultPage extends StatelessWidget {
                     fileName,
                   );
                 }
+                Navigator.popUntil(
+                  context, ModalRoute.withName('/')
+                );
               },
             ),
           ],
@@ -84,7 +88,8 @@ class ResultPage extends StatelessWidget {
               title: Text(userIndex < measurementNames.length
                   ? measurementNames[userIndex]
                   : 'Неизвестное измерение'),
-              subtitle: Text('Значение: ${userMeasurements[userIndex]} (Введено)'),
+              subtitle:
+                  Text('Значение: ${userMeasurements[userIndex]} (Введено)'),
             );
           }
         },
@@ -101,10 +106,11 @@ Future<void> saveData(
 ) async {
   try {
     String data = '';
-    
+
     data += 'Вычеслено: \n\n';
     for (int i = 0; i < calculatedMeasurements.length; i++) {
-      data += '${measurementNames[i]}: ${calculatedMeasurements[i].toStringAsFixed(2)} \n\n';
+      data +=
+          '${measurementNames[i]}: ${calculatedMeasurements[i].toStringAsFixed(2)} \n\n';
     }
     data += 'Введено: \n\n';
     for (int i = 0; i < userMeasurements.length; i++) {

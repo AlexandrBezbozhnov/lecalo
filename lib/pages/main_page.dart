@@ -11,26 +11,25 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  List<String> uploadedFiles = []; // Список для хранения имен файлов
+  late Future<List<String>> futureFiles;
 
   @override
   void initState() {
     super.initState();
-    fetchUploadedFiles(); // Загрузить список загруженных файлов при инициализации страницы
+    futureFiles = fetchUploadedFiles(); // Загрузка списка файлов
   }
 
-  Future<void> fetchUploadedFiles() async {
+  Future<List<String>> fetchUploadedFiles() async {
     final FirebaseStorage storage = FirebaseStorage.instance;
     Reference reference = storage.ref().child('uploads');
 
     try {
       ListResult result = await reference.listAll();
       List<String> files = result.items.map((item) => item.name).toList();
-      setState(() {
-        uploadedFiles = files;
-      });
+      return files;
     } catch (error) {
       print('Ошибка при получении файлов из Firebase Storage: $error');
+      throw error;
     }
   }
 
@@ -39,23 +38,26 @@ class _MainPageState extends State<MainPage> {
     Reference reference = storage.ref().child('uploads/$fileName');
 
     try {
-      File localFile =
-          File('${(await getTemporaryDirectory()).path}/$fileName');
+      File localFile = File('${(await getTemporaryDirectory()).path}/$fileName');
       await reference.writeToFile(localFile);
 
       String contents = await localFile.readAsString();
 
-      // Навигация на новую страницу для отображения содержимого файла
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) =>
-              FileViewPage(fileName: fileName, fileContents: contents),
+          builder: (context) => FileViewPage(fileName: fileName, fileContents: contents),
         ),
       );
     } catch (error) {
       print('Ошибка при загрузке или чтении файла: $error');
     }
+  }
+
+  Future<void> _refresh() async {
+    setState(() {
+      futureFiles = fetchUploadedFiles();
+    });
   }
 
   @override
@@ -64,16 +66,32 @@ class _MainPageState extends State<MainPage> {
       appBar: AppBar(
         title: Text('Главная'),
       ),
-      body: ListView.builder(
-        itemCount: uploadedFiles.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(uploadedFiles[index]),
-            onTap: () {
-              downloadAndShowFileContents(uploadedFiles[index]);
-            },
-          );
-        },
+      body: RefreshIndicator(
+        onRefresh: _refresh,
+        child: FutureBuilder<List<String>>(
+          future: futureFiles,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Ошибка загрузки: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Center(child: Text('Нет загруженных файлов'));
+            } else {
+              return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(snapshot.data![index]),
+                    onTap: () {
+                      downloadAndShowFileContents(snapshot.data![index]);
+                    },
+                  );
+                },
+              );
+            }
+          },
+        ),
       ),
     );
   }
