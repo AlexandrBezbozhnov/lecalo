@@ -11,7 +11,7 @@ class FileViewPage extends StatelessWidget {
   Future<void> deleteFile(BuildContext context) async {
     try {
       final FirebaseStorage storage = FirebaseStorage.instance;
-      Reference reference = storage.ref().child('uploads/$fileName');
+      Reference reference = storage.ref().child('$fileName');
 
       await reference.delete();
       Navigator.popUntil(context, ModalRoute.withName('/'));
@@ -25,7 +25,7 @@ class FileViewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Содержимое файла: $fileName'),
+        title: Text('$fileName'),
         actions: <Widget>[
           PopupMenuButton(
             itemBuilder: (BuildContext context) {

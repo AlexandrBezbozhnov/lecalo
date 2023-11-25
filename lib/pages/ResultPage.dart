@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'main_page.dart';
+import 'dart:async';
 
 class ResultPage extends StatelessWidget {
   final List<double> calculatedMeasurements;
@@ -15,44 +16,71 @@ class ResultPage extends StatelessWidget {
     this.userMeasurements,
   );
 
-  void _showFileNameDialog(BuildContext context) {
+  void _showSaveFileDialog(BuildContext context, List<String> folders) {
     String fileName = '';
+    String selectedFolder = folders.isNotEmpty ? folders[0] : '';
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Введите имя файла'),
-          content: TextField(
-            onChanged: (value) {
-              fileName = value;
-            },
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Отмена'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text('Сохранить'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                if (fileName.isNotEmpty) {
-                  saveData(
-                    calculatedMeasurements,
-                    measurementNames,
-                    userMeasurements,
-                    fileName,
-                  );
-                }
-                Navigator.popUntil(
-                  context, ModalRoute.withName('/')
-                );
-              },
-            ),
-          ],
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: Text('Сохранить файл'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  DropdownButton<String>(
+                    value: selectedFolder,
+                    items: folders.map((String folder) {
+                      return DropdownMenuItem<String>(
+                        value: folder,
+                        child: Text(folder),
+                      );
+                    }).toList(),
+                    onChanged: (String? value) {
+                      setState(() {
+                        selectedFolder = value ?? '';
+                      });
+                    },
+                  ),
+                  TextField(
+                    onChanged: (value) {
+                      fileName = value;
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Имя файла',
+                    ),
+                  ),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Отмена'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: Text('Сохранить'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    if (fileName.isNotEmpty) {
+                      saveData(
+                        calculatedMeasurements,
+                        measurementNames,
+                        userMeasurements,
+                        fileName,
+                        selectedFolder,
+                      );
+                    }
+                    Navigator.popUntil(context, ModalRoute.withName('/'));
+                  },
+                ),
+              ],
+            );
+          },
         );
       },
     );
@@ -67,7 +95,14 @@ class ResultPage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.save),
             onPressed: () {
-              _showFileNameDialog(context);
+              // Загрузить список папок внутри uploads в Firebase Storage
+              FirebaseStorage.instance.ref('uploads').listAll().then((result) {
+                List<String> folders =
+                    result.prefixes.map((e) => e.name).toList();
+                _showSaveFileDialog(context, folders);
+              }).catchError((error) {
+                print('Ошибка при получении списка папок: $error');
+              });
             },
           ),
         ],
@@ -103,6 +138,7 @@ Future<void> saveData(
   List<String> measurementNames,
   List<String> userMeasurements,
   String fileName,
+  String selectedFolder,
 ) async {
   try {
     String data = '';
@@ -124,7 +160,8 @@ Future<void> saveData(
     await file.writeAsString(data);
 
     final storage = FirebaseStorage.instance;
-    final filePath = 'uploads/$fileName.txt';
+    final filePath =
+        'uploads/$selectedFolder/$fileName.txt'; // Используйте выбранную папку
 
     final ref = storage.ref().child(filePath);
     final task = ref.putFile(file);

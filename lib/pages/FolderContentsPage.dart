@@ -4,7 +4,6 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'file_view_page.dart';
 
-
 class FolderContentsPage extends StatelessWidget {
   final String folderName;
   final List<String> contents;
@@ -15,38 +14,40 @@ class FolderContentsPage extends StatelessWidget {
     required this.contents,
   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Содержимое папки $folderName'),
-      ),
-      body: _buildContentsList(context), // Pass the context here
-    );
-  }
-
   Future<void> downloadAndShowFileContents(
       BuildContext context, String fileName) async {
     final FirebaseStorage storage = FirebaseStorage.instance;
-    Reference reference = storage.ref().child('$folderName/$fileName');
+    Reference reference = storage.ref().child('$fileName/');
 
     try {
       File localFile =
           File('${(await getTemporaryDirectory()).path}/$fileName');
       await reference.writeToFile(localFile);
 
-      String contents = await localFile.readAsString();
+      String fileContents = await localFile.readAsString();
 
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) =>
-              FileViewPage(fileName: fileName, fileContents: contents),
+          builder: (context) => FileViewPage(
+            fileName: fileName,
+            fileContents: fileContents,
+          ),
         ),
       );
     } catch (error) {
       print('Ошибка при загрузке или чтении файла: $error');
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Содержимое папки $folderName'),
+      ),
+      body: _buildContentsList(context),
+    );
   }
 
   Widget _buildContentsList(BuildContext context) {
@@ -56,18 +57,14 @@ class FolderContentsPage extends StatelessWidget {
             itemCount: contents.length,
             itemBuilder: (context, index) {
               String itemName = contents[index];
-              bool isFolder = itemName.endsWith('/');
 
               String fileName = itemName.split('/').last;
 
               return ListTile(
                 title: Text(fileName),
-                onTap: () {
-                  if (isFolder) {
-                    downloadAndShowFileContents(context, itemName);
-                  }
+                onTap: () async {                  
+                    await downloadAndShowFileContents(context, itemName);
                 },
-                leading: isFolder ? Icon(Icons.folder) : null,
               );
             },
           );

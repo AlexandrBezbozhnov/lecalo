@@ -134,15 +134,15 @@ class _MainPageState extends State<MainPage> {
                     onTap: () async {
                       if (isFile) {
                         downloadAndShowFileContents(itemName);
-
                       } else {
                         try {
                           ListResult result = await FirebaseStorage.instance
                               .ref()
                               .child(itemName)
                               .listAll();
-                          List<String> items =
-                              result.items.map((item) => item.fullPath).toList();
+                          List<String> items = result.items
+                              .map((item) => item.fullPath)
+                              .toList();
                           List<String> folders = result.prefixes
                               .map((folder) => folder.fullPath)
                               .toList();
