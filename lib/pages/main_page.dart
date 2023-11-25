@@ -21,6 +21,38 @@ class _MainPageState extends State<MainPage> {
     futureFiles = fetchUploadedFiles();
   }
 
+  Future<void> deleteFolderAndFiles(String folderName) async {
+    final FirebaseStorage storage = FirebaseStorage.instance;
+    Reference reference = storage.ref().child('$folderName/');
+
+    try {
+      // Получаем список файлов и подпапок в папке
+      ListResult result = await reference.listAll();
+      List<Reference> filesToDelete = result.items;
+      List<Reference> foldersToDelete = result.prefixes;
+
+      // Удаляем файлы в папке
+      await Future.forEach(filesToDelete, (fileRef) async {
+        await fileRef.delete();
+      });
+
+      // Удаляем подпапки рекурсивно
+      await Future.forEach(foldersToDelete, (folderRef) async {
+        await deleteFolderAndFiles(folderRef.fullPath);
+      });
+
+      // Удаляем саму папку
+      await reference.delete();
+
+    } catch (error) {
+      print('Ошибка при удалении папки: $error');
+      setState(() {
+        futureFiles =
+            fetchUploadedFiles(); // Обновляем список файлов после удаления
+      });
+    }
+  }
+
   Future<void> exploreFolderContents(
       String folderName, List<String> items, List<String> folders) async {
     try {
@@ -63,7 +95,7 @@ class _MainPageState extends State<MainPage> {
 
   Future<List<String>> fetchUploadedFiles() async {
     final FirebaseStorage storage = FirebaseStorage.instance;
-    Reference reference = storage.ref().child('uploads');
+    Reference reference = storage.ref().child('uploads/');
 
     try {
       ListResult result = await reference.listAll();
@@ -131,7 +163,7 @@ class _MainPageState extends State<MainPage> {
 
                   return ListTile(
                     title: Text(fileName),
-                    onTap: () async {
+                     onTap: () async {
                       if (isFile) {
                         downloadAndShowFileContents(itemName);
                       } else {
@@ -150,6 +182,35 @@ class _MainPageState extends State<MainPage> {
                         } catch (error) {
                           print('Ошибка при открытии папки: $error');
                         }
+                      }
+                    },
+                    onLongPress: () {
+                      if (!isFile) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Удалить папку и все файлы?'),
+                              content: Text(
+                                  'Вы уверены, что хотите удалить эту папку и все файлы в ней?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Отмена'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    deleteFolderAndFiles(itemName);
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Удалить'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       }
                     },
                   );
