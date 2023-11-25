@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
-import 'file_view_page.dart';
+import 'fileViewPage.dart';
 
 class FolderContentsPage extends StatelessWidget {
   final String folderName;

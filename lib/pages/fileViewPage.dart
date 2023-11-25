@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'main_page.dart';
+import 'mainPage.dart';
 
 class FileViewPage extends StatelessWidget {
   final String fileName;

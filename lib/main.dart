@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'pages/main_page.dart';
-import 'pages/create_pattern_page.dart';
-import 'pages/export_to_autodesk_page.dart';
-import 'pages/file_view_page.dart';
+import 'pages/mainPage.dart';
+import 'pages/CreatePatternPage.dart';
+import 'pages/exportToAutodeskPage.dart';
+import 'pages/fileViewPage.dart';
 
 import 'package:flutter/material.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'ResultPage.dart';
+import 'resultPage.dart';
 
 class CreatePatternPage extends StatefulWidget {
   @override
