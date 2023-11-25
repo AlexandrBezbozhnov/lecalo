@@ -58,12 +58,22 @@ class FolderContentsPage extends StatelessWidget {
             itemBuilder: (context, index) {
               String itemName = contents[index];
 
+              // Проверка на расширение файла .keep и пропуск его отображения
+              if (itemName.endsWith('.keep')) {
+                return SizedBox.shrink(); // Пропуск отображения файла .keep
+              }
+
               String fileName = itemName.split('/').last;
+              // Удаление расширения .txt из имени файла
+              if (fileName.endsWith('.txt')) {
+                fileName = fileName.substring(0, fileName.length - 4);
+              }
 
               return ListTile(
-                title: Text(fileName),
-                onTap: () async {                  
-                    await downloadAndShowFileContents(context, itemName);
+                title: Text(
+                    fileName), // Отображение имени файла без расширения .txt
+                onTap: () async {
+                  await downloadAndShowFileContents(context, itemName);
                 },
               );
             },
