@@ -44,7 +44,7 @@ class FolderContentsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Содержимое папки $folderName'),
+        title: Text('$folderName'),
       ),
       body: _buildContentsList(context),
     );
@@ -62,7 +62,9 @@ class FolderContentsPage extends StatelessWidget {
               if (itemName.endsWith('.keep')) {
                 return SizedBox.shrink(); // Пропуск отображения файла .keep
               }
-
+              if (itemName.endsWith('.bas')) {
+                return SizedBox.shrink(); // Пропуск отображения файла .keep
+              }
               String fileName = itemName.split('/').last;
               // Удаление расширения .txt из имени файла
               if (fileName.endsWith('.txt')) {

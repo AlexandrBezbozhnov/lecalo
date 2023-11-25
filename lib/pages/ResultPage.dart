@@ -141,9 +141,8 @@ Future<void> saveData(
   String selectedFolder,
 ) async {
   try {
-    String data = '';
-
-    data += 'Вычеслено: \n\n';
+    // Создание текста для файла .txt
+    String data = 'Вычеслено: \n\n';
     for (int i = 0; i < calculatedMeasurements.length; i++) {
       data +=
           '${measurementNames[i]}: ${calculatedMeasurements[i].toStringAsFixed(2)} \n\n';
@@ -154,23 +153,198 @@ Future<void> saveData(
       data += '${measurementNames[i]}: ${userMeasurements[i]} \n\n';
     }
 
+    // Запись данных в файл .txt
     final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/$fileName.txt');
+    final fileTxt = File('${directory.path}/$fileName.txt');
+    await fileTxt.writeAsString(data);
 
-    await file.writeAsString(data);
+    // Создание текста для файла .bas
+    final fileBas = File('${directory.path}/$fileName.bas');
+    final code = '''
+Sub DrawSquareWithDimensions()
+  Dim obj As AcadObject
+    For Each obj In ThisDrawing.ModelSpace
+        obj.Delete
+    Next obj
+    Dim sideLength As Double
+    
+    Dim first, firstX, firstY As Double
+    Dim second, secondX, secondY As Double
+    Dim third, thirdX, thirdY As Double
 
+    Dim fourth, fourthX, fourthY As Double
+    Dim fifth, fifthX, fifthY As Double
+    Dim sixth, sixthX, sixthY As Double
+
+    Dim seventh, seventhX, seventhY As Double
+    Dim eighth, eighthX, eighthY As Double
+    Dim ninth, ninthX, ninthY As Double
+
+    Dim tenth, tenthX, tenthY As Double
+    Dim eleventh, eleventhX, eleventhY As Double
+    Dim twelfth, twelfthX, twelfthY As Double
+
+    
+    Dim startPoint(0 To 2) As Double
+    Dim endPoint(0 To 2) As Double
+    
+    
+    
+    first = 0
+    firstX = 0
+    firstY = 0
+    
+    second = ${calculatedMeasurements[6].toStringAsFixed(2)}
+    secondX = 0
+    secondY = secondY - second
+       
+
+    ' Задайте начальную точку
+    startPoint(0) = firstX
+    startPoint(1) = firstY
+    startPoint(2) = 0
+
+    ' Рисование первой линии (вправо)
+    endPoint(0) = secondX
+    endPoint(1) = secondY
+    endPoint(2) = 0
+    ThisDrawing.ModelSpace.AddLine startPoint, endPoint
+    Dim location1(0 To 2) As Double
+    Dim dimLine1 As AcadDimAligned
+    location1(0) = -10#: location1(1) = 0#: location1(2) = 0#
+    'Set dimLine1 = ThisDrawing.ModelSpace.AddDimAligned(startPoint, endPoint, location1)
+    'dimLine1.StyleName = "Standard"
+    '-----------------------------------------------------------------------------
+    first = 0
+    firstX = 0
+    firstY = firstY - first
+    
+    
+    eleventh = ${calculatedMeasurements[0].toStringAsFixed(2)}
+    twelfth = ${calculatedMeasurements[0].toStringAsFixed(2)}
+    
+    eleventhX = firstX - eleventh / 2
+    twelfthX = firstX + twelfth / 2
+    
+    eleventhY = firstY + 2
+    twelfthY = firstY
+    
+    
+    startPoint(0) = eleventhX
+    startPoint(1) = eleventhY
+    startPoint(2) = 0
+    
+    endPoint(0) = twelfthX
+    endPoint(1) = twelfthY
+    endPoint(2) = 0
+    
+    ThisDrawing.ModelSpace.AddLine startPoint, endPoint
+
+    location1(0) = -10#: location1(1) = 0#: location1(2) = 0#
+    'Set dimLine1 = ThisDrawing.ModelSpace.AddDimAligned(startPoint, endPoint, location1)
+    'dimLine1.StyleName = "Standard"
+    '-----------------------------------------------------------------------------
+    third = ${calculatedMeasurements[8].toStringAsFixed(2)}
+    thirdX = 0
+    thirdY = firstY - third
+    
+    
+    ninth = ${calculatedMeasurements[2].toStringAsFixed(2)} + 2
+    tenth = ${calculatedMeasurements[2].toStringAsFixed(2)} - 2
+    
+    ninthX = thirdX - ninth / 2
+    tenthX = thirdX + tenth / 2
+    
+    ninthY = thirdY
+    tenthY = thirdY
+    
+    
+    startPoint(0) = ninthX
+    startPoint(1) = ninthY
+    startPoint(2) = 0
+    
+    endPoint(0) = tenthX
+    endPoint(1) = tenthY
+    endPoint(2) = 0
+    
+    ThisDrawing.ModelSpace.AddLine startPoint, endPoint
+    location1(0) = -10#: location1(1) = 0#: location1(2) = 0#
+   ' Set dimLine1 = ThisDrawing.ModelSpace.AddDimAligned(startPoint, endPoint, location1)
+    'dimLine1.StyleName = "Standard"
+    '-----------------------------------------------------------------------------
+    
+     fourth = ${calculatedMeasurements[7].toStringAsFixed(2)}
+    fourthX = 0
+    fourthY = fourthY - fourth
+    
+    seventh = ${calculatedMeasurements[3].toStringAsFixed(2)}
+    eighth = ${calculatedMeasurements[3].toStringAsFixed(2)}
+    
+    
+    seventhX = fourthX - seventh / 2
+    eighthX = eighthX + eighth / 2
+    
+    seventhY = fourthY
+    eighthY = fourthY
+    
+    
+    startPoint(0) = seventhX
+    startPoint(1) = seventhY
+    startPoint(2) = 0
+    
+    endPoint(0) = eighthX
+    endPoint(1) = eighthY
+    endPoint(2) = 0
+    
+    ThisDrawing.ModelSpace.AddLine startPoint, endPoint
+    
+    location1(0) = -10#: location1(1) = 0#: location1(2) = 0#
+    'Set dimLine1 = ThisDrawing.ModelSpace.AddDimAligned(startPoint, endPoint, location1)
+    'dimLine1.StyleName = "Standard"
+    '-----------------------------------------------------------------------------
+    
+    
+    
+    fifth = ${calculatedMeasurements[4].toStringAsFixed(2)}
+    sixth = ${calculatedMeasurements[4].toStringAsFixed(2)}
+    
+    
+    fifthX = fifthX - fifth / 2
+    sixthX = sixthX + sixth / 2
+    
+    fifthY = secondY
+    sixthY = secondY
+    
+    
+    startPoint(0) = fifthX
+    startPoint(1) = fifthY
+    startPoint(2) = 0
+    
+    endPoint(0) = sixthX
+    endPoint(1) = sixthY
+    endPoint(2) = 0
+''';
+    await fileBas.writeAsString(code);
+
+    // Отправка файлов на Firebase Storage
     final storage = FirebaseStorage.instance;
-    final filePath =
-        'uploads/$selectedFolder/$fileName.txt'; // Используйте выбранную папку
+    final filePathTxt = 'uploads/$selectedFolder/$fileName.txt';
+    final filePathBas = 'uploads/$selectedFolder/$fileName.bas';
 
-    final ref = storage.ref().child(filePath);
-    final task = ref.putFile(file);
+    final refTxt = storage.ref().child(filePathTxt);
+    final taskTxt = refTxt.putFile(fileTxt);
+    await taskTxt.whenComplete(() {
+      print('Файл .txt успешно записан');
+      fileTxt.delete();
+    });
 
-    await task.whenComplete(() {
-      print('Файл успешно записан');
-      file.delete();
+    final refBas = storage.ref().child(filePathBas);
+    final taskBas = refBas.putFile(fileBas);
+    await taskBas.whenComplete(() {
+      print('Файл .bas успешно записан');
+      fileBas.delete();
     });
   } catch (error) {
-    print('Ошибка при загрузке файла: $error');
+    print('Ошибка при загрузке файлов: $error');
   }
 }
