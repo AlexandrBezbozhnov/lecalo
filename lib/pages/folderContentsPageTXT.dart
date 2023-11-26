@@ -4,20 +4,20 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'fileViewPage.dart';
 
-class FolderContentsPage extends StatelessWidget {
+class FolderContentsPageTXT extends StatelessWidget {
   final String folderName;
   final List<String> contents;
 
-  const FolderContentsPage({
+  const FolderContentsPageTXT({
     Key? key,
     required this.folderName,
     required this.contents,
   }) : super(key: key);
 
   Future<void> downloadAndShowFileContents(
-      BuildContext context, String fileName) async {
+      BuildContext context, String fileName, String folderName) async {
     final FirebaseStorage storage = FirebaseStorage.instance;
-    Reference reference = storage.ref().child('$fileName/');
+    Reference reference = storage.ref().child('/$fileName');
 
     try {
       File localFile =
@@ -75,7 +75,7 @@ class FolderContentsPage extends StatelessWidget {
                 title: Text(
                     fileName), // Отображение имени файла без расширения .txt
                 onTap: () async {
-                  await downloadAndShowFileContents(context, itemName);
+                  await downloadAndShowFileContents(context, itemName, folderName);
                 },
               );
             },

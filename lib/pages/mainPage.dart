@@ -59,7 +59,7 @@ class _MainPageState extends State<MainPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => FolderContentsPage(
+          builder: (_) => FolderContentsPageTXT(
             folderName: folderName,
             contents: items, // Передаем только содержимое папки
           ),
