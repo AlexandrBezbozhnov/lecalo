@@ -5,7 +5,7 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'fileViewPage.dart';
-import 'folderContentsPage.dart';
+import 'folderContentsPageTXT.dart';
 
 class MainPage extends StatefulWidget {
   @override
