@@ -70,28 +70,6 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
-  Future<void> downloadAndShowFileContents(String fileName) async {
-    final FirebaseStorage storage = FirebaseStorage.instance;
-    Reference reference = storage.ref().child('uploads/$fileName');
-
-    try {
-      File localFile =
-          File('${(await getTemporaryDirectory()).path}/$fileName');
-      await reference.writeToFile(localFile);
-
-      String contents = await localFile.readAsString();
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              FileViewPage(fileName: fileName, fileContents: contents),
-        ),
-      );
-    } catch (error) {
-      print('Ошибка при загрузке или чтении файла: $error');
-    }
-  }
 
   Future<List<String>> fetchUploadedFiles() async {
     final FirebaseStorage storage = FirebaseStorage.instance;
@@ -166,9 +144,7 @@ Widget build(BuildContext context) {
                   leading: isFolder ? Icon(Icons.folder) : null, // Добавляем иконку для папки
                   title: Text(fileName),
                   onTap: () async {
-                    if (isFile) {
-                      downloadAndShowFileContents(itemName);
-                    } else {
+
                       try {
                         ListResult result = await FirebaseStorage.instance
                             .ref()
@@ -184,7 +160,6 @@ Widget build(BuildContext context) {
                       } catch (error) {
                         print('Ошибка при открытии папки: $error');
                       }
-                    }
                   },
                   onLongPress: () {
                     if (!isFile) {

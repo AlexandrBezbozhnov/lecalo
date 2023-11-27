@@ -7,7 +7,6 @@ import 'dart:io';
 import 'fileViewPage.dart';
 import 'folderContentsPageBAS.dart';
 
-
 class ExportToAutodeskPage extends StatefulWidget {
   @override
   _ExportToAutodeskPageState createState() => _ExportToAutodeskPageState();
@@ -36,29 +35,6 @@ class _ExportToAutodeskPageState extends State<ExportToAutodeskPage> {
       );
     } catch (error) {
       print('Ошибка при чтении содержимого папки: $error');
-    }
-  }
-
-  Future<void> downloadAndShowFileContents(String fileName) async {
-    final FirebaseStorage storage = FirebaseStorage.instance;
-    Reference reference = storage.ref().child('uploads/$fileName');
-
-    try {
-      File localFile =
-          File('${(await getTemporaryDirectory()).path}/$fileName');
-      await reference.writeToFile(localFile);
-
-      String contents = await localFile.readAsString();
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              FileViewPage(fileName: fileName, fileContents: contents),
-        ),
-      );
-    } catch (error) {
-      print('Ошибка при загрузке или чтении файла: $error');
     }
   }
 
@@ -124,24 +100,19 @@ class _ExportToAutodeskPageState extends State<ExportToAutodeskPage> {
                         : null, // Добавляем иконку для папки
                     title: Text(fileName),
                     onTap: () async {
-                      if (isFile) {
-                        downloadAndShowFileContents(itemName);
-                      } else {
-                        try {
-                          ListResult result = await FirebaseStorage.instance
-                              .ref()
-                              .child(itemName)
-                              .listAll();
-                          List<String> items = result.items
-                              .map((item) => item.fullPath)
-                              .toList();
-                          List<String> folders = result.prefixes
-                              .map((folder) => folder.fullPath)
-                              .toList();
-                          exploreFolderContents(itemName, items, folders);
-                        } catch (error) {
-                          print('Ошибка при открытии папки: $error');
-                        }
+                      try {
+                        ListResult result = await FirebaseStorage.instance
+                            .ref()
+                            .child(itemName)
+                            .listAll();
+                        List<String> items =
+                            result.items.map((item) => item.fullPath).toList();
+                        List<String> folders = result.prefixes
+                            .map((folder) => folder.fullPath)
+                            .toList();
+                        exploreFolderContents(itemName, items, folders);
+                      } catch (error) {
+                        print('Ошибка при открытии папки: $error');
                       }
                     },
                   );

@@ -9,34 +9,41 @@ class FolderContentsPageBAS extends StatelessWidget {
   final List<String> contents;
 
   const FolderContentsPageBAS({
-    Key? key,
+      Key? key,
     required this.folderName,
     required this.contents,
   }) : super(key: key);
 
-  Future<void> downloadAndShowFileContents(
-      BuildContext context, String fileName) async {
-    final FirebaseStorage storage = FirebaseStorage.instance;
-    Reference reference = storage.ref().child('$fileName/');
-
+  Future<String> _loadFileContents(String filePath) async {
     try {
-      File localFile =
-          File('${(await getTemporaryDirectory()).path}/$fileName');
-      await reference.writeToFile(localFile);
+      final ref = FirebaseStorage.instance.ref().child(filePath);
+      final downloadUrl = await ref.getDownloadURL();
 
-      String fileContents = await localFile.readAsString();
+      final httpHeaders = await ref.getMetadata();
+      final httpClient = HttpClient();
+      final request = await httpClient.getUrl(Uri.parse(downloadUrl));
+      final httpClientResponse = await request.close();
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => FileViewPage(
-            fileName: fileName,
-            fileContents: fileContents,
-          ),
-        ),
-      );
-    } catch (error) {
-      print('Ошибка при загрузке или чтении файла: $error');
+      if (httpClientResponse.statusCode == HttpStatus.ok) {
+        final List<int> bytes = await httpClientResponse.fold<List<int>>(
+          <int>[],
+          (previous, element) => previous..addAll(element),
+        );
+
+        final tempDir = await getTemporaryDirectory();
+        final tempPath = '${tempDir.path}/tempFile.txt';
+
+        final file = File(tempPath);
+        await file.writeAsBytes(bytes);
+
+        return await file.readAsString();
+      } else {
+        print('Failed to download file: HTTP ${httpClientResponse.statusCode}');
+        return '';
+      }
+    } catch (e) {
+      print("Error loading file: $e");
+      return '';
     }
   }
 
@@ -59,12 +66,10 @@ class FolderContentsPageBAS extends StatelessWidget {
               String itemName = contents[index];
 
               // Проверка на расширение файла .keep и пропуск его отображения
-              if (itemName.endsWith('.keep')) {
-                return SizedBox.shrink(); // Пропуск отображения файла .keep
+              if (itemName.endsWith('.keep') || itemName.endsWith('.txt')) {
+                return SizedBox.shrink(); // Пропуск отображения файла .keep или .bas
               }
-              if (itemName.endsWith('.txt')) {
-                return SizedBox.shrink(); // Пропуск отображения файла .keep
-              }
+
               String fileName = itemName.split('/').last;
               // Удаление расширения .txt из имени файла
               if (fileName.endsWith('.bas')) {
@@ -75,7 +80,16 @@ class FolderContentsPageBAS extends StatelessWidget {
                 title: Text(
                     fileName), // Отображение имени файла без расширения .txt
                 onTap: () async {
-                  await downloadAndShowFileContents(context, itemName);
+                  String fileContents = await _loadFileContents(itemName);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FileViewPage(
+                        fileName: fileName,
+                        fileContents: fileContents,
+                      ),
+                    ),
+                  );
                 },
               );
             },

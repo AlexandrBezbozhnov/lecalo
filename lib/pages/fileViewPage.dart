@@ -7,7 +7,7 @@ class FileViewPage extends StatelessWidget {
 
   FileViewPage({required this.fileName, required this.fileContents});
 
-  Future<void> deleteFile(BuildContext context) async {
+    Future<void> deleteFile(BuildContext context) async {
     try {
       final FirebaseStorage storage = FirebaseStorage.instance;
       Reference reference = storage.ref().child('$fileName');
@@ -26,19 +26,32 @@ class FileViewPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('$fileName'),
         actions: <Widget>[
-          PopupMenuButton(
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem(
-                  child: ListTile(
-                    leading: Icon(Icons.delete),
-                    title: Text('Удалить файл'),
-                    onTap: () {
-                      deleteFile(context);
-                    },
-                  ),
-                ),
-              ];
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Delete File'),
+                    content: Text('Are you sure you want to delete this file?'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          deleteFile(context);
+                        },
+                        child: Text('Delete'),
+                      ),
+                    ],
+                  );
+                },
+              );
             },
           ),
         ],

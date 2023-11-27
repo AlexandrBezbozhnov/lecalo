@@ -4,7 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'fileViewPage.dart';
 
-class FolderContentsPageTXT extends StatelessWidget {
+class FolderContentsPageTXT extends StatefulWidget {
   final String folderName;
   final List<String> contents;
 
@@ -14,29 +14,64 @@ class FolderContentsPageTXT extends StatelessWidget {
     required this.contents,
   }) : super(key: key);
 
-  Future<void> downloadAndShowFileContents(
-      BuildContext context, String fileName) async {
-    final FirebaseStorage storage = FirebaseStorage.instance;
-    Reference reference = storage.ref().child('$fileName');
+  @override
+  _FolderContentsPageTXTState createState() => _FolderContentsPageTXTState();
+}
 
+class _FolderContentsPageTXTState extends State<FolderContentsPageTXT> {
+  List<String> _contents = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _contents = widget.contents;
+  }
+
+Future<String> _loadFileContents(String filePath) async {
     try {
-      File localFile =
-          File('${(await getTemporaryDirectory()).path}/$fileName');
-      await reference.writeToFile(localFile);
+      final ref = FirebaseStorage.instance.ref().child(filePath);
+      final downloadUrl = await ref.getDownloadURL();
 
-      String fileContents = await localFile.readAsString();
+      final httpHeaders = await ref.getMetadata();
+      final httpClient = HttpClient();
+      final request = await httpClient.getUrl(Uri.parse(downloadUrl));
+      final httpClientResponse = await request.close();
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => FileViewPage(
-            fileName: fileName,
-            fileContents: fileContents,
-          ),
-        ),
-      );
-    } catch (error) {
-      print('Ошибка при загрузке или чтении файла: $error');
+      if (httpClientResponse.statusCode == HttpStatus.ok) {
+        final List<int> bytes = await httpClientResponse.fold<List<int>>(
+          <int>[],
+          (previous, element) => previous..addAll(element),
+        );
+
+        final tempDir = await getTemporaryDirectory();
+        final tempPath = '${tempDir.path}/tempFile.txt';
+
+        final file = File(tempPath);
+        await file.writeAsBytes(bytes);
+
+        return await file.readAsString();
+      } else {
+        print('Failed to download file: HTTP ${httpClientResponse.statusCode}');
+        return '';
+      }
+    } catch (e) {
+      print("Error loading file: $e");
+      return '';
+    }
+  }
+
+
+
+  Future<void> _deleteFile(String filePath) async {
+    try {
+      final ref = FirebaseStorage.instance.ref().child(filePath);
+      await ref.delete();
+      print('File deleted successfully');
+      setState(() {
+        _contents.remove(filePath); // удаление файла из списка
+      });
+    } catch (e) {
+      print("Error deleting file: $e");
     }
   }
 
@@ -44,41 +79,76 @@ class FolderContentsPageTXT extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('$folderName'),
+        title: Text(widget.folderName),
       ),
       body: _buildContentsList(context),
     );
   }
 
   Widget _buildContentsList(BuildContext context) {
-    return contents.isEmpty
+    return _contents.isEmpty
         ? Center(child: Text('Папка пуста'))
         : ListView.builder(
-            itemCount: contents.length,
+            itemCount: _contents.length,
             itemBuilder: (context, index) {
-              String itemName = contents[index];
+              String itemName = _contents[index];
 
-              // Проверка на расширение файла .keep и пропуск его отображения
-              if (itemName.endsWith('.keep')) {
-                return SizedBox.shrink(); // Пропуск отображения файла .keep
+              if (itemName.endsWith('.keep') || itemName.endsWith('.bas')) {
+                return SizedBox.shrink();
               }
-              if (itemName.endsWith('.bas')) {
-                return SizedBox.shrink(); // Пропуск отображения файла .keep
-              }
+
               String fileName = itemName.split('/').last;
-              // Удаление расширения .txt из имени файла
               if (fileName.endsWith('.txt')) {
                 fileName = fileName.substring(0, fileName.length - 4);
               }
 
               return ListTile(
-                title: Text(
-                    fileName), // Отображение имени файла без расширения .txt
+                title: Text(fileName),
                 onTap: () async {
-                  await downloadAndShowFileContents(context, itemName);
+                  String fileContents = await _loadFileContents(itemName);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FileViewPage(
+                        fileName: fileName,
+                        fileContents: fileContents,
+                      ),
+                    ),
+                  );
+                },
+                onLongPress: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text("Удалить файл?"),
+                        content: Text("Вы уверены, что хотите удалить файл $fileName?"),
+                        actions: <Widget>[
+                          TextButton(
+                            child: Text("Отмена"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: Text(
+                              "Удалить",
+                              style: TextStyle(color: Colors.red),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              _deleteFile(itemName);
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 },
               );
             },
           );
   }
 }
+
+  
