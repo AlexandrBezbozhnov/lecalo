@@ -3,9 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'pages/mainPage.dart';
 import 'pages/CreatePatternPage.dart';
 import 'pages/exportToAutodeskPage.dart';
-import 'pages/fileViewPage.dart';
 
-import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

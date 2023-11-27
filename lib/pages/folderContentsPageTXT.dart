@@ -15,9 +15,9 @@ class FolderContentsPageTXT extends StatelessWidget {
   }) : super(key: key);
 
   Future<void> downloadAndShowFileContents(
-      BuildContext context, String fileName, String folderName) async {
+      BuildContext context, String fileName) async {
     final FirebaseStorage storage = FirebaseStorage.instance;
-    Reference reference = storage.ref().child('/$fileName');
+    Reference reference = storage.ref().child('$fileName');
 
     try {
       File localFile =
@@ -75,7 +75,7 @@ class FolderContentsPageTXT extends StatelessWidget {
                 title: Text(
                     fileName), // Отображение имени файла без расширения .txt
                 onTap: () async {
-                  await downloadAndShowFileContents(context, itemName, folderName);
+                  await downloadAndShowFileContents(context, itemName);
                 },
               );
             },
