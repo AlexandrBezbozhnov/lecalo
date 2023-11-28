@@ -20,6 +20,7 @@ class FolderContentsPageTXT extends StatefulWidget {
 
 class _FolderContentsPageTXTState extends State<FolderContentsPageTXT> {
   List<String> _contents = [];
+  String _searchQuery = ''; // Переменная для хранения запроса поиска
 
   @override
   void initState() {
@@ -27,7 +28,7 @@ class _FolderContentsPageTXTState extends State<FolderContentsPageTXT> {
     _contents = widget.contents;
   }
 
-Future<String> _loadFileContents(String filePath) async {
+  Future<String> _loadFileContents(String filePath) async {
     try {
       final ref = FirebaseStorage.instance.ref().child(filePath);
       final downloadUrl = await ref.getDownloadURL();
@@ -60,8 +61,6 @@ Future<String> _loadFileContents(String filePath) async {
     }
   }
 
-
-
   Future<void> _deleteFile(String filePath) async {
     try {
       final ref = FirebaseStorage.instance.ref().child(filePath);
@@ -81,17 +80,45 @@ Future<String> _loadFileContents(String filePath) async {
       appBar: AppBar(
         title: Text(widget.folderName),
       ),
-      body: _buildContentsList(context),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              onChanged: (value) {
+                setState(() {
+                  _searchQuery = value
+                      .toLowerCase(); // Обновление запроса поиска при изменении текста в поле
+                });
+              },
+              decoration: InputDecoration(
+                labelText: 'Поиск файлов',
+                hintText: 'Введите название файла',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ),
+          Expanded(
+            child: _buildContentsList(context),
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildContentsList(BuildContext context) {
-    return _contents.isEmpty
-        ? Center(child: Text('Папка пуста'))
+    List<String> filteredContents = _contents.where((item) {
+      String itemName = item.split('/').last.toLowerCase();
+      return itemName.contains(_searchQuery);
+    }).toList();
+
+    return filteredContents.isEmpty
+        ? Center(child: Text('Нет результатов'))
         : ListView.builder(
-            itemCount: _contents.length,
+            itemCount: filteredContents.length,
             itemBuilder: (context, index) {
-              String itemName = _contents[index];
+              String itemName = filteredContents[index];
 
               if (itemName.endsWith('.keep') || itemName.endsWith('.bas')) {
                 return SizedBox.shrink();
@@ -122,7 +149,8 @@ Future<String> _loadFileContents(String filePath) async {
                     builder: (BuildContext context) {
                       return AlertDialog(
                         title: Text("Удалить файл?"),
-                        content: Text("Вы уверены, что хотите удалить файл $fileName?"),
+                        content: Text(
+                            "Вы уверены, что хотите удалить файл $fileName?"),
                         actions: <Widget>[
                           TextButton(
                             child: Text("Отмена"),
@@ -150,5 +178,3 @@ Future<String> _loadFileContents(String filePath) async {
           );
   }
 }
-
-  
