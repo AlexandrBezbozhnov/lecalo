@@ -27,7 +27,21 @@ class _FolderContentsPageBASState extends State<FolderContentsPageBAS> {
     _contents = widget.contents;
   }
 
-Future<String> _loadFileContents(String filePath) async {
+  Future<void> _openInAutoCAD(String filePath) async {
+    try {
+      // Замените 'C:\\Program Files\\AutoCAD\\acad.exe' на реальный путь к исполняемому файлу AutoCAD
+      final autoCADPath = 'C:\\Program Files\\AutoCAD\\acad.exe';
+
+      // Запускаем AutoCAD с передачей файла в качестве аргумента
+      await Process.run(autoCADPath, [filePath]);
+
+      print('File opened in AutoCAD');
+    } catch (e) {
+      print('Error opening file in AutoCAD: $e');
+    }
+  }
+
+  Future<String> _loadFileContents(String filePath) async {
     try {
       final ref = FirebaseStorage.instance.ref().child(filePath);
       final downloadUrl = await ref.getDownloadURL();
@@ -120,7 +134,8 @@ Future<String> _loadFileContents(String filePath) async {
                     builder: (BuildContext context) {
                       return AlertDialog(
                         title: Text("Удалить файл?"),
-                        content: Text("Вы уверены, что хотите удалить файл $fileName?"),
+                        content: Text(
+                            "Вы уверены, что хотите удалить файл $fileName?"),
                         actions: <Widget>[
                           TextButton(
                             child: Text("Отмена"),
@@ -136,6 +151,16 @@ Future<String> _loadFileContents(String filePath) async {
                             onPressed: () {
                               Navigator.of(context).pop();
                               _deleteFile(itemName);
+                            },
+                          ),
+                          TextButton(
+                            child: Text(
+                              "Открыть в AutoCAD",
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              _openInAutoCAD(
+                                  itemName); // Открываем файл в AutoCAD
                             },
                           ),
                         ],
