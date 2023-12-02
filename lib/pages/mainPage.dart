@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:typed_data';
 import 'package:path/path.dart' as path;
 import 'folderContentsPageTXT.dart';
+import 'package:http/http.dart' as http;
 
 class MainPage extends StatefulWidget {
   @override
@@ -12,7 +13,8 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   late Future<List<String>> futureFiles;
   late List<String> originalFilesList = []; // Инициализация переменной
-  TextEditingController searchController = TextEditingController(); // Контроллер для текстового поля поиска
+  TextEditingController searchController =
+      TextEditingController(); // Контроллер для текстового поля поиска
 
   @override
   void initState() {
@@ -84,35 +86,27 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
-Future<void> createFolder(String folderName) async {
-  final FirebaseStorage storage = FirebaseStorage.instance;
-  Reference reference = storage.ref().child('uploads/$folderName/');
+  Future<void> createFolder(String folderName) async {
+    final FirebaseStorage storage = FirebaseStorage.instance;
+    Reference reference = storage.ref().child('uploads/$folderName/');
 
-  try {
-    await reference.child('/.keep').putData(Uint8List(0));
+    try {
+      await reference.child('/.keep').putData(Uint8List(0));
 
-    setState(() {
-      futureFiles = fetchUploadedFiles();
-    });
+      setState(() {
+        futureFiles = fetchUploadedFiles();
+      });
 
-    // Всплывающая подсказка при успешном создании папки
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Папка создана')),
-    );
-
-  } catch (error) {
-    print('Ошибка при создании папки: $error');
-  }
-}
-
-
-  Future<void> _refresh() async {
-    setState(() {
-      futureFiles = fetchUploadedFiles();
-    });
+      // Всплывающая подсказка при успешном создании папки
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Папка создана')),
+      );
+    } catch (error) {
+      print('Ошибка при создании папки: $error');
+    }
   }
 
- Future<List<String>> searchFolders(String query) async {
+  Future<List<String>> searchFolders(String query) async {
     // Если список исходных файлов не определен, получаем его из Firebase Storage
     if (originalFilesList == null || originalFilesList.isEmpty) {
       try {
@@ -134,6 +128,151 @@ Future<void> createFolder(String folderName) async {
     }).toList();
 
     return filteredList;
+  }
+
+  Future<void> _refresh() async {
+    setState(() {
+      futureFiles = fetchUploadedFiles();
+    });
+  }
+
+// Добавим функцию для отображения меню действий для папки
+  void showFolderActionsMenu(String folderName) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Действия с папкой'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.delete),
+                title: Text('Удалить папку и все файлы'),
+                onTap: () {
+                  deleteFolderAndFiles(folderName);
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.edit),
+                title: Text('Переименовать папку'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  showRenameFolderDialog(folderName);
+                },
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Отмена'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+// Обновленная функция для переименования папки
+  void showRenameFolderDialog(String currentName) {
+    String newFolderName = currentName;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Переименовать папку'),
+          content: TextField(
+            onChanged: (value) {
+              newFolderName = value;
+            },
+            decoration: InputDecoration(
+              hintText: 'Введите новое имя папки',
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Отмена'),
+            ),
+            TextButton(
+              onPressed: () {
+                renameFolder(currentName, newFolderName);
+                Navigator.of(context).pop();
+              },
+              child: Text('Переименовать'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> renameFolder(String currentName, String newName) async {
+    final FirebaseStorage storage = FirebaseStorage.instance;
+    Reference reference = storage.ref().child('uploads/$currentName/');
+    Reference newReference = storage.ref().child('uploads/$newName/');
+
+    try {
+      // Получение списка файлов и папок в текущей папке
+      ListResult result = await reference.listAll();
+      List<Reference> filesToMove = result.items;
+      List<Reference> foldersToMove = result.prefixes;
+
+      // Копирование файлов внутри папки с новыми именами
+      await Future.forEach(filesToMove, (fileRef) async {
+        String oldPath = fileRef.fullPath;
+        String newFilePath = 'uploads/$newName/${oldPath.split('/').last}';
+        // Получаем URL текущего файла
+        String downloadURL = await fileRef.getDownloadURL();
+        // Загружаем файл в новую папку
+        await uploadFileFromURL(
+            newReference.child(oldPath.split('/').last), downloadURL);
+      });
+
+      // Создание пустых папок с новыми именами
+      await Future.forEach(foldersToMove, (folderRef) async {
+        String oldPath = folderRef.fullPath;
+        String newFolderPath = 'uploads/$newName/${oldPath.split('/').last}';
+        await newReference.child(oldPath.split('/').last).putData(Uint8List(0));
+      });
+
+      // Удаление старой папки после завершения всех операций
+      await Future.forEach(filesToMove, (fileRef) async {
+        await fileRef.delete();
+      });
+
+      await Future.forEach(foldersToMove, (folderRef) async {
+        await folderRef.delete();
+      });
+
+      deleteFolderAndFiles(currentName);
+
+      // Обновление списка файлов после переименования
+      setState(() {
+        futureFiles = fetchUploadedFiles();
+      });
+
+      // Всплывающая подсказка при успешном переименовании папки
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Папка переименована')),
+      );
+    } catch (error) {
+      print('Ошибка при переименовании папки: $error');
+    }
+  }
+
+// Функция для загрузки файла по его URL
+  Future<void> uploadFileFromURL(Reference ref, String downloadURL) async {
+    http.Response response = await http.get(Uri.parse(downloadURL));
+    Uint8List fileData = response.bodyBytes;
+    await ref.putData(fileData);
   }
 
   @override
@@ -169,7 +308,8 @@ Future<void> createFolder(String folderName) async {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
-                    return Center(child: Text('Ошибка загрузки: ${snapshot.error}'));
+                    return Center(
+                        child: Text('Ошибка загрузки: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return Center(child: Text('Нет результатов'));
                   } else {
@@ -204,31 +344,8 @@ Future<void> createFolder(String folderName) async {
                           },
                           onLongPress: () {
                             if (!isFile) {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text('Удалить папку и все файлы?'),
-                                    content: Text(
-                                        'Вы уверены, что хотите удалить эту папку и все файлы в ней?'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text('Отмена'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          deleteFolderAndFiles(itemName);
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text('Удалить'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
+                              // Показать меню действий для папки
+                              showFolderActionsMenu(fileName);
                             }
                           },
                         );
