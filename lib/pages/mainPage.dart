@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:typed_data';
 import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
-import 'fileViewPage.dart';
 import 'folderContentsPageTXT.dart';
 
 class MainPage extends StatefulWidget {
@@ -87,20 +84,27 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
-  Future<void> createFolder(String folderName) async {
-    final FirebaseStorage storage = FirebaseStorage.instance;
-    Reference reference = storage.ref().child('uploads/$folderName/');
+Future<void> createFolder(String folderName) async {
+  final FirebaseStorage storage = FirebaseStorage.instance;
+  Reference reference = storage.ref().child('uploads/$folderName/');
 
-    try {
-      await reference.child('/.keep').putData(Uint8List(0));
+  try {
+    await reference.child('/.keep').putData(Uint8List(0));
 
-      setState(() {
-        futureFiles = fetchUploadedFiles();
-      });
-    } catch (error) {
-      print('Ошибка при создании папки: $error');
-    }
+    setState(() {
+      futureFiles = fetchUploadedFiles();
+    });
+
+    // Всплывающая подсказка при успешном создании папки
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Папка создана')),
+    );
+
+  } catch (error) {
+    print('Ошибка при создании папки: $error');
   }
+}
+
 
   Future<void> _refresh() async {
     setState(() {
@@ -271,7 +275,7 @@ class _MainPageState extends State<MainPage> {
             },
           );
         },
-        child: Icon(Icons.add),
+        child: Icon(Icons.create_new_folder),
       ),
     );
   }
