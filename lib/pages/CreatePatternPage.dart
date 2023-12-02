@@ -354,13 +354,13 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add(value - 1);
               break;
             case 6:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1)/2);
               break;
             case 7:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1)/2);
               break;
             case 8:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1)/2);
               break;
             case 9:
               calculatedMeasurements.add(value - 1);
@@ -425,13 +425,13 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add(value - 1);
               break;
             case 6:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1)/2);
               break;
             case 7:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1)/2);
               break;
             case 8:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1)/2);
               break;
             case 9:
               calculatedMeasurements.add(value - 1);
@@ -496,13 +496,13 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add(value - 1);
               break;
             case 6:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1)/2);
               break;
             case 7:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1)/2);
               break;
             case 8:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1)/2);
               break;
             case 9:
               calculatedMeasurements.add(value - 1);
