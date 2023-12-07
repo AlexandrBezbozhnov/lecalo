@@ -4,13 +4,15 @@ import 'package:firebase_storage/firebase_storage.dart';
 class FileViewPage extends StatelessWidget {
   final String fileName;
   final String fileContents;
+  final String folderName;
 
-  FileViewPage({required this.fileName, required this.fileContents});
+  FileViewPage({required this.fileName, required this.fileContents, required this.folderName });
 
-    Future<void> deleteFile(BuildContext context) async {
+    Future<void> deleteFile(BuildContext context, fileName, folderName) async {
     try {
       final FirebaseStorage storage = FirebaseStorage.instance;
-      Reference reference = storage.ref().child('$fileName');
+      Reference reference = storage.ref().child('$folderName');
+      print(reference);
 
       await reference.delete();
       Navigator.popUntil(context, ModalRoute.withName('/'));
@@ -44,7 +46,7 @@ class FileViewPage extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () {
-                          deleteFile(context);
+                          deleteFile(context, fileName, folderName);
                         },
                         child: Text('Delete'),
                       ),

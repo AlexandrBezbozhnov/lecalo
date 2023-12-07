@@ -139,6 +139,7 @@ class _FolderContentsPageTXTState extends State<FolderContentsPageTXT> {
                       builder: (context) => FileViewPage(
                         fileName: fileName,
                         fileContents: fileContents,
+                        folderName: itemName,
                       ),
                     ),
                   );

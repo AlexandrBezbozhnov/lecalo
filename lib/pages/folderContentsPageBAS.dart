@@ -124,6 +124,7 @@ class _FolderContentsPageBASState extends State<FolderContentsPageBAS> {
                       builder: (context) => FileViewPage(
                         fileName: fileName,
                         fileContents: fileContents,
+                        folderName: itemName,
                       ),
                     ),
                   );
