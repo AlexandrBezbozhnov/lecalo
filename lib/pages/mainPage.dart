@@ -22,31 +22,38 @@ class _MainPageState extends State<MainPage> {
     futureFiles = fetchUploadedFiles();
   }
 
-  Future<void> deleteFolderAndFiles(String folderName) async {
+Future<void> deleteFolderAndFiles(String folderName) async {
     final FirebaseStorage storage = FirebaseStorage.instance;
-    Reference reference = storage.ref().child('$folderName/');
+    Reference reference = storage.ref().child('uploads/$folderName/');
 
     try {
+      // Получаем список файлов и подпапок в папке
       ListResult result = await reference.listAll();
       List<Reference> filesToDelete = result.items;
       List<Reference> foldersToDelete = result.prefixes;
 
+      // Удаляем файлы в папке
       await Future.forEach(filesToDelete, (fileRef) async {
         await fileRef.delete();
       });
 
+      // Удаляем подпапки рекурсивно
       await Future.forEach(foldersToDelete, (folderRef) async {
         await deleteFolderAndFiles(folderRef.fullPath);
       });
 
+      // Удаляем саму папку
       await reference.delete();
+
     } catch (error) {
       print('Ошибка при удалении папки: $error');
       setState(() {
-        futureFiles = fetchUploadedFiles();
+        futureFiles =
+            fetchUploadedFiles(); // Обновляем список файлов после удаления
       });
     }
   }
+
 
   Future<void> exploreFolderContents(
       String folderName, List<String> items, List<String> folders) async {
