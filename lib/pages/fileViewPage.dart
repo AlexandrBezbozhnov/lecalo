@@ -3,6 +3,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+import 'package:flutter/services.dart'; // Импортируем flutter/services.dart
+
 
 class FileViewPage extends StatelessWidget {
   final String fileName;
@@ -14,49 +16,6 @@ class FileViewPage extends StatelessWidget {
       required this.fileContents,
       required this.folderName});
 
-  Future<void> downloadFile(
-      BuildContext context, String fileName, String folderName) async {
-    try {
-      final PermissionStatus permissionStatus =
-          await Permission.storage.request();
-
-      if (permissionStatus.isGranted) {
-        final FirebaseStorage storage = FirebaseStorage.instance;
-        Reference reference = storage.ref().child('$folderName');
-        print(reference);
-        Directory appDocDir = await getApplicationDocumentsDirectory();
-        String filePath = '${appDocDir.path}/$fileName';
-        print(filePath);
-        File downloadToFile = File(filePath);
-
-        await reference.writeToFile(downloadToFile);
-
-        // Show a confirmation dialog after successful download
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Download Complete'),
-              content: Text('File has been downloaded to your device.'),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-      } else {
-        // Handle denied or restricted permission
-        // You can show an alert or request permission again
-      }
-    } catch (error) {
-      print('Ошибка при скачивании файла: $error');
-    }
-  }
 
   Future<void> deleteFile(BuildContext context, fileName, folderName) async {
     try {
@@ -72,6 +31,16 @@ class FileViewPage extends StatelessWidget {
     }
   }
 
+    Future<void> copyFileContentsToClipboard(String fileContents) async {
+    try {
+      await Clipboard.setData(ClipboardData(text: fileContents));
+      print('Содержимое файла скопировано в буфер обмена');
+    } catch (error) {
+      print('Ошибка при копировании в буфер обмена: $error');
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,9 +48,9 @@ class FileViewPage extends StatelessWidget {
         title: Text('$fileName'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.download),
+            icon: Icon(Icons.copy),
             onPressed: () {
-              downloadFile(context, fileName, folderName);
+              copyFileContentsToClipboard(fileContents);
             },
           ),
           IconButton(

@@ -9,7 +9,7 @@ class CreatePatternPage extends StatefulWidget {
 class _CreatePatternPageState extends State<CreatePatternPage> {
   final List<String> clothingTypes = ['Комбинезон', 'Купальник', 'Лосины'];
   final List<String> ageCategories = ['Малыш', 'Девочка', 'Юниорка'];
-  final List<String> sleeveTypes = ['Короткий', 'Длинный'];
+  final List<String> sleeveTypes = ['Короткий', 'Длинный', 'Без рукавов'];
 
   String selectedClothingType = 'Комбинезон';
   String selectedAgeCategory = 'Малыш';
