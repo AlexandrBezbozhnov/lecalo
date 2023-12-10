@@ -110,9 +110,6 @@ class _FolderContentsPageBASState extends State<FolderContentsPageBAS> {
               }
 
               String fileName = itemName.split('/').last;
-              if (fileName.endsWith('.bas')) {
-                fileName = fileName.substring(0, fileName.length - 4);
-              }
 
               return ListTile(
                 title: Text(fileName),
