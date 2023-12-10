@@ -15,6 +15,7 @@ class _MainPageState extends State<MainPage> {
   late List<String> originalFilesList = []; // Инициализация переменной
   TextEditingController searchController =
       TextEditingController(); // Контроллер для текстового поля поиска
+  bool folderContentsOpened = false; // Добавленная переменная
 
   @override
   void initState() {
@@ -22,7 +23,7 @@ class _MainPageState extends State<MainPage> {
     futureFiles = fetchUploadedFiles();
   }
 
-Future<void> deleteFolderAndFiles(String folderName) async {
+  Future<void> deleteFolderAndFiles(String folderName) async {
     final FirebaseStorage storage = FirebaseStorage.instance;
     Reference reference = storage.ref().child('uploads/$folderName/');
 
@@ -44,7 +45,6 @@ Future<void> deleteFolderAndFiles(String folderName) async {
 
       // Удаляем саму папку
       await reference.delete();
-
     } catch (error) {
       print('Ошибка при удалении папки: $error');
       setState(() {
@@ -54,19 +54,30 @@ Future<void> deleteFolderAndFiles(String folderName) async {
     }
   }
 
-
   Future<void> exploreFolderContents(
       String folderName, List<String> items, List<String> folders) async {
     try {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => FolderContentsPageTXT(
-            folderName: folderName,
-            contents: items,
+      if (!folderContentsOpened) {
+        folderContentsOpened = true; // Установка флага, что страница открыта
+
+        // Открываем страницу FolderContentsPageTXT
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => FolderContentsPageTXT(
+              folderName: folderName,
+              contents: items,
+            ),
           ),
-        ),
-      );
+        ).then((_) async {
+          folderContentsOpened = false; // Сброс флага после закрытия страницы
+          // Загрузка файлов после закрытия страницы FolderContentsPageTXT
+          List<String> updatedFiles = await fetchUploadedFiles();
+          setState(() {
+            futureFiles = Future.value(updatedFiles);
+          });
+        });
+      }
     } catch (error) {
       print('Ошибка при чтении содержимого папки: $error');
     }

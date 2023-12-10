@@ -14,6 +14,7 @@ class ExportToAutodeskPage extends StatefulWidget {
 
 class _ExportToAutodeskPageState extends State<ExportToAutodeskPage> {
   late Future<List<String>> futureFiles;
+  bool folderContentsOpened = false; // Добавленная переменная
 
   @override
   void initState() {
@@ -24,15 +25,27 @@ class _ExportToAutodeskPageState extends State<ExportToAutodeskPage> {
   Future<void> exploreFolderContents(
       String folderName, List<String> items, List<String> folders) async {
     try {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => FolderContentsPageBAS(
-            folderName: folderName,
-            contents: items, // Передаем только содержимое папки
+      if (!folderContentsOpened) {
+        folderContentsOpened = true; // Установка флага, что страница открыта
+
+        // Открываем страницу FolderContentsPageTXT
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => FolderContentsPageBAS(
+              folderName: folderName,
+              contents: items,
+            ),
           ),
-        ),
-      );
+        ).then((_) async {
+          folderContentsOpened = false; // Сброс флага после закрытия страницы
+          // Загрузка файлов после закрытия страницы FolderContentsPageTXT
+          List<String> updatedFiles = await fetchUploadedFiles();
+          setState(() {
+            futureFiles = Future.value(updatedFiles);
+          });
+        });
+      }
     } catch (error) {
       print('Ошибка при чтении содержимого папки: $error');
     }
