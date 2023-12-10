@@ -20,6 +20,7 @@ class FolderContentsPageBAS extends StatefulWidget {
 
 class _FolderContentsPageBASState extends State<FolderContentsPageBAS> {
   List<String> _contents = [];
+  bool fileOpened = false; // Добавленная переменная
 
   @override
   void initState() {
@@ -99,7 +100,7 @@ class _FolderContentsPageBASState extends State<FolderContentsPageBAS> {
 
   Widget _buildContentsList(BuildContext context) {
     return _contents.isEmpty
-        ? Center(child: Text('Папка пуста'))
+        ? Center(child: Text('Folder is empty'))
         : ListView.builder(
             itemCount: _contents.length,
             itemBuilder: (context, index) {
@@ -114,17 +115,23 @@ class _FolderContentsPageBASState extends State<FolderContentsPageBAS> {
               return ListTile(
                 title: Text(fileName),
                 onTap: () async {
-                  String fileContents = await _loadFileContents(itemName);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FileViewPage(
-                        fileName: fileName,
-                        fileContents: fileContents,
-                        folderName: itemName,
+                  if (!fileOpened) {
+                    fileOpened = true; // Установка флага, что файл открыт
+
+                    String fileContents = await _loadFileContents(itemName);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FileViewPage(
+                          fileName: fileName,
+                          fileContents: fileContents,
+                          folderName: itemName,
+                        ),
                       ),
-                    ),
-                  );
+                    ).then((_) {
+                      fileOpened = false; // Сброс флага после закрытия файла
+                    });
+                  }
                 },
                 onLongPress: () {
                   showDialog(

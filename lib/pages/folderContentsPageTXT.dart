@@ -20,7 +20,9 @@ class FolderContentsPageTXT extends StatefulWidget {
 
 class _FolderContentsPageTXTState extends State<FolderContentsPageTXT> {
   List<String> _contents = [];
-  String _searchQuery = ''; // Переменная для хранения запроса поиска
+  String _searchQuery = '';
+  bool fileOpened = false; // Добавленная переменная
+  // Переменная для хранения запроса поиска
 
   @override
   void initState() {
@@ -114,7 +116,7 @@ class _FolderContentsPageTXTState extends State<FolderContentsPageTXT> {
     }).toList();
 
     return filteredContents.isEmpty
-        ? Center(child: Text('Нет результатов'))
+        ? Center(child: Text('No results'))
         : ListView.builder(
             itemCount: filteredContents.length,
             itemBuilder: (context, index) {
@@ -132,17 +134,23 @@ class _FolderContentsPageTXTState extends State<FolderContentsPageTXT> {
               return ListTile(
                 title: Text(fileName),
                 onTap: () async {
-                  String fileContents = await _loadFileContents(itemName);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FileViewPage(
-                        fileName: fileName,
-                        fileContents: fileContents,
-                        folderName: itemName,
+                  if (!fileOpened) {
+                    fileOpened = true; // Установка флага, что файл открыт
+
+                    String fileContents = await _loadFileContents(itemName);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FileViewPage(
+                          fileName: fileName,
+                          fileContents: fileContents,
+                          folderName: itemName,
+                        ),
                       ),
-                    ),
-                  );
+                    ).then((_) {
+                      fileOpened = false; // Сброс флага после закрытия файла
+                    });
+                  }
                 },
                 onLongPress: () {
                   showDialog(
