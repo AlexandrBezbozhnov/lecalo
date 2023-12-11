@@ -11,12 +11,8 @@ class ResultPage extends StatelessWidget {
   final List<String> userMeasurements;
   String selectedClothingType;
 
-  ResultPage(
-    this.calculatedMeasurements,
-    this.measurementNames,
-    this.userMeasurements,
-    this.selectedClothingType
-  );
+  ResultPage(this.calculatedMeasurements, this.measurementNames,
+      this.userMeasurements, this.selectedClothingType);
 
   void _showSaveFileDialog(BuildContext context, List<String> folders) {
     String fileName = '';
@@ -78,7 +74,7 @@ class ResultPage extends StatelessWidget {
                         selectedClothingType,
                       );
                     }
-                    Navigator.popUntil(context, ModalRoute.withName('/'));
+                    Navigator.pushReplacementNamed(context, '/');
                   },
                 ),
               ],
@@ -146,7 +142,7 @@ Future<void> saveData(
 ) async {
   try {
     // Создание текста для файла .txt
-    String data = '$selectedClothingType \n\n Вычеслено: \n\n';
+    String data = '$selectedClothingType \n\nВычеслено: \n\n';
     for (int i = 0; i < calculatedMeasurements.length; i++) {
       data +=
           '${measurementNames[i]}: ${calculatedMeasurements[i].toStringAsFixed(2)} \n\n';
@@ -164,7 +160,8 @@ Future<void> saveData(
 
     // Создание текста для файла .bas
     final fileBas = File('${directory.path}/$fileName.bas');
-    final code = '''
+    if (selectedClothingType == 'Лосины') {
+      final code = '''
 Sub DrawSquareWithDimensions()
   Dim obj As AcadObject
     For Each obj In ThisDrawing.ModelSpace
@@ -328,7 +325,14 @@ Sub DrawSquareWithDimensions()
     endPoint(1) = sixthY
     endPoint(2) = 0
 ''';
-    await fileBas.writeAsString(code);
+      await fileBas.writeAsString(code);
+    } else if (selectedClothingType == 'Комбинезон') {
+      final code = ''' Комбинезон ''';
+      await fileBas.writeAsString(code);
+    } else if (selectedClothingType == 'Купальник') {
+      final code = ''' Купальник ''';
+      await fileBas.writeAsString(code);
+    }
 
     // Отправка файлов на Firebase Storage
     final storage = FirebaseStorage.instance;
