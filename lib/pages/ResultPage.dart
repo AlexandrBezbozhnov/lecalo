@@ -113,7 +113,7 @@ class ResultPage extends StatelessWidget {
             return ListTile(
               title: Text(measurementNames[index]),
               subtitle: Text(
-                'Значение: ${calculatedMeasurements[index].toStringAsFixed(2)} (Вычислено)',
+                '${calculatedMeasurements[index].toStringAsFixed(2)} (Вычислено)',
               ),
             );
           } else {
