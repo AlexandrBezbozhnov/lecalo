@@ -88,6 +88,15 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
     }
   }
 
+  bool areMeasurementsFilled() {
+    for (String measurement in measurements) {
+      if (measurement.isEmpty) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   List<double> calculateMeasurements() {
     List<double> calculatedMeasurements = [];
 
@@ -771,19 +780,40 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      List<double> calculatedMeasurements =
-                          calculateMeasurements();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ResultPage(
-                            calculatedMeasurements,
-                            measurementNames[selectedClothingType]!,
-                            measurements,
-                            selectedClothingType,
+                      if (areMeasurementsFilled()) {
+                        List<double> calculatedMeasurements =
+                            calculateMeasurements();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ResultPage(
+                              calculatedMeasurements,
+                              measurementNames[selectedClothingType]!,
+                              measurements,
+                              selectedClothingType,
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      } else {
+                        // Выводите сообщение об ошибке или действия по вашему усмотрению
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Ошибка'),
+                              content: Text('Заполните все замеры'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('OK'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
                     },
                     child: Text('Вычислить'),
                   ),
