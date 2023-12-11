@@ -35,8 +35,8 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
       'Длина от талии до колена',
       'Длина рукава',
       'Дуга',
-      'Высота сидения (От талии до твердой поверхности)',
-      'Полудуга (От талии спереди через низ до талии сзади)',
+      'Высота сидения',
+      'Полудуга',
       'Длина талии переда',
       'Длина талии спинки',
     ],
@@ -54,7 +54,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
       'Длина трусов по боку',
       'Длина рукава',
       'Дуга',
-      'Полудуга (От талии спереди через низ до талии сзади)',
+      'Полудуга',
       'Попа 1',
       'Попа 2',
       'Попа 3',
@@ -73,8 +73,8 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
       'Обхват подъема стопы',
       'Длина от талии до пола',
       'Длина от талии до колена',
-      'Высота сидения (От талии до твердой поверхности)',
-      'Полудуга (От талии спереди через низ до талии сзади)',
+      'Высота сидения',
+      'Полудуга',
     ],
   };
 
@@ -380,10 +380,10 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add((value - 2) / 2);
               break;
             case 14:
-              calculatedMeasurements.add(value);
+              calculatedMeasurements.add(value - 1);
               break;
             case 15:
-              calculatedMeasurements.add(value);
+              calculatedMeasurements.add(value - 1);
               break;
             case 16:
               calculatedMeasurements.add(value);
@@ -398,10 +398,10 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add(value);
               break;
             case 20:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add(value);
               break;
             case 21:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add(value);
               break;
           }
         }
@@ -457,10 +457,10 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add((value - 2) / 2);
               break;
             case 14:
-              calculatedMeasurements.add(value);
+              calculatedMeasurements.add(value - 1);
               break;
             case 15:
-              calculatedMeasurements.add(value);
+              calculatedMeasurements.add(value - 1);
               break;
             case 16:
               calculatedMeasurements.add(value);
@@ -475,10 +475,10 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add(value);
               break;
             case 20:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add(value);
               break;
             case 21:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add(value);
               break;
           }
         }
@@ -534,10 +534,10 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add((value - 2) / 2);
               break;
             case 14:
-              calculatedMeasurements.add(value);
+              calculatedMeasurements.add(value - 1);
               break;
             case 15:
-              calculatedMeasurements.add(value);
+              calculatedMeasurements.add(value - 1);
               break;
             case 16:
               calculatedMeasurements.add(value);
@@ -552,10 +552,10 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add(value);
               break;
             case 20:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add(value);
               break;
             case 21:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add(value);
               break;
           }
         }
@@ -766,22 +766,29 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               }),
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                List<double> calculatedMeasurements = calculateMeasurements();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ResultPage(
-                      calculatedMeasurements,
-                      measurementNames[selectedClothingType]!,
-                      measurements,
-                    ),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      List<double> calculatedMeasurements =
+                          calculateMeasurements();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ResultPage(
+                            calculatedMeasurements,
+                            measurementNames[selectedClothingType]!,
+                            measurements,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Text('Вычислить'),
                   ),
-                );
-              },
-              child: Text('Вычислить'),
-            ),
+                ),
+              ],
+            )
           ],
         ),
       ),
