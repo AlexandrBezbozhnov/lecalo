@@ -47,6 +47,9 @@ class _MainPageState extends State<MainPage> {
       await reference.delete();
     } catch (error) {
       print('Ошибка при удалении папки: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Папка "$folderName" успешно удалена')),
+      );
       setState(() {
         futureFiles =
             fetchUploadedFiles(); // Обновляем список файлов после удаления
@@ -168,8 +171,8 @@ class _MainPageState extends State<MainPage> {
                 leading: Icon(Icons.delete),
                 title: Text('Удалить папку и все файлы'),
                 onTap: () {
-                  deleteFolderAndFiles(folderName);
-                  Navigator.of(context).pop();
+                  showConfirmationDialog(
+                      folderName); // Показать диалог подтверждения
                 },
               ),
               ListTile(
@@ -183,6 +186,35 @@ class _MainPageState extends State<MainPage> {
             ],
           ),
           actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Отмена'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showConfirmationDialog(String folderName) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Подтвердите удаление'),
+          content: Text(
+              'Вы уверены, что хотите удалить папку "$folderName" и все файлы в ней?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                deleteFolderAndFiles(folderName); // Удалить папку и файлы
+                Navigator.of(context).pop();
+                Navigator.of(context).pop(); // Закрыть оба диалоговых окна
+              },
+              child: Text('Удалить'),
+            ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();

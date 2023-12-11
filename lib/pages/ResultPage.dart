@@ -9,11 +9,13 @@ class ResultPage extends StatelessWidget {
   final List<double> calculatedMeasurements;
   final List<String> measurementNames;
   final List<String> userMeasurements;
+  String selectedClothingType;
 
   ResultPage(
     this.calculatedMeasurements,
     this.measurementNames,
     this.userMeasurements,
+    this.selectedClothingType
   );
 
   void _showSaveFileDialog(BuildContext context, List<String> folders) {
@@ -47,7 +49,7 @@ class ResultPage extends StatelessWidget {
                   ),
                   TextField(
                     onChanged: (value) {
-                      fileName = value;
+                      fileName = '$value $selectedClothingType';
                     },
                     decoration: InputDecoration(
                       labelText: 'Имя файла',
@@ -73,6 +75,7 @@ class ResultPage extends StatelessWidget {
                         userMeasurements,
                         fileName,
                         selectedFolder,
+                        selectedClothingType,
                       );
                     }
                     Navigator.popUntil(context, ModalRoute.withName('/'));
@@ -139,10 +142,11 @@ Future<void> saveData(
   List<String> userMeasurements,
   String fileName,
   String selectedFolder,
+  String selectedClothingType,
 ) async {
   try {
     // Создание текста для файла .txt
-    String data = 'Вычеслено: \n\n';
+    String data = '$selectedClothingType \n\n Вычеслено: \n\n';
     for (int i = 0; i < calculatedMeasurements.length; i++) {
       data +=
           '${measurementNames[i]}: ${calculatedMeasurements[i].toStringAsFixed(2)} \n\n';

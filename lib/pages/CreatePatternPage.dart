@@ -780,6 +780,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
                             calculatedMeasurements,
                             measurementNames[selectedClothingType]!,
                             measurements,
+                            selectedClothingType,
                           ),
                         ),
                       );
