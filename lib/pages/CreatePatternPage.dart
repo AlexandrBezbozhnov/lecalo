@@ -712,8 +712,10 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Создание лекала'),
-      ),
+        title: Text('Создание лекала',
+        textAlign: TextAlign.center, // Центрирование текста
+        ),
+        centerTitle: true, ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(

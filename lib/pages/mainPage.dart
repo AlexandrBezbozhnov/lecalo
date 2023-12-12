@@ -329,7 +329,11 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Главная'),
+        title: Text(
+          'Главная', 
+          textAlign: TextAlign.center, // Центрирование текста
+        ),
+        centerTitle: true, // Устанавливаем центрирование заголовка
       ),
       body: RefreshIndicator(
         onRefresh: _refresh,

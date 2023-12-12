@@ -82,8 +82,10 @@ class _ExportToAutodeskPageState extends State<ExportToAutodeskPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Autodesk'),
-      ),
+        title: Text('Autodesk',
+        textAlign: TextAlign.center, // Центрирование текста
+        ),
+        centerTitle: true, ),
       body: RefreshIndicator(
         onRefresh: _refresh,
         child: FutureBuilder<List<String>>(

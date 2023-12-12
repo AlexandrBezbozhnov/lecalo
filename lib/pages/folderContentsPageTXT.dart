@@ -80,7 +80,10 @@ class _FolderContentsPageTXTState extends State<FolderContentsPageTXT> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.folderName),
+        title: Text(widget.folderName,
+          textAlign: TextAlign.center,
+        ),
+        centerTitle: true,
         actions: [
           IconButton(
             icon: Icon(Icons.filter_list),

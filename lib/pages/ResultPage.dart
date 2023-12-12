@@ -89,7 +89,10 @@ class ResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Результаты'),
+        title: Text('Результаты',
+          textAlign: TextAlign.center,
+        ),
+        centerTitle: true, 
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.save),

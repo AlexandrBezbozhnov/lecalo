@@ -5,7 +5,6 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:flutter/services.dart'; // Импортируем flutter/services.dart
 
-
 class FileViewPage extends StatelessWidget {
   final String fileName;
   final String fileContents;
@@ -15,7 +14,6 @@ class FileViewPage extends StatelessWidget {
       {required this.fileName,
       required this.fileContents,
       required this.folderName});
-
 
   Future<void> deleteFile(BuildContext context, fileName, folderName) async {
     try {
@@ -31,7 +29,7 @@ class FileViewPage extends StatelessWidget {
     }
   }
 
-    Future<void> copyFileContentsToClipboard(String fileContents) async {
+  Future<void> copyFileContentsToClipboard(String fileContents) async {
     try {
       await Clipboard.setData(ClipboardData(text: fileContents));
       print('Содержимое файла скопировано в буфер обмена');
@@ -40,12 +38,15 @@ class FileViewPage extends StatelessWidget {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('$fileName'),
+        title: Text(
+          '$fileName',
+          textAlign: TextAlign.center,
+        ),
+        centerTitle: true, // Устанавливаем центрирование заголовка
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.copy),
