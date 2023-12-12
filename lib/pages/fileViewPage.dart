@@ -1,21 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
-import 'package:flutter/services.dart'; // Импортируем flutter/services.dart
+import 'package:flutter/services.dart'; // Import flutter/services.dart
+import 'EditFilePage.dart';
+import 'dart:convert';// Import the page for file editing
 
-class FileViewPage extends StatelessWidget {
+class FileViewPage extends StatefulWidget {
   final String fileName;
   final String fileContents;
   final String folderName;
 
-  FileViewPage(
-      {required this.fileName,
-      required this.fileContents,
-      required this.folderName});
+  FileViewPage({
+    required this.fileName,
+    required this.fileContents,
+    required this.folderName,
+  });
 
-  Future<void> deleteFile(BuildContext context, fileName, folderName) async {
+  @override
+  _FileViewPageState createState() => _FileViewPageState();
+}
+
+class _FileViewPageState extends State<FileViewPage> {
+  late String fileContents;
+
+  @override
+  void initState() {
+    super.initState();
+    fileContents = widget.fileContents;
+  }
+
+  Future<void> deleteFile(
+      BuildContext context, String fileName, String folderName) async {
     try {
       final FirebaseStorage storage = FirebaseStorage.instance;
       Reference reference = storage.ref().child('$folderName');
@@ -25,16 +39,16 @@ class FileViewPage extends StatelessWidget {
       Navigator.popUntil(context, ModalRoute.withName('/'));
       Navigator.pushReplacementNamed(context, '/');
     } catch (error) {
-      print('Ошибка при удалении файла: $error');
+      print('Error deleting file: $error');
     }
   }
 
   Future<void> copyFileContentsToClipboard(String fileContents) async {
     try {
       await Clipboard.setData(ClipboardData(text: fileContents));
-      print('Содержимое файла скопировано в буфер обмена');
+      print('File contents copied to clipboard');
     } catch (error) {
-      print('Ошибка при копировании в буфер обмена: $error');
+      print('Error copying to clipboard: $error');
     }
   }
 
@@ -43,10 +57,10 @@ class FileViewPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '$fileName',
+          widget.fileName,
           textAlign: TextAlign.center,
         ),
-        centerTitle: true, // Устанавливаем центрирование заголовка
+        centerTitle: true,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.copy),
@@ -72,7 +86,8 @@ class FileViewPage extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () {
-                          deleteFile(context, fileName, folderName);
+                          deleteFile(
+                              context, widget.fileName, widget.folderName);
                         },
                         child: Text('Delete'),
                       ),
@@ -80,6 +95,40 @@ class FileViewPage extends StatelessWidget {
                   );
                 },
               );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () async {
+              final updatedFileContents = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      EditFilePage(fileContents: fileContents),
+                ),
+              );
+
+              if (updatedFileContents != null) {
+                setState(() {
+                  fileContents = updatedFileContents;
+                });
+
+                try {
+                  final FirebaseStorage storage = FirebaseStorage.instance;
+                  Reference reference =
+                      storage.ref().child(widget.folderName);
+                  print(reference);
+                  // Преобразуем обновленное содержимое файла (строку) в Uint8List
+                  List<int> bytes = utf8.encode(updatedFileContents);
+                  // Загружаем обновленное содержимое в Firebase Storage
+                  await reference.putData(Uint8List.fromList(bytes));
+
+                  print('Содержимое файла обновлено в Firebase Storage');
+                } catch (error) {
+                  print(
+                      'Ошибка при обновлении содержимого файла в Firebase Storage: $error');
+                }
+              }
             },
           ),
         ],

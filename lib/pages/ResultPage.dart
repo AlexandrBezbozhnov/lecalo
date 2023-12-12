@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
-import 'mainPage.dart';
 import 'dart:async';
 
 class ResultPage extends StatelessWidget {
