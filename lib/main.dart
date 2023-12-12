@@ -3,11 +3,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'pages/mainPage.dart';
 import 'pages/CreatePatternPage.dart';
 import 'pages/exportToAutodeskPage.dart';
-
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
@@ -28,8 +30,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-      ),
+      theme: ThemeData(),
       home: Scaffold(
         body: _pages[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(

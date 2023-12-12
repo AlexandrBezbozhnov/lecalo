@@ -20,7 +20,8 @@ class FolderContentsPageBAS extends StatefulWidget {
 
 class _FolderContentsPageBASState extends State<FolderContentsPageBAS> {
   List<String> _contents = [];
-  bool fileOpened = false; // Добавленная переменная
+  bool fileOpened = false;
+  String _selectedFilter = ''; // Добавленная переменная для фильтрации
 
   @override
   void initState() {
@@ -93,19 +94,31 @@ class _FolderContentsPageBASState extends State<FolderContentsPageBAS> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.folderName),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.filter_list),
+            onPressed: () {
+              _showFilterOptions(context);
+            },
+          ),
+        ],
       ),
       body: _buildContentsList(context),
     );
   }
 
   Widget _buildContentsList(BuildContext context) {
-    return _contents.isEmpty
-        ? Center(child: Text('Folder is empty'))
-        : ListView.builder(
-            itemCount: _contents.length,
-            itemBuilder: (context, index) {
-              String itemName = _contents[index];
+    List<String> filteredContents = _contents.where((item) {
+      String itemName = item.split('/').last.toLowerCase();
+      return itemName.contains(_selectedFilter);
+    }).toList();
 
+    return filteredContents.isEmpty
+        ? Center(child: Text('No results'))
+        : ListView.builder(
+            itemCount: filteredContents.length,
+            itemBuilder: (context, index) {
+              String itemName = filteredContents[index];
               if (itemName.endsWith('.keep') || itemName.endsWith('.txt')) {
                 return SizedBox.shrink();
               }
@@ -176,5 +189,42 @@ class _FolderContentsPageBASState extends State<FolderContentsPageBAS> {
               );
             },
           );
+  }
+
+  void _showFilterOptions(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Выберите фильтр"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildFilterOption("Лосины"),
+              _buildFilterOption("Комбинезон"),
+              _buildFilterOption("Купальник"),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildFilterOption(String filter) {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _selectedFilter = filter.toLowerCase();
+        });
+        Navigator.pop(context); // Закрываем диалоговое окно после выбора опции
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          filter,
+          style: TextStyle(fontSize: 18.0),
+        ),
+      ),
+    );
   }
 }
