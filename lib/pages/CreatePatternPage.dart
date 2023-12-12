@@ -771,6 +771,17 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
                   onChanged: (value) {
                     _handleMeasurementChange(index, value);
                   },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Введите число';
+                    }
+                    final numeric = num.tryParse(value);
+                    if (numeric == null) {
+                      return 'Введите корректное число';
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
                 );
               }),
             ),
