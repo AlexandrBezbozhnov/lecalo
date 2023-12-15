@@ -137,7 +137,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add(value / 2);
               break;
             case 8:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1) / 2);
               break;
             case 9:
               calculatedMeasurements.add(value - 1);
@@ -146,19 +146,19 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add((value - 1) / 2);
               break;
             case 11:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1) / 2);
               break;
             case 12:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1) / 2);
               break;
             case 13:
               calculatedMeasurements.add(value - 1);
               break;
             case 14:
-              calculatedMeasurements.add(value - 3);
+              calculatedMeasurements.add(value - (value / 10));
               break;
             case 15:
-              calculatedMeasurements.add(value - 2);
+              calculatedMeasurements.add(value - (value / 10));
               break;
             case 16:
               calculatedMeasurements.add(value - adjustment);
@@ -214,7 +214,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add(value / 2);
               break;
             case 8:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1) / 2);
               break;
             case 9:
               calculatedMeasurements.add(value - 1);
@@ -223,19 +223,19 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add((value - 1) / 2);
               break;
             case 11:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1) / 2);
               break;
             case 12:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1) / 2);
               break;
             case 13:
               calculatedMeasurements.add(value - 1);
               break;
             case 14:
-              calculatedMeasurements.add(value - 3);
+              calculatedMeasurements.add(value - (value / 10));
               break;
             case 15:
-              calculatedMeasurements.add(value - 2);
+              calculatedMeasurements.add(value - (value / 10));
               break;
             case 16:
               calculatedMeasurements.add(value - adjustment);
@@ -291,7 +291,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add(value / 2);
               break;
             case 8:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1) / 2);
               break;
             case 9:
               calculatedMeasurements.add(value - 1);
@@ -300,19 +300,19 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add((value - 1) / 2);
               break;
             case 11:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1) / 2);
               break;
             case 12:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1) / 2);
               break;
             case 13:
               calculatedMeasurements.add(value - 1);
               break;
             case 14:
-              calculatedMeasurements.add(value - 3);
+              calculatedMeasurements.add(value - (value / 10));
               break;
             case 15:
-              calculatedMeasurements.add(value - 2);
+              calculatedMeasurements.add(value - (value / 10));
               break;
             case 16:
               calculatedMeasurements.add(value - adjustment);
@@ -599,13 +599,13 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add(value / 2);
               break;
             case 6:
-              calculatedMeasurements.add(((value - 3) * 90) / 100);
+              calculatedMeasurements.add(value - (value / 10));
               break;
             case 7:
-              calculatedMeasurements.add(((value - 2) * 90) / 100);
+              calculatedMeasurements.add(value - (value / 10));
               break;
             case 8:
-              calculatedMeasurements.add(((value - 1) * 90) / 100);
+              calculatedMeasurements.add(value - 1);
               break;
             case 9:
               calculatedMeasurements.add((value - 2) / 2);
@@ -640,14 +640,13 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add(value / 2);
               break;
             case 6:
-              calculatedMeasurements.add(((value - 3) * 90) / 100);
+              calculatedMeasurements.add(value - (value / 10));
               break;
             case 7:
-              calculatedMeasurements.add(((value - 2) * 90) / 100);
+              calculatedMeasurements.add(value - (value / 10));
               break;
             case 8:
-              calculatedMeasurements.add(((value - 1) * 90) / 100);
-              break;
+              calculatedMeasurements.add(value - 1);
             case 9:
               calculatedMeasurements.add((value - 2) / 2);
               break;
@@ -681,13 +680,13 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add(value / 2);
               break;
             case 6:
-              calculatedMeasurements.add(((value - 3) * 90) / 100);
+              calculatedMeasurements.add(value - (value / 10));
               break;
             case 7:
-              calculatedMeasurements.add(((value - 2) * 90) / 100);
+              calculatedMeasurements.add(value - (value / 10));
               break;
             case 8:
-              calculatedMeasurements.add(((value - 1) * 90) / 100);
+              calculatedMeasurements.add(value - 1);
               break;
             case 9:
               calculatedMeasurements.add((value - 2) / 2);
