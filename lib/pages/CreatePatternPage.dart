@@ -359,7 +359,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add((value - 3) / 4);
               break;
             case 4:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1) / 2);
               break;
             case 5:
               calculatedMeasurements.add(value - 1);
@@ -436,7 +436,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add((value - 4) / 4);
               break;
             case 4:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1) / 2);
               break;
             case 5:
               calculatedMeasurements.add(value - 1);
@@ -513,7 +513,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add((value - 5) / 4);
               break;
             case 4:
-              calculatedMeasurements.add(value - 1);
+              calculatedMeasurements.add((value - 1) / 2);
               break;
             case 5:
               calculatedMeasurements.add(value - 1);
@@ -803,6 +803,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
                               measurementNames[selectedClothingType]!,
                               measurements,
                               selectedClothingType,
+                              selectedAgeCategory,
                             ),
                           ),
                         );

@@ -9,9 +9,10 @@ class ResultPage extends StatelessWidget {
   final List<String> measurementNames;
   final List<String> userMeasurements;
   String selectedClothingType;
+  String selectedAgeCategory;
 
   ResultPage(this.calculatedMeasurements, this.measurementNames,
-      this.userMeasurements, this.selectedClothingType);
+      this.userMeasurements, this.selectedClothingType, this.selectedAgeCategory);
 
   void _showSaveFileDialog(BuildContext context, List<String> folders) {
     String fileName = '';
@@ -71,6 +72,7 @@ class ResultPage extends StatelessWidget {
                         fileName,
                         selectedFolder,
                         selectedClothingType,
+                        selectedAgeCategory,
                       );
                     }
                     Navigator.pushReplacementNamed(context, '/');
@@ -141,10 +143,11 @@ Future<void> saveData(
   String fileName,
   String selectedFolder,
   String selectedClothingType,
+  String selectedAgeCategory,
 ) async {
   try {
     // Создание текста для файла .txt
-    String data = '$selectedClothingType \n\nВычеслено: \n\n';
+    String data = '$selectedClothingType\n\n$selectedAgeCategory\n\nВычеслено: \n\n';
     for (int i = 0; i < calculatedMeasurements.length; i++) {
       data +=
           '${measurementNames[i]}: ${calculatedMeasurements[i].toStringAsFixed(2)} \n\n';
