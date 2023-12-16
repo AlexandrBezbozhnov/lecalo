@@ -1,3 +1,4 @@
+
 Sub DrawSquareWithDimensions()
 Kupalnik
 Rucav
@@ -14,16 +15,15 @@ End Sub
         endPoint(0) = endX
         endPoint(1) = endY
         endPoint(2) = 0
-
-        ThisDrawing.ModelSpace.AddLine startPoint, endPoint
+ThisDrawing.ModelSpace.AddLine startPoint, endPoint
     End Sub
     Public Sub AddLineKri5(startX As Double, startY As Double, endX As Double, endY As Double)
     Dim splineObj As AcadSpline
     Dim startTan(0 To 2) As Double
     Dim endTan(0 To 2) As Double
-    Dim fitPoints(0 To 14) As Double   
-    startTan(0) = 0: startTan(1) = 0: startTan(2) = 0  
-    endTan(0) = 0: endTan(1) = 0: endTan(2) = 0   
+    Dim fitPoints(0 To 14) As Double
+    startTan(0) = 0: startTan(1) = 0: startTan(2) = 0
+    endTan(0) = 0: endTan(1) = 0: endTan(2) = 0
     fitPoints(0) = startX
     fitPoints(1) = startY
     fitPoints(2) = 0
@@ -46,8 +46,8 @@ Public Sub AddLineKri4(startX As Double, startY As Double, endX As Double, endY 
     Dim startTan(0 To 2) As Double
     Dim endTan(0 To 2) As Double
     Dim fitPoints(0 To 5) As Double
-    startTan(0) = 0: startTan(1) = 0: startTan(2) = 0  
-    endTan(0) = 0: endTan(1) = 0: endTan(2) = 0   
+    startTan(0) = 0: startTan(1) = 0: startTan(2) = 0
+    endTan(0) = 0: endTan(1) = 0: endTan(2) = 0
     fitPoints(0) = startX
     fitPoints(1) = startY
     fitPoints(2) = 0
@@ -59,7 +59,7 @@ Public Sub AddLineKri4(startX As Double, startY As Double, endX As Double, endY 
     fitPoints(8) = 0
     fitPoints(9) = endX
     fitPoints(10) = endY
-    fitPoints(11) = 0 
+    fitPoints(11) = 0
     Set splineObj = ThisDrawing.ModelSpace.AddSpline(fitPoints, startTan, endTan)
 End Sub
 Public Sub AddLineKri3(startX As Double, startY As Double, endX As Double, endY As Double)
@@ -68,7 +68,7 @@ Public Sub AddLineKri3(startX As Double, startY As Double, endX As Double, endY 
     Dim endTan(0 To 2) As Double
     Dim midX As Double
     Dim midY As Double
-    Dim fitPoints(0 To 8 ) As Double
+    Dim fitPoints(0 To 8) As Double
     startTan(0) = 0: startTan(1) = 0: startTan(2) = 0
     endTan(0) = 0: endTan(1) = 0: endTan(2) = 0
     midX = (startX + endX) / 2
@@ -99,11 +99,11 @@ Public Sub AddLineKri2(startX As Double, startY As Double, endX As Double, endY 
     Dim splineObj As AcadSpline
     Dim startTan(0 To 2) As Double
     Dim endTan(0 To 2) As Double
-    Dim fitPoints(0 To 8 ) As Double
+    Dim fitPoints(0 To 8) As Double
     Dim midX As Double
     Dim midY As Double
-    startTan(0) = -2: startTan(1) = 0.3: startTan(2) = 0
-    endTan(0) = 0.3: endTan(1) = -0.8: endTan(2) = 0
+    startTan(0) = 0: startTan(1) = 0: startTan(2) = 0
+    endTan(0) = 0: endTan(1) = -0: endTan(2) = 0
     midX = (startX + endX) / 2
     midY = (startY + endY) / 2
     fitPoints(0) = startX
@@ -115,7 +115,7 @@ Public Sub AddLineKri2(startX As Double, startY As Double, endX As Double, endY 
     fitPoints(6) = endX
     fitPoints(7) = endY
     fitPoints(8) = 0
-    Set splineObj = ThisDrawing.ModelSpace.AddSpline(fitPoints, startTan, endTan) 
+    Set splineObj = ThisDrawing.ModelSpace.AddSpline(fitPoints, startTan, endTan)
     End Sub
  Public Sub Rucav()
  Dim first, firstY As Double
@@ -125,6 +125,7 @@ Public Sub AddLineKri2(startX As Double, startY As Double, endX As Double, endY 
     Dim secondX As Double: secondX = 0
     
     Dim third, thirdY As Double: third = 20
+    
     Dim thirdX As Double: thirdX = 0
     
     Dim fourth, fourthY As Double: fourth = 25
@@ -149,12 +150,12 @@ Public Sub AddLineKri2(startX As Double, startY As Double, endX As Double, endY 
     Dim endPoint(0 To 2) As Double
     
     
-    Dim standart As Double: standart = 7
+    Dim standart As Double: standart = 9
     Dim distan As Double: distan = 50
    
     first = 0
     firstX = 0 + distan
-    firstY = standart 
+    firstY = standart
     
     second = ${calculatedMeasurements[11].toStringAsFixed(2)} -  standart 
     secondX = 0 + distan
@@ -270,8 +271,7 @@ Public Sub Kupalnik()
     AddLine firstX, firstY, secondX, secondY
     
     location1(0) = firstX - 15#: location1(1) = 0#: location1(2) = 0#
-
-    AddLine firstX, firstY, secondX, secondY
+AddLine firstX, firstY, secondX, secondY
     '-----------------------------------------------------------------------------
     
     location1(0) = 0#: location1(1) = 0#: location1(2) = 0#
@@ -291,14 +291,13 @@ Public Sub Kupalnik()
     AddLineKri2 twelfthX, twelfthY - 3, sixthX, sixthY
     
     seventhX = seventh
-    seventhY = -2 'СТАНДАРТ
+    seventhY = -3 '????????
     
     AddLine seventhX, seventhY, sixthX, sixthY
     
     
     
    '-----------------------------------------------------------------------------
-   
    fifth = ${calculatedMeasurements[9].toStringAsFixed(2)}
    ninth = ${calculatedMeasurements[1].toStringAsFixed(2)}
    
@@ -347,7 +346,7 @@ Public Sub Kupalnik()
     tenth = ${calculatedMeasurements[3].toStringAsFixed(2)}
     
     fourthX = 0
-    fourthY = fourth * -1
+    fourthY = thirdY - fourth
     
     tenthX = tenth
     tenthY = fourthY
@@ -356,7 +355,7 @@ Public Sub Kupalnik()
     AddLine tenthX, tenthY, fourthX, fourthY
     '-----------------------------------------------------------------------------
     
-    thirteen = 3 'СТРАНДАРТ тр
+    thirteen = 4 '????????? ??
     
     thirteenY = secondY
     thirteenX = thirteen
@@ -379,8 +378,8 @@ Sub DrawCheckSquare()
     Dim checkSquareSize As Double
     checkSquareSize = 3
 
-    Dim topLeftX As Double: topLeftX = 5 
-    Dim topLeftY As Double: topLeftY = -5 
+    Dim topLeftX As Double: topLeftX = 5
+    Dim topLeftY As Double: topLeftY = -5
     Dim bottomRightX As Double: bottomRightX = topLeftX + checkSquareSize
     Dim bottomRightY As Double: bottomRightY = topLeftY - checkSquareSize
 
