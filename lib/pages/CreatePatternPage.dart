@@ -39,6 +39,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
       'Полудуга',
       'Длина талии переда',
       'Длина талии спинки',
+      'Обхват запястья',
     ],
     'Купальник': [
       'Обхват шеи',
@@ -57,6 +58,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
       'Полудуга',
       'Длина талии переда',
       'Длина талии спинки',
+      'Обхват запястья',
       'Попа 1',
       'Попа 2',
       'Попа 3',
@@ -178,6 +180,9 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
             case 21:
               calculatedMeasurements.add(value - 1);
               break;
+            case 22:
+              calculatedMeasurements.add((value - 1) / 2);
+              break;
           }
         }
       } else if (selectedAgeCategory == 'Девочка') {
@@ -255,6 +260,9 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
             case 21:
               calculatedMeasurements.add(value - 1);
               break;
+            case 22:
+              calculatedMeasurements.add((value - 1) / 2);
+              break;
           }
         }
       } else if (selectedAgeCategory == 'Юниорка') {
@@ -331,6 +339,9 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               break;
             case 21:
               calculatedMeasurements.add(value - 1);
+              break;
+            case 22:
+              calculatedMeasurements.add((value - 1) / 2);
               break;
           }
         }
@@ -395,7 +406,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add(value - 1);
               break;
             case 16:
-              calculatedMeasurements.add(value);
+              calculatedMeasurements.add((value - 1) / 2);
               break;
             case 17:
               calculatedMeasurements.add(value);
@@ -410,6 +421,9 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add(value);
               break;
             case 21:
+              calculatedMeasurements.add(value);
+              break;
+            case 22:
               calculatedMeasurements.add(value);
               break;
           }
@@ -472,7 +486,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add(value - 1);
               break;
             case 16:
-              calculatedMeasurements.add(value);
+              calculatedMeasurements.add((value - 1) / 2);
               break;
             case 17:
               calculatedMeasurements.add(value);
@@ -487,6 +501,9 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add(value);
               break;
             case 21:
+              calculatedMeasurements.add(value);
+              break;
+            case 22:
               calculatedMeasurements.add(value);
               break;
           }
@@ -549,7 +566,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add(value - 1);
               break;
             case 16:
-              calculatedMeasurements.add(value);
+              calculatedMeasurements.add((value - 1) / 2);
               break;
             case 17:
               calculatedMeasurements.add(value);
@@ -564,6 +581,9 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
               calculatedMeasurements.add(value);
               break;
             case 21:
+              calculatedMeasurements.add(value);
+              break;
+            case 22:
               calculatedMeasurements.add(value);
               break;
           }
@@ -711,10 +731,12 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Создание лекала',
-        textAlign: TextAlign.center, // Центрирование текста
+        title: Text(
+          'Создание лекала',
+          textAlign: TextAlign.center, // Центрирование текста
         ),
-        centerTitle: true, ),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(

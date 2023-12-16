@@ -373,7 +373,6 @@ class _MainPageState extends State<MainPage> {
                         String itemName = snapshot.data![index];
                         bool isFile = itemName.endsWith('.txt');
                         bool isFolder = !isFile;
-
                         String fileName = path.basename(itemName);
 
                         return ListTile(
