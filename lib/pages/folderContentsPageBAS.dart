@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'fileViewPage.dart';
+import 'package:flutter/services.dart';
 
 class FolderContentsPageBAS extends StatefulWidget {
   final String folderName;
@@ -29,17 +30,41 @@ class _FolderContentsPageBASState extends State<FolderContentsPageBAS> {
     _contents = widget.contents;
   }
 
-  Future<void> _openInAutoCAD(String filePath) async {
+  Future<void> _copyFileToClipboard(String filePath) async {
     try {
-      // Замените 'C:\\Program Files\\AutoCAD\\acad.exe' на реальный путь к исполняемому файлу AutoCAD
-      final autoCADPath = 'C:\\Program Files\\AutoCAD\\acad.exe';
+      final ref = FirebaseStorage.instance.ref().child(filePath);
+      final downloadUrl = await ref.getDownloadURL();
 
-      // Запускаем AutoCAD с передачей файла в качестве аргумента
-      await Process.run(autoCADPath, [filePath]);
+      final httpHeaders = await ref.getMetadata();
+      final httpClient = HttpClient();
+      final request = await httpClient.getUrl(Uri.parse(downloadUrl));
+      final httpClientResponse = await request.close();
 
-      print('File opened in AutoCAD');
+      if (httpClientResponse.statusCode == HttpStatus.ok) {
+        final List<int> bytes = await httpClientResponse.fold<List<int>>(
+          <int>[],
+          (previous, element) => previous..addAll(element),
+        );
+
+        final String fileName = filePath.split('/').last;
+        final tempDir = await getTemporaryDirectory();
+        final tempFilePath = '${tempDir.path}/$fileName';
+
+        final file = File(tempFilePath);
+        await file.writeAsBytes(bytes);
+
+        // Копирование пути файла в буфер обмена
+        await Clipboard.setData(ClipboardData(text: tempFilePath));
+
+        print('File copied to clipboard: $tempFilePath');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('File copied to clipboard: $tempFilePath')),
+        );
+      } else {
+        print('Failed to download file: HTTP ${httpClientResponse.statusCode}');
+      }
     } catch (e) {
-      print('Error opening file in AutoCAD: $e');
+      print("Error copying file: $e");
     }
   }
 
@@ -93,10 +118,11 @@ class _FolderContentsPageBASState extends State<FolderContentsPageBAS> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.folderName,
+        title: Text(
+          widget.folderName,
           textAlign: TextAlign.center,
         ),
-        centerTitle: true, 
+        centerTitle: true,
         actions: [
           IconButton(
             icon: Icon(Icons.filter_list),
@@ -127,9 +153,7 @@ class _FolderContentsPageBASState extends State<FolderContentsPageBAS> {
               }
 
               String fileName = itemName.split('/').last;
-              if (fileName.endsWith('.bas')) {
-                fileName = fileName.substring(0, fileName.length - 4);
-              }
+
               return ListTile(
                 title: Text(fileName),
                 onTap: () async {
@@ -182,7 +206,7 @@ class _FolderContentsPageBASState extends State<FolderContentsPageBAS> {
                             ),
                             onPressed: () {
                               Navigator.of(context).pop();
-                              _openInAutoCAD(
+                              _copyFileToClipboard(
                                   itemName); // Открываем файл в AutoCAD
                             },
                           ),

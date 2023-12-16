@@ -337,7 +337,6 @@ Sub DrawSquareWithDimensions()
     } else if (selectedClothingType == 'Купальник') {
       if (selectedAgeCategory == 'Малыш'){
       final code = ''' 
-      Attribute VB_Name = "Module2"
 Sub DrawSquareWithDimensions()
 Kupalnik
 Rucav
@@ -408,7 +407,7 @@ Public Sub AddLineKri3(startX As Double, startY As Double, endX As Double, endY 
     Dim endTan(0 To 2) As Double
     Dim midX As Double
     Dim midY As Double
-    Dim fitPoints(0 To 8) As Double
+    Dim fitPoints(0 To 8 ) As Double
     startTan(0) = 0: startTan(1) = 0: startTan(2) = 0
     endTan(0) = 0: endTan(1) = 0: endTan(2) = 0
     midX = (startX + endX) / 2
@@ -439,7 +438,7 @@ Public Sub AddLineKri2(startX As Double, startY As Double, endX As Double, endY 
     Dim splineObj As AcadSpline
     Dim startTan(0 To 2) As Double
     Dim endTan(0 To 2) As Double
-    Dim fitPoints(0 To 8) As Double
+    Dim fitPoints(0 To 8 ) As Double
     Dim midX As Double
     Dim midY As Double
     startTan(0) = -2: startTan(1) = 0.3: startTan(2) = 0
@@ -508,8 +507,8 @@ Public Sub AddLineKri2(startX As Double, startY As Double, endX As Double, endY 
     thirdX = 0 + distan
     thirdY = 0
     
-    fifth = ${calculatedMeasurements[4].toStringAsFixed(2)}
-    sixth = ${calculatedMeasurements[4].toStringAsFixed(2)}
+    fifth = ${calculatedMeasurements[22].toStringAsFixed(2)}
+    sixth = ${calculatedMeasurements[22].toStringAsFixed(2)}
     
     
     fifthX = thirdX - fifth / 2
@@ -522,8 +521,8 @@ Public Sub AddLineKri2(startX As Double, startY As Double, endX As Double, endY 
     AddLine fifthX, fifthY, sixthX, sixthY
     '-----------------------------------------------------------------------------
         
-    seventh = ${calculatedMeasurements[22].toStringAsFixed(2)}
-    eighth = ${calculatedMeasurements[22].toStringAsFixed(2)}
+    seventh = ${calculatedMeasurements[4].toStringAsFixed(2)}
+    eighth = ${calculatedMeasurements[4].toStringAsFixed(2)}
     
     
     seventhX = secondX - seventh / 2
@@ -734,7 +733,6 @@ End Sub
       }
       else if (selectedAgeCategory == 'Девочка'){
       final code = ''' 
-      Attribute VB_Name = "Module2"
 Sub DrawSquareWithDimensions()
 Kupalnik
 Rucav
@@ -805,7 +803,7 @@ Public Sub AddLineKri3(startX As Double, startY As Double, endX As Double, endY 
     Dim endTan(0 To 2) As Double
     Dim midX As Double
     Dim midY As Double
-    Dim fitPoints(0 To 8) As Double
+    Dim fitPoints(0 To 8 ) As Double
     startTan(0) = 0: startTan(1) = 0: startTan(2) = 0
     endTan(0) = 0: endTan(1) = 0: endTan(2) = 0
     midX = (startX + endX) / 2
@@ -836,7 +834,7 @@ Public Sub AddLineKri2(startX As Double, startY As Double, endX As Double, endY 
     Dim splineObj As AcadSpline
     Dim startTan(0 To 2) As Double
     Dim endTan(0 To 2) As Double
-    Dim fitPoints(0 To 8) As Double
+    Dim fitPoints(0 To 8 ) As Double
     Dim midX As Double
     Dim midY As Double
     startTan(0) = -2: startTan(1) = 0.3: startTan(2) = 0
@@ -1131,7 +1129,6 @@ End Sub
       }
       else if (selectedAgeCategory == 'Юниорка'){
       final code = ''' 
-      Attribute VB_Name = "Module2"
 Sub DrawSquareWithDimensions()
 Kupalnik
 Rucav
