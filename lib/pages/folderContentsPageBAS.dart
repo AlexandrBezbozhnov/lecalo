@@ -30,43 +30,46 @@ class _FolderContentsPageBASState extends State<FolderContentsPageBAS> {
     _contents = widget.contents;
   }
 
-  Future<void> _copyFileToClipboard(String filePath) async {
-    try {
-      final ref = FirebaseStorage.instance.ref().child(filePath);
-      final downloadUrl = await ref.getDownloadURL();
+Future<void> _downloadFile(String filePath) async {
+  try {
+    final ref = FirebaseStorage.instance.ref().child(filePath);
+    final downloadUrl = await ref.getDownloadURL();
 
-      final httpHeaders = await ref.getMetadata();
-      final httpClient = HttpClient();
-      final request = await httpClient.getUrl(Uri.parse(downloadUrl));
-      final httpClientResponse = await request.close();
+    final httpHeaders = await ref.getMetadata();
+    final httpClient = HttpClient();
+    final request = await httpClient.getUrl(Uri.parse(downloadUrl));
+    final httpClientResponse = await request.close();
 
-      if (httpClientResponse.statusCode == HttpStatus.ok) {
-        final List<int> bytes = await httpClientResponse.fold<List<int>>(
-          <int>[],
-          (previous, element) => previous..addAll(element),
-        );
+    if (httpClientResponse.statusCode == HttpStatus.ok) {
+      final List<int> bytes = await httpClientResponse.fold<List<int>>(
+        <int>[],
+        (previous, element) => previous..addAll(element),
+      );
 
-        final String fileName = filePath.split('/').last;
-        final tempDir = await getTemporaryDirectory();
-        final tempFilePath = '${tempDir.path}/$fileName';
+      final String fileName = filePath.split('/').last;
 
-        final file = File(tempFilePath);
+      final downloadsDirectory = await getDownloadsDirectory();
+      if (downloadsDirectory != null) {
+        final file = File('${downloadsDirectory.path}/$fileName');
         await file.writeAsBytes(bytes);
 
-        // Копирование пути файла в буфер обмена
-        await Clipboard.setData(ClipboardData(text: tempFilePath));
-
-        print('File copied to clipboard: $tempFilePath');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('File copied to clipboard: $tempFilePath')),
-        );
+        // Show a message or perform actions after successful download
+        print('File downloaded to ${file.path}');
       } else {
-        print('Failed to download file: HTTP ${httpClientResponse.statusCode}');
+        // Handle the case where downloadsDirectory is null
+        print('Unable to access downloads directory');
       }
-    } catch (e) {
-      print("Error copying file: $e");
+    } else {
+      print('Failed to download file: HTTP ${httpClientResponse.statusCode}');
     }
+  } catch (e) {
+    print("Error downloading file: $e");
   }
+}
+
+
+
+
 
   Future<String> _loadFileContents(String filePath) async {
     try {
@@ -202,12 +205,11 @@ class _FolderContentsPageBASState extends State<FolderContentsPageBAS> {
                           ),
                           TextButton(
                             child: Text(
-                              "Открыть в AutoCAD",
+                              "Копировать файл",
                             ),
                             onPressed: () {
                               Navigator.of(context).pop();
-                              _copyFileToClipboard(
-                                  itemName); // Открываем файл в AutoCAD
+                              _downloadFile(itemName);
                             },
                           ),
                         ],
