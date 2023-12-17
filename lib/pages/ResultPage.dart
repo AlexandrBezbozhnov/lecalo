@@ -11,8 +11,12 @@ class ResultPage extends StatelessWidget {
   String selectedClothingType;
   String selectedAgeCategory;
 
-  ResultPage(this.calculatedMeasurements, this.measurementNames,
-      this.userMeasurements, this.selectedClothingType, this.selectedAgeCategory);
+  ResultPage(
+      this.calculatedMeasurements,
+      this.measurementNames,
+      this.userMeasurements,
+      this.selectedClothingType,
+      this.selectedAgeCategory);
 
   void _showSaveFileDialog(BuildContext context, List<String> folders) {
     String fileName = '';
@@ -90,10 +94,11 @@ class ResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Результаты',
+        title: Text(
+          'Результаты',
           textAlign: TextAlign.center,
         ),
-        centerTitle: true, 
+        centerTitle: true,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.save),
@@ -147,7 +152,8 @@ Future<void> saveData(
 ) async {
   try {
     // Создание текста для файла .txt
-    String data = '$selectedClothingType\n\n$selectedAgeCategory\n\nВычеслено: \n\n';
+    String data =
+        '$selectedClothingType\n\n$selectedAgeCategory\n\nВычеслено: \n\n';
     for (int i = 0; i < calculatedMeasurements.length; i++) {
       data +=
           '${measurementNames[i]}: ${calculatedMeasurements[i].toStringAsFixed(2)} \n\n';
@@ -332,11 +338,1542 @@ Sub DrawSquareWithDimensions()
 ''';
       await fileBas.writeAsString(code);
     } else if (selectedClothingType == 'Комбинезон') {
-      final code = ''' Комбинезон ''';
-      await fileBas.writeAsString(code);
+      if (selectedAgeCategory == 'Малыш') {
+        final code = ''' 
+              Sub DrawSquareWithDimensions()
+Kombinizon (0)
+Losini (50)
+Rucav (100)
+DrawCheckSquare
+End Sub
+
+ Public Sub AddLine(startX As Double, startY As Double, endX As Double, endY As Double)
+ 
+   Dim startPoint(0 To 2) As Double
+   Dim endPoint(0 To 2) As Double
+        startPoint(0) = startX
+        startPoint(1) = startY
+        startPoint(2) = 0
+
+        endPoint(0) = endX
+        endPoint(1) = endY
+        endPoint(2) = 0
+
+        ThisDrawing.ModelSpace.AddLine startPoint, endPoint
+    End Sub
+
+Public Sub AddLineKri(startX As Double, startY As Double, endX As Double, endY As Double)
+    Dim splineObj As AcadSpline
+    Dim startTan(0 To 2) As Double
+    Dim endTan(0 To 2) As Double
+    Dim fitPoints(0 To 14) As Double
+    
+    startTan(0) = 0: startTan(1) = 0: startTan(2) = 0
+    
+    endTan(0) = 0: endTan(1) = 0: endTan(2) = 0
+    
+    fitPoints(0) = startX
+    fitPoints(1) = startY
+    fitPoints(2) = 0
+    fitPoints(3) = startX + (endX - startX) / 4
+    fitPoints(4) = startY + (endY - startY) / 4
+    fitPoints(5) = 0
+    fitPoints(6) = startX + (endX - startX) / 2
+    fitPoints(7) = startY + (endY - startY) / 2
+    fitPoints(8) = 0
+    fitPoints(9) = startX + 3 * (endX - startX) / 4
+    fitPoints(10) = startY + 3 * (endY - startY) / 4
+    fitPoints(11) = 0
+    fitPoints(12) = endX
+    fitPoints(13) = endY
+    fitPoints(14) = 0
+    
+    Set splineObj = ThisDrawing.ModelSpace.AddSpline(fitPoints, startTan, endTan)
+End Sub
+Public Sub AddLineKri2(startX As Double, startY As Double, endX As Double, endY As Double)
+    Dim splineObj As AcadSpline
+    Dim startTan(0 To 2) As Double
+    Dim endTan(0 To 2) As Double
+    Dim fitPoints(0 To 5) As Double
+    startTan(0) = 0: startTan(1) = 0: startTan(2) = 0
+    endTan(0) = 0: endTan(1) = 0: endTan(2) = 0
+    fitPoints(0) = startX: fitPoints(1) = startY: fitPoints(2) = 0
+    fitPoints(3) = endX: fitPoints(4) = endY: fitPoints(5) = 0
+    Set splineObj = ThisDrawing.ModelSpace.AddSpline(fitPoints, startTan, endTan)
+    End Sub
+    Public Sub AddLineKri5(startX As Double, startY As Double, endX As Double, endY As Double)
+    Dim splineObj As AcadSpline
+    Dim startTan(0 To 2) As Double
+    Dim endTan(0 To 2) As Double
+    Dim fitPoints(0 To 14) As Double
+    startTan(0) = 0: startTan(1) = 0: startTan(2) = 0
+    endTan(0) = 0: endTan(1) = 0: endTan(2) = 0
+    fitPoints(0) = startX
+    fitPoints(1) = startY
+    fitPoints(2) = 0
+    fitPoints(3) = startX + (endX - startX) / 4
+    fitPoints(4) = startY + (endY - startY) / 4
+    fitPoints(5) = 0
+    fitPoints(6) = startX + (endX - startX) / 2
+    fitPoints(7) = startY + (endY - startY) / 2
+    fitPoints(8) = 0
+    fitPoints(9) = startX + 3 * (endX - startX) / 4
+    fitPoints(10) = startY + 3 * (endY - startY) / 4
+    fitPoints(11) = 0
+    fitPoints(12) = endX
+    fitPoints(13) = endY
+    fitPoints(14) = 0
+    Set splineObj = ThisDrawing.ModelSpace.AddSpline(fitPoints, startTan, endTan)
+End Sub
+Public Sub Kombinizon(distan As Double)
+Dim obj As AcadObject
+    For Each obj In ThisDrawing.ModelSpace
+        obj.Delete
+    Next obj
+    
+    Dim first, firstY As Double
+    Dim firstX As Double: firstX = 0
+    
+    Dim second, secondY As Double
+    Dim secondX As Double: secondX = 0
+    
+    Dim third, thirdY As Double: third = 20
+    Dim thirdX As Double: thirdX = 0
+    
+    Dim fourth, fourthY As Double: fourth = 25
+    Dim fourthX As Double: fourthX = 0
+    
+    Dim fifth, fifthY As Double: fifth = 15
+    Dim fifthX As Double: fifthX = 0
+    
+    Dim sixth, sixthY As Double
+    Dim sixthX As Double: sixthX = 0
+    
+    Dim seventh, seventhY As Double: seventh = 22
+    Dim seventhX As Double: seventhX = 0
+    
+    Dim eighth, eighthY As Double: eighth = 17
+    Dim eighthX As Double: eighthX = 0
+    
+    Dim ninth, ninthY As Double: ninth = 20
+    Dim ninthX As Double: ninthX = 0
+    
+    Dim tenth, tenthY As Double: tenth = 23
+    Dim tenthX As Double: tenthX = 0
+    
+    Dim eleventh, eleventhY As Double: eleventh = 10
+    Dim eleventhX As Double: eleventhX = 0
+    
+    Dim twelfth, twelfthY As Double: twelfth = 13
+    Dim twelfthX As Double: twelfthX = 0
+    
+    Dim thirteen, thirteenY As Double: thirteen = 5
+    Dim thirteenX As Double: thirteenX = 0
+    
+    Dim fourteen, fourteenY As Double
+    Dim fourteenX As Double: fourteenX = 0
+    
+    Dim fifteen, fifteenY As Double: fifteen = 10
+    Dim fifteenX As Double: fifteenX = 0
+    
+    Dim location1(0 To 2) As Double
+    Dim dimLine1 As AcadDimAligned
+    
+    Dim startPoint(0 To 2) As Double
+    Dim endPoint(0 To 2) As Double
+      
+    first = 0
+    firstX = 0
+    firstY = 0
+    
+    second = ${calculatedMeasurements[20].toStringAsFixed(2)} + 15 'Стандарт
+    secondX = 0
+    secondY = secondY - second
+    AddLine firstX, firstY, secondX, secondY
+    
+    location1(0) = firstX - 15#: location1(1) = 0#: location1(2) = 0#
+    AddLine firstX, firstY, secondX, secondY
+    '-----------------------------------------------------------------------------
+    
+    location1(0) = 0#: location1(1) = 0#: location1(2) = 0#
+    
+    twelfth = 5
+    sixth = ${calculatedMeasurements[0].toStringAsFixed(2)}
+    seventh = ${calculatedMeasurements[10].toStringAsFixed(2)}
+    
+    
+    twelfthX = 0
+    twelfthY = twelfth * -1
+    
+    sixthX = sixth
+    sixthY = 0
+    
+    AddLineKri2 twelfthX, twelfthY, sixthX, sixthY
+    AddLineKri2 twelfthX, twelfthY - 3, sixthX, sixthY
+    
+    seventhX = seventh
+    seventhY = -2 '????????
+    
+    AddLine seventhX, seventhY, sixthX, sixthY
+    
+    
+    
+   '-----------------------------------------------------------------------------
+   
+   fifth = ${calculatedMeasurements[13].toStringAsFixed(2)}
+   ninth = ${calculatedMeasurements[1].toStringAsFixed(2)}
+   
+   fifthX = 0
+   fifthY = fifth * -1
+   
+   ninthX = ninth
+   ninthY = fifthY
+   location1(0) = 0: location1(1) = 0#: location1(2) = 0#
+    
+   AddLine fifthX, fifthY, ninthX, ninthY
+   
+   '----------------------------------------------------------------------------
+    
+    fifteen = fifth / 2
+    eleventh = ${calculatedMeasurements[11].toStringAsFixed(2)}
+    
+    
+    fifteenX = 0
+    fifteenY = fifteen * -1
+    
+    eleventhX = eleventh
+    eleventhY = fifteenY
+    
+    location1(0) = 0: location1(1) = 0#: location1(2) = 0#
+    
+    AddLine fifteenX, fifteenY, eleventhX, eleventhY
+    '-----------------------------------------------------------------------------
+    
+    third = ${calculatedMeasurements[20].toStringAsFixed(2)}
+    eighth = ${calculatedMeasurements[2].toStringAsFixed(2)}
+    
+    
+    thirdX = 0
+    thirdY = third * -1
+    
+    eighthX = eighth
+    eighthY = thirdY
+    
+    
+    location1(0) = 0: location1(1) = 0#: location1(2) = 0#
+     AddLine thirdX, thirdY, eighthX, eighthY
+    '-----------------------------------------------------------------------------
+    
+    fourth = 15
+    tenth = ${calculatedMeasurements[3].toStringAsFixed(2)}
+    
+    fourthX = 0
+    fourthY = thirdY - fourth
+    
+    tenthX = tenth
+    tenthY = fourthY
+    
+    location1(0) = 0: location1(1) = 0#: location1(2) = 0#
+    AddLine tenthX, tenthY, fourthX, fourthY
+    '-----------------------------------------------------------------------------
+    
+    
+    
+    
+    AddLineKri2 seventhX, seventhY, eleventhX, eleventhY
+    AddLineKri2 eleventhX, eleventhY, ninthX, ninthY
+    AddLineKri2 ninthX, ninthY, eighthX, eighthY
+    AddLineKri2 eighthX, eighthY, tenthX, tenthY
+
+    
+End Sub
+
+
+Public Sub Rucav(distan As Double)
+ Dim first, firstY As Double
+    Dim firstX As Double: firstX = 0
+    
+    Dim second, secondY As Double
+    Dim secondX As Double: secondX = 0
+    
+    Dim third, thirdY As Double: third = 20
+    Dim thirdX As Double: thirdX = 0
+    
+    Dim fourth, fourthY As Double: fourth = 25
+    Dim fourthX As Double: fourthX = 0
+    
+    Dim fifth, fifthY As Double
+    Dim fifthX As Double: fifthX = 0
+    
+    Dim sixth, sixthY As Double
+    Dim sixthX As Double: sixthX = 0
+    
+    Dim seventh, seventhY As Double
+    Dim seventhX As Double: seventhX = 0
+    
+    Dim eighth, eighthY As Double
+    Dim eighthX As Double: eighthX = 0
+    
+    Dim location1(0 To 2) As Double
+    Dim dimLine1 As AcadDimAligned
+    
+    Dim startPoint(0 To 2) As Double
+    Dim endPoint(0 To 2) As Double
+    
+    
+    Dim standart As Double: standart = 7
+    
+    first = 0
+    firstX = 0 + distan
+    firstY = standart
+    
+    second = ${calculatedMeasurements[16].toStringAsFixed(2)} - standart
+    secondX = 0 + distan
+    secondY = secondY - second
+    
+    AddLine firstX, firstY, secondX, secondY
+
+    AddLine firstX, firstY, secondX, secondY
+    '-----------------------------------------------------------------------------
+    third = 0
+    thirdX = 0 + distan
+    thirdY = 0
+    
+    fifth = ${calculatedMeasurements[22].toStringAsFixed(2)}
+    sixth = ${calculatedMeasurements[22].toStringAsFixed(2)}
+    
+    
+    fifthX = thirdX - fifth / 2
+    sixthX = thirdX + sixth / 2
+    
+    fifthY = thirdY
+    sixthY = thirdY
+   
+    
+    AddLine fifthX, fifthY, sixthX, sixthY
+    '-----------------------------------------------------------------------------
+        
+    seventh = ${calculatedMeasurements[8].toStringAsFixed(2)}
+    eighth = ${calculatedMeasurements[8].toStringAsFixed(2)}
+    
+    
+    seventhX = secondX - seventh / 2
+    eighthX = secondX + eighth / 2
+    
+    seventhY = secondY
+    eighthY = secondY
+  
+    
+    AddLine seventhX, seventhY, eighthX, eighthY
+    '-----------------------------------------------------------------------------
+    
+    
+    AddLineKri5 firstX, firstY, fifthX, fifthY
+    AddLineKri5 firstX, firstY, sixthX, sixthY
+    AddLineKri5 fifthX, fifthY, seventhX, seventhY
+    AddLineKri5 sixthX, sixthY, eighthX, eighthY
+    
+ End Sub
+Public Sub Losini(distan As Double)
+Dim obj As AcadObject
+   
+    Dim first, firstY As Double
+    Dim firstX As Double: firstX = 0
+    
+    Dim second, secondY As Double
+    Dim secondX As Double: secondX = 0
+    
+    Dim third, thirdY As Double
+    Dim thirdX As Double: thirdX = 0
+    
+    Dim fourth, fourthY As Double
+    Dim fourthX As Double: fourthX = 0
+    
+    Dim fifth, fifthY As Double
+    Dim fifthX As Double: fifthX = 0
+    
+    Dim sixth, sixthY As Double
+    Dim sixthX As Double: sixthX = 0
+    
+    Dim seventh, seventhY As Double
+    Dim seventhX As Double: seventhX = 0
+    
+    Dim eighth, eighthY As Double
+    Dim eighthX As Double: eighthX = 0
+    
+    Dim ninth, ninthY As Double
+    Dim ninthX As Double: ninthX = 0
+    
+    Dim tenth, tenthY As Double
+    Dim tenthX As Double: tenthX = 0
+    
+    Dim eleventh, eleventhY As Double
+    Dim eleventhX As Double: eleventhX = 0
+    
+    Dim twelfth, twelfthY As Double
+    Dim twelfthX As Double: twelfthX = 0
+    
+    Dim thirteen, thirteenY As Double: thirteen = 0
+    Dim thirteenX As Double: thirteenX = 0
+    
+    Dim fourteen, fourteenY As Double
+    Dim fourteenX As Double: fourteenX = 0
+    
+    
+    Dim location1(0 To 2) As Double
+    Dim dimLine1 As AcadDimAligned
+    
+    Dim startPoint(0 To 2) As Double
+    Dim endPoint(0 To 2) As Double
+      
+    first = 0
+    firstX = 0 + distan
+    firstY = 0
+    
+    second = ${calculatedMeasurements[14].toStringAsFixed(2)}
+    secondX = 0 + distan
+    secondY = secondY - second
+    AddLine firstX, firstY, secondX, secondY - 8
+    
+   
+    '-----------------------------------------------------------------------------
+
+    
+    
+    eleventh = ${calculatedMeasurements[2].toStringAsFixed(2)}
+    twelfth = ${calculatedMeasurements[2].toStringAsFixed(2)}
+    
+    eleventhX = firstX - eleventh / 2
+    twelfthX = firstX + twelfth / 2
+    
+    eleventhY = firstY
+    twelfthY = firstY
+  
+   
+   AddLine eleventhX, eleventhY, twelfthX, twelfthY
+    '-----------------------------------------------------------------------------
+    third = ${calculatedMeasurements[18].toStringAsFixed(2)}
+    thirdX = 0 + distan
+    thirdY = firstY - third
+    
+    
+    ninth = ${calculatedMeasurements[4].toStringAsFixed(2)}
+    tenth = ${calculatedMeasurements[4].toStringAsFixed(2)}
+    
+    ninthX = thirdX - ninth / 2
+    tenthX = thirdX + tenth / 2
+    
+    ninthY = thirdY
+    tenthY = thirdY
+   
+    
+   AddLine ninthX, ninthY, tenthX, tenthY
+    '-----------------------------------------------------------------------------
+    
+     fourth = ${calculatedMeasurements[15].toStringAsFixed(2)}
+    fourthX = 0 + distan
+    fourthY = secondY + second - fourth
+    
+    seventh = ${calculatedMeasurements[5].toStringAsFixed(2)} + 2
+    eighth = (${calculatedMeasurements[5].toStringAsFixed(2)} - 2) + distan * 2
+    
+    
+    seventhX = fourthX - seventh / 2
+    eighthX = eighthX + eighth / 2
+    
+    seventhY = fourthY
+    eighthY = fourthY
+    
+
+
+    AddLine seventhX, seventhY, eighthX, eighthY
+
+    '-----------------------------------------------------------------------------
+    
+    fifth = ${calculatedMeasurements[6].toStringAsFixed(2)}
+    sixth = ${calculatedMeasurements[6].toStringAsFixed(2)}
+    
+    
+    fifthX = (fifthX - fifth / 2) + distan
+    sixthX = (sixthX + sixth / 2) + distan
+    
+    fifthY = secondY
+    sixthY = secondY
+    
+    AddLine fifthX, fifthY, sixthX, sixthY
+     '-----------------------------------------------------------------------------
+    thirteen = ${calculatedMeasurements[7].toStringAsFixed(2)}
+    fourteen = ${calculatedMeasurements[7].toStringAsFixed(2)}
+    
+    
+    thirteenX = distan + (thirteenX - thirteen / 2)
+    fourteenX = distan + (fourteenX + fourteen / 2)
+    
+    thirteenY = secondY - 8
+    fourteenY = secondY - 8
+    
+    AddLine thirteenX, thirteenY, fourteenX, fourteenY
+     '-----------------------------------------------------------------------------
+
+    AddLineKri ninthX, ninthY, seventhX, seventhY
+    AddLineKri seventhX, seventhY, fifthX, fifthY
+    AddLineKri sixthX, sixthY, eighthX, eighthY
+    AddLineKri eighthX, eighthY, tenthX, tenthY
+    AddLine fifthX, fifthY, thirteenX, thirteenY
+    AddLine sixthX, sixthY, fourteenX, fourteenY
+    
+    
+ '-----------------------------------------------------------------------------
+
+   AddLineKri eleventhX, eleventhY, ninthX, ninthY
+     '-----------------------------------------------------------------------------
+   AddLine tenthX, tenthY, twelfthX, twelfthY
+
+End Sub
+
+Sub DrawCheckSquare()
+    Dim checkSquareSize As Double
+    checkSquareSize = 3
+
+    Dim topLeftX As Double: topLeftX = 5
+    Dim topLeftY As Double: topLeftY = -5
+    Dim bottomRightX As Double: bottomRightX = topLeftX + checkSquareSize
+    Dim bottomRightY As Double: bottomRightY = topLeftY - checkSquareSize
+
+    AddLine topLeftX, topLeftY, topLeftX, bottomRightY
+    AddLine topLeftX, bottomRightY, bottomRightX, bottomRightY
+    AddLine bottomRightX, bottomRightY, bottomRightX, topLeftY
+    AddLine bottomRightX, topLeftY, topLeftX, topLeftY
+End Sub
+
+              ''';
+        await fileBas.writeAsString(code);
+      }
+      else if (selectedAgeCategory == 'Девочка'){
+        final code = ''' 
+              Sub DrawSquareWithDimensions()
+Kombinizon (0)
+Losini (50)
+Rucav (100)
+DrawCheckSquare
+End Sub
+
+ Public Sub AddLine(startX As Double, startY As Double, endX As Double, endY As Double)
+ 
+   Dim startPoint(0 To 2) As Double
+   Dim endPoint(0 To 2) As Double
+        startPoint(0) = startX
+        startPoint(1) = startY
+        startPoint(2) = 0
+
+        endPoint(0) = endX
+        endPoint(1) = endY
+        endPoint(2) = 0
+
+        ThisDrawing.ModelSpace.AddLine startPoint, endPoint
+    End Sub
+
+Public Sub AddLineKri(startX As Double, startY As Double, endX As Double, endY As Double)
+    Dim splineObj As AcadSpline
+    Dim startTan(0 To 2) As Double
+    Dim endTan(0 To 2) As Double
+    Dim fitPoints(0 To 14) As Double
+    
+    startTan(0) = 0: startTan(1) = 0: startTan(2) = 0
+    
+    endTan(0) = 0: endTan(1) = 0: endTan(2) = 0
+    
+    fitPoints(0) = startX
+    fitPoints(1) = startY
+    fitPoints(2) = 0
+    fitPoints(3) = startX + (endX - startX) / 4
+    fitPoints(4) = startY + (endY - startY) / 4
+    fitPoints(5) = 0
+    fitPoints(6) = startX + (endX - startX) / 2
+    fitPoints(7) = startY + (endY - startY) / 2
+    fitPoints(8) = 0
+    fitPoints(9) = startX + 3 * (endX - startX) / 4
+    fitPoints(10) = startY + 3 * (endY - startY) / 4
+    fitPoints(11) = 0
+    fitPoints(12) = endX
+    fitPoints(13) = endY
+    fitPoints(14) = 0
+    
+    Set splineObj = ThisDrawing.ModelSpace.AddSpline(fitPoints, startTan, endTan)
+End Sub
+Public Sub AddLineKri2(startX As Double, startY As Double, endX As Double, endY As Double)
+    Dim splineObj As AcadSpline
+    Dim startTan(0 To 2) As Double
+    Dim endTan(0 To 2) As Double
+    Dim fitPoints(0 To 5) As Double
+    startTan(0) = 0: startTan(1) = 0: startTan(2) = 0
+    endTan(0) = 0: endTan(1) = 0: endTan(2) = 0
+    fitPoints(0) = startX: fitPoints(1) = startY: fitPoints(2) = 0
+    fitPoints(3) = endX: fitPoints(4) = endY: fitPoints(5) = 0
+    Set splineObj = ThisDrawing.ModelSpace.AddSpline(fitPoints, startTan, endTan)
+    End Sub
+    Public Sub AddLineKri5(startX As Double, startY As Double, endX As Double, endY As Double)
+    Dim splineObj As AcadSpline
+    Dim startTan(0 To 2) As Double
+    Dim endTan(0 To 2) As Double
+    Dim fitPoints(0 To 14) As Double
+    startTan(0) = 0: startTan(1) = 0: startTan(2) = 0
+    endTan(0) = 0: endTan(1) = 0: endTan(2) = 0
+    fitPoints(0) = startX
+    fitPoints(1) = startY
+    fitPoints(2) = 0
+    fitPoints(3) = startX + (endX - startX) / 4
+    fitPoints(4) = startY + (endY - startY) / 4
+    fitPoints(5) = 0
+    fitPoints(6) = startX + (endX - startX) / 2
+    fitPoints(7) = startY + (endY - startY) / 2
+    fitPoints(8) = 0
+    fitPoints(9) = startX + 3 * (endX - startX) / 4
+    fitPoints(10) = startY + 3 * (endY - startY) / 4
+    fitPoints(11) = 0
+    fitPoints(12) = endX
+    fitPoints(13) = endY
+    fitPoints(14) = 0
+    Set splineObj = ThisDrawing.ModelSpace.AddSpline(fitPoints, startTan, endTan)
+End Sub
+Public Sub Kombinizon(distan As Double)
+Dim obj As AcadObject
+    For Each obj In ThisDrawing.ModelSpace
+        obj.Delete
+    Next obj
+    
+    Dim first, firstY As Double
+    Dim firstX As Double: firstX = 0
+    
+    Dim second, secondY As Double
+    Dim secondX As Double: secondX = 0
+    
+    Dim third, thirdY As Double: third = 20
+    Dim thirdX As Double: thirdX = 0
+    
+    Dim fourth, fourthY As Double: fourth = 25
+    Dim fourthX As Double: fourthX = 0
+    
+    Dim fifth, fifthY As Double: fifth = 15
+    Dim fifthX As Double: fifthX = 0
+    
+    Dim sixth, sixthY As Double
+    Dim sixthX As Double: sixthX = 0
+    
+    Dim seventh, seventhY As Double: seventh = 22
+    Dim seventhX As Double: seventhX = 0
+    
+    Dim eighth, eighthY As Double: eighth = 17
+    Dim eighthX As Double: eighthX = 0
+    
+    Dim ninth, ninthY As Double: ninth = 20
+    Dim ninthX As Double: ninthX = 0
+    
+    Dim tenth, tenthY As Double: tenth = 23
+    Dim tenthX As Double: tenthX = 0
+    
+    Dim eleventh, eleventhY As Double: eleventh = 10
+    Dim eleventhX As Double: eleventhX = 0
+    
+    Dim twelfth, twelfthY As Double: twelfth = 13
+    Dim twelfthX As Double: twelfthX = 0
+    
+    Dim thirteen, thirteenY As Double: thirteen = 5
+    Dim thirteenX As Double: thirteenX = 0
+    
+    Dim fourteen, fourteenY As Double
+    Dim fourteenX As Double: fourteenX = 0
+    
+    Dim fifteen, fifteenY As Double: fifteen = 10
+    Dim fifteenX As Double: fifteenX = 0
+    
+    Dim location1(0 To 2) As Double
+    Dim dimLine1 As AcadDimAligned
+    
+    Dim startPoint(0 To 2) As Double
+    Dim endPoint(0 To 2) As Double
+      
+    first = 0
+    firstX = 0
+    firstY = 0
+    
+    second = ${calculatedMeasurements[20].toStringAsFixed(2)} + 15 'Стандарт
+    secondX = 0
+    secondY = secondY - second
+    AddLine firstX, firstY, secondX, secondY
+    
+    location1(0) = firstX - 15#: location1(1) = 0#: location1(2) = 0#
+    AddLine firstX, firstY, secondX, secondY
+    '-----------------------------------------------------------------------------
+    
+    location1(0) = 0#: location1(1) = 0#: location1(2) = 0#
+    
+    twelfth = 5
+    sixth = ${calculatedMeasurements[0].toStringAsFixed(2)}
+    seventh = ${calculatedMeasurements[10].toStringAsFixed(2)}
+    
+    
+    twelfthX = 0
+    twelfthY = twelfth * -1
+    
+    sixthX = sixth
+    sixthY = 0
+    
+    AddLineKri2 twelfthX, twelfthY, sixthX, sixthY
+    AddLineKri2 twelfthX, twelfthY - 3, sixthX, sixthY
+    
+    seventhX = seventh
+    seventhY = -3 '????????
+    
+    AddLine seventhX, seventhY, sixthX, sixthY
+    
+    
+    
+   '-----------------------------------------------------------------------------
+   
+   fifth = ${calculatedMeasurements[13].toStringAsFixed(2)}
+   ninth = ${calculatedMeasurements[1].toStringAsFixed(2)}
+   
+   fifthX = 0
+   fifthY = fifth * -1
+   
+   ninthX = ninth
+   ninthY = fifthY
+   location1(0) = 0: location1(1) = 0#: location1(2) = 0#
+    
+   AddLine fifthX, fifthY, ninthX, ninthY
+   
+   '----------------------------------------------------------------------------
+    
+    fifteen = fifth / 2
+    eleventh = ${calculatedMeasurements[11].toStringAsFixed(2)}
+    
+    
+    fifteenX = 0
+    fifteenY = fifteen * -1
+    
+    eleventhX = eleventh
+    eleventhY = fifteenY
+    
+    location1(0) = 0: location1(1) = 0#: location1(2) = 0#
+    
+    AddLine fifteenX, fifteenY, eleventhX, eleventhY
+    '-----------------------------------------------------------------------------
+    
+    third = ${calculatedMeasurements[20].toStringAsFixed(2)}
+    eighth = ${calculatedMeasurements[2].toStringAsFixed(2)}
+    
+    
+    thirdX = 0
+    thirdY = third * -1
+    
+    eighthX = eighth
+    eighthY = thirdY
+    
+    
+    location1(0) = 0: location1(1) = 0#: location1(2) = 0#
+     AddLine thirdX, thirdY, eighthX, eighthY
+    '-----------------------------------------------------------------------------
+    
+    fourth = 15
+    tenth = ${calculatedMeasurements[3].toStringAsFixed(2)}
+    
+    fourthX = 0
+    fourthY = thirdY - fourth
+    
+    tenthX = tenth
+    tenthY = fourthY
+    
+    location1(0) = 0: location1(1) = 0#: location1(2) = 0#
+    AddLine tenthX, tenthY, fourthX, fourthY
+    '-----------------------------------------------------------------------------
+    
+    
+    
+    
+    AddLineKri2 seventhX, seventhY, eleventhX, eleventhY
+    AddLineKri2 eleventhX, eleventhY, ninthX, ninthY
+    AddLineKri2 ninthX, ninthY, eighthX, eighthY
+    AddLineKri2 eighthX, eighthY, tenthX, tenthY
+
+    
+End Sub
+
+
+Public Sub Rucav(distan As Double)
+ Dim first, firstY As Double
+    Dim firstX As Double: firstX = 0
+    
+    Dim second, secondY As Double
+    Dim secondX As Double: secondX = 0
+    
+    Dim third, thirdY As Double: third = 20
+    Dim thirdX As Double: thirdX = 0
+    
+    Dim fourth, fourthY As Double: fourth = 25
+    Dim fourthX As Double: fourthX = 0
+    
+    Dim fifth, fifthY As Double
+    Dim fifthX As Double: fifthX = 0
+    
+    Dim sixth, sixthY As Double
+    Dim sixthX As Double: sixthX = 0
+    
+    Dim seventh, seventhY As Double
+    Dim seventhX As Double: seventhX = 0
+    
+    Dim eighth, eighthY As Double
+    Dim eighthX As Double: eighthX = 0
+    
+    Dim location1(0 To 2) As Double
+    Dim dimLine1 As AcadDimAligned
+    
+    Dim startPoint(0 To 2) As Double
+    Dim endPoint(0 To 2) As Double
+    
+    
+    Dim standart As Double: standart = 9
+    
+    first = 0
+    firstX = 0 + distan
+    firstY = standart
+    
+    second = ${calculatedMeasurements[16].toStringAsFixed(2)} - standart
+    secondX = 0 + distan
+    secondY = secondY - second
+    
+    AddLine firstX, firstY, secondX, secondY
+
+    AddLine firstX, firstY, secondX, secondY
+    '-----------------------------------------------------------------------------
+    third = 0
+    thirdX = 0 + distan
+    thirdY = 0
+    
+    fifth = ${calculatedMeasurements[22].toStringAsFixed(2)}
+    sixth = ${calculatedMeasurements[22].toStringAsFixed(2)}
+    
+    
+    fifthX = thirdX - fifth / 2
+    sixthX = thirdX + sixth / 2
+    
+    fifthY = thirdY
+    sixthY = thirdY
+   
+    
+    AddLine fifthX, fifthY, sixthX, sixthY
+    '-----------------------------------------------------------------------------
+        
+    seventh = ${calculatedMeasurements[8].toStringAsFixed(2)}
+    eighth = ${calculatedMeasurements[8].toStringAsFixed(2)}
+    
+    
+    seventhX = secondX - seventh / 2
+    eighthX = secondX + eighth / 2
+    
+    seventhY = secondY
+    eighthY = secondY
+  
+    
+    AddLine seventhX, seventhY, eighthX, eighthY
+    '-----------------------------------------------------------------------------
+    
+    
+    AddLineKri5 firstX, firstY, fifthX, fifthY
+    AddLineKri5 firstX, firstY, sixthX, sixthY
+    AddLineKri5 fifthX, fifthY, seventhX, seventhY
+    AddLineKri5 sixthX, sixthY, eighthX, eighthY
+    
+ End Sub
+Public Sub Losini(distan As Double)
+Dim obj As AcadObject
+   
+    Dim first, firstY As Double
+    Dim firstX As Double: firstX = 0
+    
+    Dim second, secondY As Double
+    Dim secondX As Double: secondX = 0
+    
+    Dim third, thirdY As Double
+    Dim thirdX As Double: thirdX = 0
+    
+    Dim fourth, fourthY As Double
+    Dim fourthX As Double: fourthX = 0
+    
+    Dim fifth, fifthY As Double
+    Dim fifthX As Double: fifthX = 0
+    
+    Dim sixth, sixthY As Double
+    Dim sixthX As Double: sixthX = 0
+    
+    Dim seventh, seventhY As Double
+    Dim seventhX As Double: seventhX = 0
+    
+    Dim eighth, eighthY As Double
+    Dim eighthX As Double: eighthX = 0
+    
+    Dim ninth, ninthY As Double
+    Dim ninthX As Double: ninthX = 0
+    
+    Dim tenth, tenthY As Double
+    Dim tenthX As Double: tenthX = 0
+    
+    Dim eleventh, eleventhY As Double
+    Dim eleventhX As Double: eleventhX = 0
+    
+    Dim twelfth, twelfthY As Double
+    Dim twelfthX As Double: twelfthX = 0
+    
+    Dim thirteen, thirteenY As Double: thirteen = 0
+    Dim thirteenX As Double: thirteenX = 0
+    
+    Dim fourteen, fourteenY As Double
+    Dim fourteenX As Double: fourteenX = 0
+    
+    
+    Dim location1(0 To 2) As Double
+    Dim dimLine1 As AcadDimAligned
+    
+    Dim startPoint(0 To 2) As Double
+    Dim endPoint(0 To 2) As Double
+      
+    first = 0
+    firstX = 0 + distan
+    firstY = 0
+    
+    second = ${calculatedMeasurements[14].toStringAsFixed(2)}
+    secondX = 0 + distan
+    secondY = secondY - second
+    AddLine firstX, firstY, secondX, secondY - 8
+    
+   
+    '-----------------------------------------------------------------------------
+
+    
+    
+    eleventh = ${calculatedMeasurements[2].toStringAsFixed(2)}
+    twelfth = ${calculatedMeasurements[2].toStringAsFixed(2)}
+    
+    eleventhX = firstX - eleventh / 2
+    twelfthX = firstX + twelfth / 2
+    
+    eleventhY = firstY
+    twelfthY = firstY
+  
+   
+   AddLine eleventhX, eleventhY, twelfthX, twelfthY
+    '-----------------------------------------------------------------------------
+    third = ${calculatedMeasurements[18].toStringAsFixed(2)}
+    thirdX = 0 + distan
+    thirdY = firstY - third
+    
+    
+    ninth = ${calculatedMeasurements[4].toStringAsFixed(2)}
+    tenth = ${calculatedMeasurements[4].toStringAsFixed(2)}
+    
+    ninthX = thirdX - ninth / 2
+    tenthX = thirdX + tenth / 2
+    
+    ninthY = thirdY
+    tenthY = thirdY
+   
+    
+   AddLine ninthX, ninthY, tenthX, tenthY
+    '-----------------------------------------------------------------------------
+    
+     fourth = ${calculatedMeasurements[15].toStringAsFixed(2)}
+    fourthX = 0 + distan
+    fourthY = secondY + second - fourth
+    
+    seventh = ${calculatedMeasurements[5].toStringAsFixed(2)} + 2
+    eighth = (${calculatedMeasurements[5].toStringAsFixed(2)} - 2) + distan * 2
+    
+    
+    seventhX = fourthX - seventh / 2
+    eighthX = eighthX + eighth / 2
+    
+    seventhY = fourthY
+    eighthY = fourthY
+    
+
+
+    AddLine seventhX, seventhY, eighthX, eighthY
+
+    '-----------------------------------------------------------------------------
+    
+    fifth = ${calculatedMeasurements[6].toStringAsFixed(2)}
+    sixth = ${calculatedMeasurements[6].toStringAsFixed(2)}
+    
+    
+    fifthX = (fifthX - fifth / 2) + distan
+    sixthX = (sixthX + sixth / 2) + distan
+    
+    fifthY = secondY
+    sixthY = secondY
+    
+    AddLine fifthX, fifthY, sixthX, sixthY
+     '-----------------------------------------------------------------------------
+    thirteen = ${calculatedMeasurements[7].toStringAsFixed(2)}
+    fourteen = ${calculatedMeasurements[7].toStringAsFixed(2)}
+    
+    
+    thirteenX = distan + (thirteenX - thirteen / 2)
+    fourteenX = distan + (fourteenX + fourteen / 2)
+    
+    thirteenY = secondY - 8
+    fourteenY = secondY - 8
+    
+    AddLine thirteenX, thirteenY, fourteenX, fourteenY
+     '-----------------------------------------------------------------------------
+
+    AddLineKri ninthX, ninthY, seventhX, seventhY
+    AddLineKri seventhX, seventhY, fifthX, fifthY
+    AddLineKri sixthX, sixthY, eighthX, eighthY
+    AddLineKri eighthX, eighthY, tenthX, tenthY
+    AddLine fifthX, fifthY, thirteenX, thirteenY
+    AddLine sixthX, sixthY, fourteenX, fourteenY
+    
+    
+ '-----------------------------------------------------------------------------
+
+   AddLineKri eleventhX, eleventhY, ninthX, ninthY
+     '-----------------------------------------------------------------------------
+   AddLine tenthX, tenthY, twelfthX, twelfthY
+
+End Sub
+
+Sub DrawCheckSquare()
+    Dim checkSquareSize As Double
+    checkSquareSize = 3
+
+    Dim topLeftX As Double: topLeftX = 5
+    Dim topLeftY As Double: topLeftY = -5
+    Dim bottomRightX As Double: bottomRightX = topLeftX + checkSquareSize
+    Dim bottomRightY As Double: bottomRightY = topLeftY - checkSquareSize
+
+    AddLine topLeftX, topLeftY, topLeftX, bottomRightY
+    AddLine topLeftX, bottomRightY, bottomRightX, bottomRightY
+    AddLine bottomRightX, bottomRightY, bottomRightX, topLeftY
+    AddLine bottomRightX, topLeftY, topLeftX, topLeftY
+End Sub
+
+              ''';
+        await fileBas.writeAsString(code);
+      }
+      else if (selectedAgeCategory == 'Юниорка'){
+        final code = ''' 
+              Sub DrawSquareWithDimensions()
+Kombinizon (0)
+Losini (50)
+Rucav (100)
+DrawCheckSquare
+End Sub
+
+ Public Sub AddLine(startX As Double, startY As Double, endX As Double, endY As Double)
+ 
+   Dim startPoint(0 To 2) As Double
+   Dim endPoint(0 To 2) As Double
+        startPoint(0) = startX
+        startPoint(1) = startY
+        startPoint(2) = 0
+
+        endPoint(0) = endX
+        endPoint(1) = endY
+        endPoint(2) = 0
+
+        ThisDrawing.ModelSpace.AddLine startPoint, endPoint
+    End Sub
+
+Public Sub AddLineKri(startX As Double, startY As Double, endX As Double, endY As Double)
+    Dim splineObj As AcadSpline
+    Dim startTan(0 To 2) As Double
+    Dim endTan(0 To 2) As Double
+    Dim fitPoints(0 To 14) As Double
+    
+    startTan(0) = 0: startTan(1) = 0: startTan(2) = 0
+    
+    endTan(0) = 0: endTan(1) = 0: endTan(2) = 0
+    
+    fitPoints(0) = startX
+    fitPoints(1) = startY
+    fitPoints(2) = 0
+    fitPoints(3) = startX + (endX - startX) / 4
+    fitPoints(4) = startY + (endY - startY) / 4
+    fitPoints(5) = 0
+    fitPoints(6) = startX + (endX - startX) / 2
+    fitPoints(7) = startY + (endY - startY) / 2
+    fitPoints(8) = 0
+    fitPoints(9) = startX + 3 * (endX - startX) / 4
+    fitPoints(10) = startY + 3 * (endY - startY) / 4
+    fitPoints(11) = 0
+    fitPoints(12) = endX
+    fitPoints(13) = endY
+    fitPoints(14) = 0
+    
+    Set splineObj = ThisDrawing.ModelSpace.AddSpline(fitPoints, startTan, endTan)
+End Sub
+Public Sub AddLineKri2(startX As Double, startY As Double, endX As Double, endY As Double)
+    Dim splineObj As AcadSpline
+    Dim startTan(0 To 2) As Double
+    Dim endTan(0 To 2) As Double
+    Dim fitPoints(0 To 5) As Double
+    startTan(0) = 0: startTan(1) = 0: startTan(2) = 0
+    endTan(0) = 0: endTan(1) = 0: endTan(2) = 0
+    fitPoints(0) = startX: fitPoints(1) = startY: fitPoints(2) = 0
+    fitPoints(3) = endX: fitPoints(4) = endY: fitPoints(5) = 0
+    Set splineObj = ThisDrawing.ModelSpace.AddSpline(fitPoints, startTan, endTan)
+    End Sub
+    Public Sub AddLineKri5(startX As Double, startY As Double, endX As Double, endY As Double)
+    Dim splineObj As AcadSpline
+    Dim startTan(0 To 2) As Double
+    Dim endTan(0 To 2) As Double
+    Dim fitPoints(0 To 14) As Double
+    startTan(0) = 0: startTan(1) = 0: startTan(2) = 0
+    endTan(0) = 0: endTan(1) = 0: endTan(2) = 0
+    fitPoints(0) = startX
+    fitPoints(1) = startY
+    fitPoints(2) = 0
+    fitPoints(3) = startX + (endX - startX) / 4
+    fitPoints(4) = startY + (endY - startY) / 4
+    fitPoints(5) = 0
+    fitPoints(6) = startX + (endX - startX) / 2
+    fitPoints(7) = startY + (endY - startY) / 2
+    fitPoints(8) = 0
+    fitPoints(9) = startX + 3 * (endX - startX) / 4
+    fitPoints(10) = startY + 3 * (endY - startY) / 4
+    fitPoints(11) = 0
+    fitPoints(12) = endX
+    fitPoints(13) = endY
+    fitPoints(14) = 0
+    Set splineObj = ThisDrawing.ModelSpace.AddSpline(fitPoints, startTan, endTan)
+End Sub
+Public Sub Kombinizon(distan As Double)
+Dim obj As AcadObject
+    For Each obj In ThisDrawing.ModelSpace
+        obj.Delete
+    Next obj
+    
+    Dim first, firstY As Double
+    Dim firstX As Double: firstX = 0
+    
+    Dim second, secondY As Double
+    Dim secondX As Double: secondX = 0
+    
+    Dim third, thirdY As Double: third = 20
+    Dim thirdX As Double: thirdX = 0
+    
+    Dim fourth, fourthY As Double: fourth = 25
+    Dim fourthX As Double: fourthX = 0
+    
+    Dim fifth, fifthY As Double: fifth = 15
+    Dim fifthX As Double: fifthX = 0
+    
+    Dim sixth, sixthY As Double
+    Dim sixthX As Double: sixthX = 0
+    
+    Dim seventh, seventhY As Double: seventh = 22
+    Dim seventhX As Double: seventhX = 0
+    
+    Dim eighth, eighthY As Double: eighth = 17
+    Dim eighthX As Double: eighthX = 0
+    
+    Dim ninth, ninthY As Double: ninth = 20
+    Dim ninthX As Double: ninthX = 0
+    
+    Dim tenth, tenthY As Double: tenth = 23
+    Dim tenthX As Double: tenthX = 0
+    
+    Dim eleventh, eleventhY As Double: eleventh = 10
+    Dim eleventhX As Double: eleventhX = 0
+    
+    Dim twelfth, twelfthY As Double: twelfth = 13
+    Dim twelfthX As Double: twelfthX = 0
+    
+    Dim thirteen, thirteenY As Double: thirteen = 5
+    Dim thirteenX As Double: thirteenX = 0
+    
+    Dim fourteen, fourteenY As Double
+    Dim fourteenX As Double: fourteenX = 0
+    
+    Dim fifteen, fifteenY As Double: fifteen = 10
+    Dim fifteenX As Double: fifteenX = 0
+    
+    Dim location1(0 To 2) As Double
+    Dim dimLine1 As AcadDimAligned
+    
+    Dim startPoint(0 To 2) As Double
+    Dim endPoint(0 To 2) As Double
+      
+    first = 0
+    firstX = 0
+    firstY = 0
+    
+    second = ${calculatedMeasurements[20].toStringAsFixed(2)} + 15 'Стандарт
+    secondX = 0
+    secondY = secondY - second
+    AddLine firstX, firstY, secondX, secondY
+    
+    location1(0) = firstX - 15#: location1(1) = 0#: location1(2) = 0#
+    AddLine firstX, firstY, secondX, secondY
+    '-----------------------------------------------------------------------------
+    
+    location1(0) = 0#: location1(1) = 0#: location1(2) = 0#
+    
+    twelfth = 5
+    sixth = ${calculatedMeasurements[0].toStringAsFixed(2)}
+    seventh = ${calculatedMeasurements[10].toStringAsFixed(2)}
+    
+    
+    twelfthX = 0
+    twelfthY = twelfth * -1
+    
+    sixthX = sixth
+    sixthY = 0
+    
+    AddLineKri2 twelfthX, twelfthY, sixthX, sixthY
+    AddLineKri2 twelfthX, twelfthY - 3, sixthX, sixthY
+    
+    seventhX = seventh
+    seventhY = -3 '????????
+    
+    AddLine seventhX, seventhY, sixthX, sixthY
+    
+    
+    
+   '-----------------------------------------------------------------------------
+   
+   fifth = ${calculatedMeasurements[13].toStringAsFixed(2)}
+   ninth = ${calculatedMeasurements[1].toStringAsFixed(2)}
+   
+   fifthX = 0
+   fifthY = fifth * -1
+   
+   ninthX = ninth
+   ninthY = fifthY
+   location1(0) = 0: location1(1) = 0#: location1(2) = 0#
+    
+   AddLine fifthX, fifthY, ninthX, ninthY
+   
+   '----------------------------------------------------------------------------
+    
+    fifteen = fifth / 2
+    eleventh = ${calculatedMeasurements[11].toStringAsFixed(2)}
+    
+    
+    fifteenX = 0
+    fifteenY = fifteen * -1
+    
+    eleventhX = eleventh
+    eleventhY = fifteenY
+    
+    location1(0) = 0: location1(1) = 0#: location1(2) = 0#
+    
+    AddLine fifteenX, fifteenY, eleventhX, eleventhY
+    '-----------------------------------------------------------------------------
+    
+    third = ${calculatedMeasurements[20].toStringAsFixed(2)}
+    eighth = ${calculatedMeasurements[2].toStringAsFixed(2)}
+    
+    
+    thirdX = 0
+    thirdY = third * -1
+    
+    eighthX = eighth
+    eighthY = thirdY
+    
+    
+    location1(0) = 0: location1(1) = 0#: location1(2) = 0#
+     AddLine thirdX, thirdY, eighthX, eighthY
+    '-----------------------------------------------------------------------------
+    
+    fourth = 15
+    tenth = ${calculatedMeasurements[3].toStringAsFixed(2)}
+    
+    fourthX = 0
+    fourthY = thirdY - fourth
+    
+    tenthX = tenth
+    tenthY = fourthY
+    
+    location1(0) = 0: location1(1) = 0#: location1(2) = 0#
+    AddLine tenthX, tenthY, fourthX, fourthY
+    '-----------------------------------------------------------------------------
+    
+    
+    
+    
+    AddLineKri2 seventhX, seventhY, eleventhX, eleventhY
+    AddLineKri2 eleventhX, eleventhY, ninthX, ninthY
+    AddLineKri2 ninthX, ninthY, eighthX, eighthY
+    AddLineKri2 eighthX, eighthY, tenthX, tenthY
+
+    
+End Sub
+
+
+Public Sub Rucav(distan As Double)
+ Dim first, firstY As Double
+    Dim firstX As Double: firstX = 0
+    
+    Dim second, secondY As Double
+    Dim secondX As Double: secondX = 0
+    
+    Dim third, thirdY As Double: third = 20
+    Dim thirdX As Double: thirdX = 0
+    
+    Dim fourth, fourthY As Double: fourth = 25
+    Dim fourthX As Double: fourthX = 0
+    
+    Dim fifth, fifthY As Double
+    Dim fifthX As Double: fifthX = 0
+    
+    Dim sixth, sixthY As Double
+    Dim sixthX As Double: sixthX = 0
+    
+    Dim seventh, seventhY As Double
+    Dim seventhX As Double: seventhX = 0
+    
+    Dim eighth, eighthY As Double
+    Dim eighthX As Double: eighthX = 0
+    
+    Dim location1(0 To 2) As Double
+    Dim dimLine1 As AcadDimAligned
+    
+    Dim startPoint(0 To 2) As Double
+    Dim endPoint(0 To 2) As Double
+    
+    
+    Dim standart As Double: standart = 11
+    
+    first = 0
+    firstX = 0 + distan
+    firstY = standart
+    
+    second = ${calculatedMeasurements[16].toStringAsFixed(2)} - standart
+    secondX = 0 + distan
+    secondY = secondY - second
+    
+    AddLine firstX, firstY, secondX, secondY
+
+    AddLine firstX, firstY, secondX, secondY
+    '-----------------------------------------------------------------------------
+    third = 0
+    thirdX = 0 + distan
+    thirdY = 0
+    
+    fifth = ${calculatedMeasurements[22].toStringAsFixed(2)}
+    sixth = ${calculatedMeasurements[22].toStringAsFixed(2)}
+    
+    
+    fifthX = thirdX - fifth / 2
+    sixthX = thirdX + sixth / 2
+    
+    fifthY = thirdY
+    sixthY = thirdY
+   
+    
+    AddLine fifthX, fifthY, sixthX, sixthY
+    '-----------------------------------------------------------------------------
+        
+    seventh = ${calculatedMeasurements[8].toStringAsFixed(2)}
+    eighth = ${calculatedMeasurements[8].toStringAsFixed(2)}
+    
+    
+    seventhX = secondX - seventh / 2
+    eighthX = secondX + eighth / 2
+    
+    seventhY = secondY
+    eighthY = secondY
+  
+    
+    AddLine seventhX, seventhY, eighthX, eighthY
+    '-----------------------------------------------------------------------------
+    
+    
+    AddLineKri5 firstX, firstY, fifthX, fifthY
+    AddLineKri5 firstX, firstY, sixthX, sixthY
+    AddLineKri5 fifthX, fifthY, seventhX, seventhY
+    AddLineKri5 sixthX, sixthY, eighthX, eighthY
+    
+ End Sub
+Public Sub Losini(distan As Double)
+Dim obj As AcadObject
+   
+    Dim first, firstY As Double
+    Dim firstX As Double: firstX = 0
+    
+    Dim second, secondY As Double
+    Dim secondX As Double: secondX = 0
+    
+    Dim third, thirdY As Double
+    Dim thirdX As Double: thirdX = 0
+    
+    Dim fourth, fourthY As Double
+    Dim fourthX As Double: fourthX = 0
+    
+    Dim fifth, fifthY As Double
+    Dim fifthX As Double: fifthX = 0
+    
+    Dim sixth, sixthY As Double
+    Dim sixthX As Double: sixthX = 0
+    
+    Dim seventh, seventhY As Double
+    Dim seventhX As Double: seventhX = 0
+    
+    Dim eighth, eighthY As Double
+    Dim eighthX As Double: eighthX = 0
+    
+    Dim ninth, ninthY As Double
+    Dim ninthX As Double: ninthX = 0
+    
+    Dim tenth, tenthY As Double
+    Dim tenthX As Double: tenthX = 0
+    
+    Dim eleventh, eleventhY As Double
+    Dim eleventhX As Double: eleventhX = 0
+    
+    Dim twelfth, twelfthY As Double
+    Dim twelfthX As Double: twelfthX = 0
+    
+    Dim thirteen, thirteenY As Double: thirteen = 0
+    Dim thirteenX As Double: thirteenX = 0
+    
+    Dim fourteen, fourteenY As Double
+    Dim fourteenX As Double: fourteenX = 0
+    
+    
+    Dim location1(0 To 2) As Double
+    Dim dimLine1 As AcadDimAligned
+    
+    Dim startPoint(0 To 2) As Double
+    Dim endPoint(0 To 2) As Double
+      
+    first = 0
+    firstX = 0 + distan
+    firstY = 0
+    
+    second = ${calculatedMeasurements[14].toStringAsFixed(2)}
+    secondX = 0 + distan
+    secondY = secondY - second
+    AddLine firstX, firstY, secondX, secondY - 8
+    
+   
+    '-----------------------------------------------------------------------------
+
+    
+    
+    eleventh = ${calculatedMeasurements[2].toStringAsFixed(2)}
+    twelfth = ${calculatedMeasurements[2].toStringAsFixed(2)}
+    
+    eleventhX = firstX - eleventh / 2
+    twelfthX = firstX + twelfth / 2
+    
+    eleventhY = firstY
+    twelfthY = firstY
+  
+   
+   AddLine eleventhX, eleventhY, twelfthX, twelfthY
+    '-----------------------------------------------------------------------------
+    third = ${calculatedMeasurements[18].toStringAsFixed(2)}
+    thirdX = 0 + distan
+    thirdY = firstY - third
+    
+    
+    ninth = ${calculatedMeasurements[4].toStringAsFixed(2)}
+    tenth = ${calculatedMeasurements[4].toStringAsFixed(2)}
+    
+    ninthX = thirdX - ninth / 2
+    tenthX = thirdX + tenth / 2
+    
+    ninthY = thirdY
+    tenthY = thirdY
+   
+    
+   AddLine ninthX, ninthY, tenthX, tenthY
+    '-----------------------------------------------------------------------------
+    
+     fourth = ${calculatedMeasurements[15].toStringAsFixed(2)}
+    fourthX = 0 + distan
+    fourthY = secondY + second - fourth
+    
+    seventh = ${calculatedMeasurements[5].toStringAsFixed(2)} + 2
+    eighth = (${calculatedMeasurements[5].toStringAsFixed(2)} - 2) + distan * 2
+    
+    
+    seventhX = fourthX - seventh / 2
+    eighthX = eighthX + eighth / 2
+    
+    seventhY = fourthY
+    eighthY = fourthY
+    
+
+
+    AddLine seventhX, seventhY, eighthX, eighthY
+
+    '-----------------------------------------------------------------------------
+    
+    fifth = ${calculatedMeasurements[6].toStringAsFixed(2)}
+    sixth = ${calculatedMeasurements[6].toStringAsFixed(2)}
+    
+    
+    fifthX = (fifthX - fifth / 2) + distan
+    sixthX = (sixthX + sixth / 2) + distan
+    
+    fifthY = secondY
+    sixthY = secondY
+    
+    AddLine fifthX, fifthY, sixthX, sixthY
+     '-----------------------------------------------------------------------------
+    thirteen = ${calculatedMeasurements[7].toStringAsFixed(2)}
+    fourteen = ${calculatedMeasurements[7].toStringAsFixed(2)}
+    
+    
+    thirteenX = distan + (thirteenX - thirteen / 2)
+    fourteenX = distan + (fourteenX + fourteen / 2)
+    
+    thirteenY = secondY - 8
+    fourteenY = secondY - 8
+    
+    AddLine thirteenX, thirteenY, fourteenX, fourteenY
+     '-----------------------------------------------------------------------------
+
+    AddLineKri ninthX, ninthY, seventhX, seventhY
+    AddLineKri seventhX, seventhY, fifthX, fifthY
+    AddLineKri sixthX, sixthY, eighthX, eighthY
+    AddLineKri eighthX, eighthY, tenthX, tenthY
+    AddLine fifthX, fifthY, thirteenX, thirteenY
+    AddLine sixthX, sixthY, fourteenX, fourteenY
+    
+    
+ '-----------------------------------------------------------------------------
+
+   AddLineKri eleventhX, eleventhY, ninthX, ninthY
+     '-----------------------------------------------------------------------------
+   AddLine tenthX, tenthY, twelfthX, twelfthY
+
+End Sub
+
+Sub DrawCheckSquare()
+    Dim checkSquareSize As Double
+    checkSquareSize = 3
+
+    Dim topLeftX As Double: topLeftX = 5
+    Dim topLeftY As Double: topLeftY = -5
+    Dim bottomRightX As Double: bottomRightX = topLeftX + checkSquareSize
+    Dim bottomRightY As Double: bottomRightY = topLeftY - checkSquareSize
+
+    AddLine topLeftX, topLeftY, topLeftX, bottomRightY
+    AddLine topLeftX, bottomRightY, bottomRightX, bottomRightY
+    AddLine bottomRightX, bottomRightY, bottomRightX, topLeftY
+    AddLine bottomRightX, topLeftY, topLeftX, topLeftY
+End Sub
+
+              ''';
+        await fileBas.writeAsString(code);
+      }
     } else if (selectedClothingType == 'Купальник') {
-      if (selectedAgeCategory == 'Малыш'){
-      final code = ''' 
+      if (selectedAgeCategory == 'Малыш') {
+        final code = ''' 
 Sub DrawSquareWithDimensions()
 Kupalnik
 Rucav
@@ -728,10 +2265,9 @@ Sub DrawCheckSquare()
 End Sub
 
  ''';
-       await fileBas.writeAsString(code);
-      }
-      else if (selectedAgeCategory == 'Девочка'){
-      final code = ''' 
+        await fileBas.writeAsString(code);
+      } else if (selectedAgeCategory == 'Девочка') {
+        final code = ''' 
 Sub DrawSquareWithDimensions()
 Kupalnik
 Rucav
@@ -1122,10 +2658,9 @@ Sub DrawCheckSquare()
     AddLine bottomRightX, topLeftY, topLeftX, topLeftY
 End Sub
  ''';
-       await fileBas.writeAsString(code);
-      }
-      else if (selectedAgeCategory == 'Юниорка'){
-      final code = ''' 
+        await fileBas.writeAsString(code);
+      } else if (selectedAgeCategory == 'Юниорка') {
+        final code = ''' 
 Sub DrawSquareWithDimensions()
 Kupalnik
 Rucav
@@ -1516,7 +3051,7 @@ Sub DrawCheckSquare()
     AddLine bottomRightX, topLeftY, topLeftX, topLeftY
 End Sub
  ''';
-       await fileBas.writeAsString(code);
+        await fileBas.writeAsString(code);
       }
     }
 
