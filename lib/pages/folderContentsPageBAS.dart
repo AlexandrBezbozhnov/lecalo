@@ -208,7 +208,7 @@ Future<void> _downloadFile(String filePath) async {
                           ),
                           TextButton(
                             child: Text(
-                              "Копировать файл",
+                              "Скачать файл",
                             ),
                             onPressed: () {
                               Navigator.of(context).pop();
