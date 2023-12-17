@@ -50,11 +50,14 @@ Future<void> _downloadFile(String filePath) async {
 
       final downloadsDirectory = await getDownloadsDirectory();
       if (downloadsDirectory != null) {
-        final file = File('${downloadsDirectory.path}/$fileName');
+        final file = File('/storage/emulated/0/Download/$fileName');
         await file.writeAsBytes(bytes);
 
         // Show a message or perform actions after successful download
         print('File downloaded to ${file.path}');
+        ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Фаил успешно загружен')),
+      );
       } else {
         // Handle the case where downloadsDirectory is null
         print('Unable to access downloads directory');
