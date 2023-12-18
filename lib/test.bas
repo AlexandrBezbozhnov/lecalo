@@ -1,3 +1,5 @@
+flutter build apk --build-name=2.6 --build-number=17
+
 
 Sub DrawSquareWithDimensions()
 Kupalnik

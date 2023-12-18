@@ -643,8 +643,8 @@ Public Sub Rucav(distan As Double)
     sixth = ${calculatedMeasurements[22].toStringAsFixed(2)}
     
     
-    fifthX = thirdX - fifth / 2
-    sixthX = thirdX + sixth / 2
+    fifthX = thirdX - fifth 
+    sixthX = thirdX + sixth 
     
     fifthY = thirdY
     sixthY = thirdY
@@ -657,8 +657,8 @@ Public Sub Rucav(distan As Double)
     eighth = ${calculatedMeasurements[8].toStringAsFixed(2)}
     
     
-    seventhX = secondX - seventh / 2
-    eighthX = secondX + eighth / 2
+    seventhX = secondX - seventh 
+    eighthX = secondX + eighth 
     
     seventhY = secondY
     eighthY = secondY
@@ -743,8 +743,8 @@ Dim obj As AcadObject
     eleventh = ${calculatedMeasurements[2].toStringAsFixed(2)}
     twelfth = ${calculatedMeasurements[2].toStringAsFixed(2)}
     
-    eleventhX = firstX - eleventh / 2
-    twelfthX = firstX + twelfth / 2
+    eleventhX = firstX - eleventh 
+    twelfthX = firstX + twelfth 
     
     eleventhY = firstY
     twelfthY = firstY
@@ -757,11 +757,11 @@ Dim obj As AcadObject
     thirdY = firstY - third
     
     
-    ninth = ${calculatedMeasurements[4].toStringAsFixed(2)}
-    tenth = ${calculatedMeasurements[4].toStringAsFixed(2)}
+    ninth = ${calculatedMeasurements[4].toStringAsFixed(2)} + 2
+    tenth = ${calculatedMeasurements[4].toStringAsFixed(2)} - 2
     
-    ninthX = thirdX - ninth / 2
-    tenthX = thirdX + tenth / 2
+    ninthX = thirdX - ninth 
+    tenthX = thirdX + tenth 
     
     ninthY = thirdY
     tenthY = thirdY
@@ -774,12 +774,12 @@ Dim obj As AcadObject
     fourthX = 0 + distan
     fourthY = secondY + second - fourth
     
-    seventh = ${calculatedMeasurements[5].toStringAsFixed(2)} + 2
-    eighth = (${calculatedMeasurements[5].toStringAsFixed(2)} - 2) + distan * 2
+    seventh = ${calculatedMeasurements[5].toStringAsFixed(2)}
+    eighth = ${calculatedMeasurements[5].toStringAsFixed(2)} + distan
     
     
-    seventhX = fourthX - seventh / 2
-    eighthX = eighthX + eighth / 2
+    seventhX = fourthX - seventh 
+    eighthX = eighthX + eighth 
     
     seventhY = fourthY
     eighthY = fourthY
@@ -794,8 +794,8 @@ Dim obj As AcadObject
     sixth = ${calculatedMeasurements[6].toStringAsFixed(2)}
     
     
-    fifthX = (fifthX - fifth / 2) + distan
-    sixthX = (sixthX + sixth / 2) + distan
+    fifthX = (fifthX - fifth ) + distan
+    sixthX = (sixthX + sixth ) + distan
     
     fifthY = secondY
     sixthY = secondY
@@ -806,8 +806,8 @@ Dim obj As AcadObject
     fourteen = ${calculatedMeasurements[7].toStringAsFixed(2)}
     
     
-    thirteenX = distan + (thirteenX - thirteen / 2)
-    fourteenX = distan + (fourteenX + fourteen / 2)
+    thirteenX = distan + (thirteenX - thirteen )
+    fourteenX = distan + (fourteenX + fourteen )
     
     thirteenY = secondY - 8
     fourteenY = secondY - 8
@@ -1154,8 +1154,8 @@ Public Sub Rucav(distan As Double)
     sixth = ${calculatedMeasurements[22].toStringAsFixed(2)}
     
     
-    fifthX = thirdX - fifth / 2
-    sixthX = thirdX + sixth / 2
+    fifthX = thirdX - fifth 
+    sixthX = thirdX + sixth 
     
     fifthY = thirdY
     sixthY = thirdY
@@ -1168,8 +1168,8 @@ Public Sub Rucav(distan As Double)
     eighth = ${calculatedMeasurements[8].toStringAsFixed(2)}
     
     
-    seventhX = secondX - seventh / 2
-    eighthX = secondX + eighth / 2
+    seventhX = secondX - seventh 
+    eighthX = secondX + eighth 
     
     seventhY = secondY
     eighthY = secondY
@@ -1254,8 +1254,8 @@ Dim obj As AcadObject
     eleventh = ${calculatedMeasurements[2].toStringAsFixed(2)}
     twelfth = ${calculatedMeasurements[2].toStringAsFixed(2)}
     
-    eleventhX = firstX - eleventh / 2
-    twelfthX = firstX + twelfth / 2
+    eleventhX = firstX - eleventh 
+    twelfthX = firstX + twelfth 
     
     eleventhY = firstY
     twelfthY = firstY
@@ -1268,11 +1268,11 @@ Dim obj As AcadObject
     thirdY = firstY - third
     
     
-    ninth = ${calculatedMeasurements[4].toStringAsFixed(2)}
-    tenth = ${calculatedMeasurements[4].toStringAsFixed(2)}
+    ninth = ${calculatedMeasurements[4].toStringAsFixed(2)} + 2
+    tenth = ${calculatedMeasurements[4].toStringAsFixed(2)} - 2
     
-    ninthX = thirdX - ninth / 2
-    tenthX = thirdX + tenth / 2
+    ninthX = thirdX - ninth 
+    tenthX = thirdX + tenth 
     
     ninthY = thirdY
     tenthY = thirdY
@@ -1285,12 +1285,12 @@ Dim obj As AcadObject
     fourthX = 0 + distan
     fourthY = secondY + second - fourth
     
-    seventh = ${calculatedMeasurements[5].toStringAsFixed(2)} + 2
-    eighth = (${calculatedMeasurements[5].toStringAsFixed(2)} - 2) + distan * 2
+    seventh = ${calculatedMeasurements[5].toStringAsFixed(2)}
+    eighth = ${calculatedMeasurements[5].toStringAsFixed(2)} + distan
     
     
-    seventhX = fourthX - seventh / 2
-    eighthX = eighthX + eighth / 2
+    seventhX = fourthX - seventh 
+    eighthX = eighthX + eighth 
     
     seventhY = fourthY
     eighthY = fourthY
@@ -1305,8 +1305,8 @@ Dim obj As AcadObject
     sixth = ${calculatedMeasurements[6].toStringAsFixed(2)}
     
     
-    fifthX = (fifthX - fifth / 2) + distan
-    sixthX = (sixthX + sixth / 2) + distan
+    fifthX = (fifthX - fifth ) + distan
+    sixthX = (sixthX + sixth ) + distan
     
     fifthY = secondY
     sixthY = secondY
@@ -1317,8 +1317,8 @@ Dim obj As AcadObject
     fourteen = ${calculatedMeasurements[7].toStringAsFixed(2)}
     
     
-    thirteenX = distan + (thirteenX - thirteen / 2)
-    fourteenX = distan + (fourteenX + fourteen / 2)
+    thirteenX = distan + (thirteenX - thirteen )
+    fourteenX = distan + (fourteenX + fourteen )
     
     thirteenY = secondY - 8
     fourteenY = secondY - 8
@@ -1665,8 +1665,8 @@ Public Sub Rucav(distan As Double)
     sixth = ${calculatedMeasurements[22].toStringAsFixed(2)}
     
     
-    fifthX = thirdX - fifth / 2
-    sixthX = thirdX + sixth / 2
+    fifthX = thirdX - fifth 
+    sixthX = thirdX + sixth 
     
     fifthY = thirdY
     sixthY = thirdY
@@ -1679,8 +1679,8 @@ Public Sub Rucav(distan As Double)
     eighth = ${calculatedMeasurements[8].toStringAsFixed(2)}
     
     
-    seventhX = secondX - seventh / 2
-    eighthX = secondX + eighth / 2
+    seventhX = secondX - seventh 
+    eighthX = secondX + eighth 
     
     seventhY = secondY
     eighthY = secondY
@@ -1765,8 +1765,8 @@ Dim obj As AcadObject
     eleventh = ${calculatedMeasurements[2].toStringAsFixed(2)}
     twelfth = ${calculatedMeasurements[2].toStringAsFixed(2)}
     
-    eleventhX = firstX - eleventh / 2
-    twelfthX = firstX + twelfth / 2
+    eleventhX = firstX - eleventh 
+    twelfthX = firstX + twelfth 
     
     eleventhY = firstY
     twelfthY = firstY
@@ -1779,11 +1779,11 @@ Dim obj As AcadObject
     thirdY = firstY - third
     
     
-    ninth = ${calculatedMeasurements[4].toStringAsFixed(2)}
-    tenth = ${calculatedMeasurements[4].toStringAsFixed(2)}
+    ninth = ${calculatedMeasurements[4].toStringAsFixed(2)} + 2
+    tenth = ${calculatedMeasurements[4].toStringAsFixed(2)} - 2
     
-    ninthX = thirdX - ninth / 2
-    tenthX = thirdX + tenth / 2
+    ninthX = thirdX - ninth 
+    tenthX = thirdX + tenth 
     
     ninthY = thirdY
     tenthY = thirdY
@@ -1796,12 +1796,12 @@ Dim obj As AcadObject
     fourthX = 0 + distan
     fourthY = secondY + second - fourth
     
-    seventh = ${calculatedMeasurements[5].toStringAsFixed(2)} + 2
-    eighth = (${calculatedMeasurements[5].toStringAsFixed(2)} - 2) + distan * 2
+    seventh = ${calculatedMeasurements[5].toStringAsFixed(2)}
+    eighth = ${calculatedMeasurements[5].toStringAsFixed(2)} + distan 
     
     
-    seventhX = fourthX - seventh / 2
-    eighthX = eighthX + eighth / 2
+    seventhX = fourthX - seventh 
+    eighthX = eighthX + eighth 
     
     seventhY = fourthY
     eighthY = fourthY
@@ -1816,8 +1816,8 @@ Dim obj As AcadObject
     sixth = ${calculatedMeasurements[6].toStringAsFixed(2)}
     
     
-    fifthX = (fifthX - fifth / 2) + distan
-    sixthX = (sixthX + sixth / 2) + distan
+    fifthX = (fifthX - fifth ) + distan
+    sixthX = (sixthX + sixth ) + distan
     
     fifthY = secondY
     sixthY = secondY
@@ -1828,8 +1828,8 @@ Dim obj As AcadObject
     fourteen = ${calculatedMeasurements[7].toStringAsFixed(2)}
     
     
-    thirteenX = distan + (thirteenX - thirteen / 2)
-    fourteenX = distan + (fourteenX + fourteen / 2)
+    thirteenX = distan + (thirteenX - thirteen )
+    fourteenX = distan + (fourteenX + fourteen )
     
     thirteenY = secondY - 8
     fourteenY = secondY - 8
