@@ -826,6 +826,7 @@ class _CreatePatternPageState extends State<CreatePatternPage> {
                               measurements,
                               selectedClothingType,
                               selectedAgeCategory,
+                              selectedSleeveType,
                             ),
                           ),
                         );
