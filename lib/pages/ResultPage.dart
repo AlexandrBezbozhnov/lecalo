@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'dart:async';
+import 'dart:convert';
 
 class ResultPage extends StatelessWidget {
   final List<double> calculatedMeasurements;
@@ -167,9 +168,47 @@ Future<void> saveData(
       final userIndex = calculatedMeasurements.length + i;
       data += '${measurementNames[i]}: ${userMeasurements[i]} \n\n';
     }
+    Map<String, dynamic> jsonData = {
+      'selectedClothingType': selectedClothingType,
+      'selectedAgeCategory': selectedAgeCategory,
+      'selectedSleeveType': selectedSleeveType,
+      'calculatedMeasurements': Map.fromIterable(
+        measurementNames,
+        key: (name) => name,
+        value: (name) {
+          int index = measurementNames.indexOf(name);
+          return calculatedMeasurements[index].toStringAsFixed(2);
+        },
+      ),
+      'userMeasurements': Map.fromIterable(
+        measurementNames,
+        key: (name) => name,
+        value: (name) {
+          int index = measurementNames.indexOf(name);
+          return userMeasurements[index];
+        },
+      ),
+    };
 
-    // Запись данных в файл .txt
+    // Конвертация Map в JSON строку
+    String jsonDataString = json.encode(jsonData);
+
+    // Запись данных в файл .json
     final directory = await getApplicationDocumentsDirectory();
+    final fileJson = File('${directory.path}/$fileName.json');
+    await fileJson.writeAsString(jsonDataString);
+
+    // Отправка файла JSON на Firebase Storage
+    final storage = FirebaseStorage.instance;
+    final filePathJson = 'uploads/$selectedFolder/$fileName.json';
+
+    final refJson = storage.ref().child(filePathJson);
+    final taskJson = refJson.putFile(fileJson);
+    await taskJson.whenComplete(() {
+      print('Файл .json успешно записан');
+      fileJson.delete();
+    });
+    // Запись данных в файл .txt
     final fileTxt = File('${directory.path}/$fileName.txt');
     await fileTxt.writeAsString(data);
 
@@ -2547,8 +2586,7 @@ End Sub
           await fileBas.writeAsString(code);
         }
       }
-    } 
-    else {
+    } else {
       if (selectedClothingType == 'Лосины') {
         final code = '''
 Sub DrawSquareWithDimensions()
@@ -5432,7 +5470,6 @@ End Sub
       }
     }
     // Отправка файлов на Firebase Storage
-    final storage = FirebaseStorage.instance;
     final filePathTxt = 'uploads/$selectedFolder/$fileName.txt';
     final filePathBas = 'uploads/$selectedFolder/$fileName.bas';
 
