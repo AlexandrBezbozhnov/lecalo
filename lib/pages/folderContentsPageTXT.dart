@@ -133,7 +133,7 @@ class _FolderContentsPageTXTState extends State<FolderContentsPageTXT> {
             itemBuilder: (context, index) {
               String itemName = filteredContents[index];
 
-              if (itemName.endsWith('.keep') || itemName.endsWith('.bas')) {
+              if (itemName.endsWith('.keep') || itemName.endsWith('.bas') || itemName.endsWith('.json')) {
                 return SizedBox.shrink();
               }
 

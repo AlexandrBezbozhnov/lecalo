@@ -541,7 +541,7 @@ Dim obj As AcadObject
     
     location1(0) = 0#: location1(1) = 0#: location1(2) = 0#
     
-    twelfth = 5
+    twelfth = 2
     sixth = ${calculatedMeasurements[0].toStringAsFixed(2)}
     seventh = ${calculatedMeasurements[10].toStringAsFixed(2)}
     
@@ -568,7 +568,7 @@ Dim obj As AcadObject
    ninth = ${calculatedMeasurements[1].toStringAsFixed(2)}
    
    fifthX = 0
-   fifthY = fifth * -1
+   fifthY = (secondY + 15) - (fifth * -1)
    
    ninthX = ninth
    ninthY = fifthY
@@ -967,7 +967,7 @@ Dim obj As AcadObject
     
     location1(0) = 0#: location1(1) = 0#: location1(2) = 0#
     
-    twelfth = 5
+    twelfth = 2
     sixth = ${calculatedMeasurements[0].toStringAsFixed(2)}
     seventh = ${calculatedMeasurements[10].toStringAsFixed(2)}
     
@@ -994,7 +994,7 @@ Dim obj As AcadObject
    ninth = ${calculatedMeasurements[1].toStringAsFixed(2)}
    
    fifthX = 0
-   fifthY = fifth * -1
+   fifthY = (secondY + 15) - (fifth * -1)
    
    ninthX = ninth
    ninthY = fifthY
@@ -1393,7 +1393,7 @@ Dim obj As AcadObject
     
     location1(0) = 0#: location1(1) = 0#: location1(2) = 0#
     
-    twelfth = 5
+    twelfth = 2
     sixth = ${calculatedMeasurements[0].toStringAsFixed(2)}
     seventh = ${calculatedMeasurements[10].toStringAsFixed(2)}
     
@@ -1420,7 +1420,7 @@ Dim obj As AcadObject
    ninth = ${calculatedMeasurements[1].toStringAsFixed(2)}
    
    fifthX = 0
-   fifthY = fifth * -1
+   fifthY = (secondY + 15) - (fifth * -1)
    
    ninthX = ninth
    ninthY = fifthY
@@ -1855,7 +1855,7 @@ AddLine firstX, firstY, secondX, secondY
     
     location1(0) = 0#: location1(1) = 0#: location1(2) = 0#
     
-    twelfth = 5
+    twelfth = 2
     sixth = ${calculatedMeasurements[0].toStringAsFixed(2)}
     seventh = ${calculatedMeasurements[6].toStringAsFixed(2)}
     
@@ -1881,7 +1881,7 @@ AddLine firstX, firstY, secondX, secondY
    ninth = ${calculatedMeasurements[1].toStringAsFixed(2)}
    
    fifthX = 0
-   fifthY = fifth * -1
+   fifthY = fifthY = (secondY + 15) - (fifth * -1)
    
    ninthX = ninth
    ninthY = fifthY
@@ -2163,7 +2163,7 @@ AddLine firstX, firstY, secondX, secondY
     
     location1(0) = 0#: location1(1) = 0#: location1(2) = 0#
     
-    twelfth = 5
+    twelfth = 2
     sixth = ${calculatedMeasurements[0].toStringAsFixed(2)}
     seventh = ${calculatedMeasurements[6].toStringAsFixed(2)}
     
@@ -2189,7 +2189,7 @@ AddLine firstX, firstY, secondX, secondY
    ninth = ${calculatedMeasurements[1].toStringAsFixed(2)}
    
    fifthX = 0
-   fifthY = fifth * -1
+   fifthY = fifthY = (secondY + 15) - (fifth * -1)
    
    ninthX = ninth
    ninthY = fifthY
@@ -2470,7 +2470,7 @@ AddLine firstX, firstY, secondX, secondY
     
     location1(0) = 0#: location1(1) = 0#: location1(2) = 0#
     
-    twelfth = 5
+    twelfth = 2
     sixth = ${calculatedMeasurements[0].toStringAsFixed(2)}
     seventh = ${calculatedMeasurements[6].toStringAsFixed(2)}
     
@@ -2496,7 +2496,7 @@ AddLine firstX, firstY, secondX, secondY
    ninth = ${calculatedMeasurements[1].toStringAsFixed(2)}
    
    fifthX = 0
-   fifthY = fifth * -1
+   fifthY = fifthY = (secondY + 15) - (fifth * -1)
    
    ninthX = ninth
    ninthY = fifthY
@@ -3055,8 +3055,8 @@ Public Sub Rucav(distan As Double)
     thirdX = 0 + distan
     thirdY = 0
     
-    fifth = ${calculatedMeasurements[22].toStringAsFixed(2)}
-    sixth = ${calculatedMeasurements[22].toStringAsFixed(2)}
+    fifth = ${calculatedMeasurements[8].toStringAsFixed(2)}
+    sixth = ${calculatedMeasurements[8].toStringAsFixed(2)}
     
     
     fifthX = thirdX - fifth 
@@ -3069,8 +3069,8 @@ Public Sub Rucav(distan As Double)
     AddLine fifthX, fifthY, sixthX, sixthY
     '-----------------------------------------------------------------------------
         
-    seventh = ${calculatedMeasurements[8].toStringAsFixed(2)}
-    eighth = ${calculatedMeasurements[8].toStringAsFixed(2)}
+    seventh = ${calculatedMeasurements[22].toStringAsFixed(2)}
+    eighth = ${calculatedMeasurements[22].toStringAsFixed(2)}
     
     
     seventhX = secondX - seventh 
@@ -3565,8 +3565,8 @@ Public Sub Rucav(distan As Double)
     thirdX = 0 + distan
     thirdY = 0
     
-    fifth = ${calculatedMeasurements[22].toStringAsFixed(2)}
-    sixth = ${calculatedMeasurements[22].toStringAsFixed(2)}
+    fifth = ${calculatedMeasurements[8].toStringAsFixed(2)}
+    sixth = ${calculatedMeasurements[8].toStringAsFixed(2)}
     
     
     fifthX = thirdX - fifth 
@@ -3579,8 +3579,8 @@ Public Sub Rucav(distan As Double)
     AddLine fifthX, fifthY, sixthX, sixthY
     '-----------------------------------------------------------------------------
         
-    seventh = ${calculatedMeasurements[8].toStringAsFixed(2)}
-    eighth = ${calculatedMeasurements[8].toStringAsFixed(2)}
+    seventh = ${calculatedMeasurements[22].toStringAsFixed(2)}
+    eighth = ${calculatedMeasurements[22].toStringAsFixed(2)}
     
     
     seventhX = secondX - seventh 
@@ -4075,8 +4075,8 @@ Public Sub Rucav(distan As Double)
     thirdX = 0 + distan
     thirdY = 0
     
-    fifth = ${calculatedMeasurements[22].toStringAsFixed(2)}
-    sixth = ${calculatedMeasurements[22].toStringAsFixed(2)}
+    fifth = ${calculatedMeasurements[8].toStringAsFixed(2)}
+    sixth = ${calculatedMeasurements[8].toStringAsFixed(2)}
     
     
     fifthX = thirdX - fifth 
@@ -4089,8 +4089,8 @@ Public Sub Rucav(distan As Double)
     AddLine fifthX, fifthY, sixthX, sixthY
     '-----------------------------------------------------------------------------
         
-    seventh = ${calculatedMeasurements[8].toStringAsFixed(2)}
-    eighth = ${calculatedMeasurements[8].toStringAsFixed(2)}
+    seventh = ${calculatedMeasurements[22].toStringAsFixed(2)}
+    eighth = ${calculatedMeasurements[22].toStringAsFixed(2)}
     
     
     seventhX = secondX - seventh 
@@ -4458,8 +4458,8 @@ Public Sub AddLineKri2(startX As Double, startY As Double, endX As Double, endY 
     thirdX = 0 + distan
     thirdY = 0
     
-    fifth = ${calculatedMeasurements[16].toStringAsFixed(2)}
-    sixth = ${calculatedMeasurements[16].toStringAsFixed(2)}
+    fifth = ${calculatedMeasurements[4].toStringAsFixed(2)}
+    sixth = ${calculatedMeasurements[4].toStringAsFixed(2)}
     
     
     fifthX = thirdX - fifth 
@@ -4472,8 +4472,8 @@ Public Sub AddLineKri2(startX As Double, startY As Double, endX As Double, endY 
     AddLine fifthX, fifthY, sixthX, sixthY
     '-----------------------------------------------------------------------------
         
-    seventh = ${calculatedMeasurements[4].toStringAsFixed(2)}
-    eighth = ${calculatedMeasurements[4].toStringAsFixed(2)}
+    seventh = ${calculatedMeasurements[16].toStringAsFixed(2)}
+    eighth = ${calculatedMeasurements[16].toStringAsFixed(2)}
     
     
     seventhX = secondX - seventh 
@@ -4852,8 +4852,8 @@ Public Sub AddLineKri2(startX As Double, startY As Double, endX As Double, endY 
     thirdX = 0 + distan
     thirdY = 0
     
-    fifth = ${calculatedMeasurements[16].toStringAsFixed(2)}
-    sixth = ${calculatedMeasurements[16].toStringAsFixed(2)}
+    fifth = ${calculatedMeasurements[4].toStringAsFixed(2)}
+    sixth = ${calculatedMeasurements[4].toStringAsFixed(2)}
     
     
     fifthX = thirdX - fifth 
@@ -4866,8 +4866,8 @@ Public Sub AddLineKri2(startX As Double, startY As Double, endX As Double, endY 
     AddLine fifthX, fifthY, sixthX, sixthY
     '-----------------------------------------------------------------------------
         
-    seventh = ${calculatedMeasurements[4].toStringAsFixed(2)}
-    eighth = ${calculatedMeasurements[4].toStringAsFixed(2)}
+    seventh = ${calculatedMeasurements[16].toStringAsFixed(2)}
+    eighth = ${calculatedMeasurements[16].toStringAsFixed(2)}
     
     
     seventhX = secondX - seventh 
@@ -5245,8 +5245,8 @@ Public Sub AddLineKri2(startX As Double, startY As Double, endX As Double, endY 
     thirdX = 0 + distan
     thirdY = 0
     
-    fifth = ${calculatedMeasurements[16].toStringAsFixed(2)}
-    sixth = ${calculatedMeasurements[16].toStringAsFixed(2)}
+    fifth = ${calculatedMeasurements[4].toStringAsFixed(2)}
+    sixth = ${calculatedMeasurements[4].toStringAsFixed(2)}
     
     
     fifthX = thirdX - fifth 
@@ -5259,8 +5259,8 @@ Public Sub AddLineKri2(startX As Double, startY As Double, endX As Double, endY 
     AddLine fifthX, fifthY, sixthX, sixthY
     '-----------------------------------------------------------------------------
         
-    seventh = ${calculatedMeasurements[4].toStringAsFixed(2)}
-    eighth = ${calculatedMeasurements[4].toStringAsFixed(2)}
+    seventh = ${calculatedMeasurements[16].toStringAsFixed(2)}
+    eighth = ${calculatedMeasurements[16].toStringAsFixed(2)}
     
     
     seventhX = secondX - seventh 
