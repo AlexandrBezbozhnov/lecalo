@@ -2913,7 +2913,7 @@ Dim obj As AcadObject
     
     location1(0) = 0#: location1(1) = 0#: location1(2) = 0#
     
-    twelfth = 5
+    twelfth = 2
     sixth = ${calculatedMeasurements[0].toStringAsFixed(2)}
     seventh = ${calculatedMeasurements[10].toStringAsFixed(2)}
     
@@ -2940,7 +2940,7 @@ Dim obj As AcadObject
    ninth = ${calculatedMeasurements[1].toStringAsFixed(2)}
    
    fifthX = 0
-   fifthY = fifth * -1
+   fifthY = (secondY + 15) - (fifth * -1)
    
    ninthX = ninth
    ninthY = fifthY
@@ -3423,7 +3423,7 @@ Dim obj As AcadObject
     
     location1(0) = 0#: location1(1) = 0#: location1(2) = 0#
     
-    twelfth = 5
+    twelfth = 2
     sixth = ${calculatedMeasurements[0].toStringAsFixed(2)}
     seventh = ${calculatedMeasurements[10].toStringAsFixed(2)}
     
@@ -3450,7 +3450,7 @@ Dim obj As AcadObject
    ninth = ${calculatedMeasurements[1].toStringAsFixed(2)}
    
    fifthX = 0
-   fifthY = fifth * -1
+   fifthY = (secondY + 15) - (fifth * -1)
    
    ninthX = ninth
    ninthY = fifthY
@@ -3933,7 +3933,7 @@ Dim obj As AcadObject
     
     location1(0) = 0#: location1(1) = 0#: location1(2) = 0#
     
-    twelfth = 5
+    twelfth = 2
     sixth = ${calculatedMeasurements[0].toStringAsFixed(2)}
     seventh = ${calculatedMeasurements[10].toStringAsFixed(2)}
     
@@ -3960,7 +3960,7 @@ Dim obj As AcadObject
    ninth = ${calculatedMeasurements[1].toStringAsFixed(2)}
    
    fifthX = 0
-   fifthY = fifth * -1
+   fifthY = (secondY + 15) - (fifth * -1)
    
    ninthX = ninth
    ninthY = fifthY

@@ -330,7 +330,7 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Главная', 
+          'Главная',
           textAlign: TextAlign.center, // Центрирование текста
         ),
         centerTitle: true, // Устанавливаем центрирование заголовка
